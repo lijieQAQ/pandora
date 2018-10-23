@@ -5,20 +5,17 @@
 </template>
 
 <script>
-import Main from '../layout/Main'
+import Main from '../../components/Main'
+
 export default {
   name: 'priceLadder',
-    data () {
-    return {
-      
-    }
+  data () {
+    return {}
   },
   components: {
     Main
   },
-  methods:{
-
-  }
+  methods: {}
 }
 </script>
 

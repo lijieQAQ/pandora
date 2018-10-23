@@ -36,18 +36,12 @@
 </template>
 
 <script>
-  export default {
-    name: 'login'
-  }
+export default {
+  name: 'login'
+}
 </script>
 
 <style scoped lang="less">
-  /*@charset "utf-8";*/
-  /* CSS Document */
- /* @font-face {
-    font-family: 'bmwRg';
-    src : url('../font/BMWCdRg.ttf');
-  }*/
   body {
     font-family: 'bmwRg';
     width: 100%;
@@ -92,7 +86,7 @@
     -ms-transform: translate(-50%, -50%);
     border-radius: 10px;
     /*filter:alpha(opacity:95);*/
-    opacity:0.95; 
+    opacity:0.95;
     -moz-opacity:0.95;
     -khtml-opacity: 0.95;
   }
