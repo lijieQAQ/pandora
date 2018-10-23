@@ -1,0 +1,465 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+	/*vertical-align: baseline;*/
+    vertical-align: middle;
+}
+/* remember to define focus styles! */
+:focus {
+	outline: 0;
+}
+body {
+	line-height: 1;
+	color: black;
+	background: white;
+}
+ol, ul {
+	list-style: none;
+}
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+	border-collapse: separate;
+	border-spacing: 0;
+}
+caption, th, td {
+	text-align: left;
+	font-weight: normal;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: "";
+}
+blockquote, q {
+	quotes: "" "";
+}
+*{ padding:0; margin:0;}
+/******layout.css*********/
+.box{
+    display: -webkit-box;
+    display: -moz-box;
+    display: box;
+}
+.box.center {
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    box-pack: center;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    box-align: center;
+}
+.box.h_center {
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    box-align: center;
+}
+.box.v_center:not(.vertical) {
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    box-pack: center;
+}
+.box.v_center.vertical {
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    box-orient: vertical;
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    box-pack: center;
+}
+.flexbox.h_center {
+    display: -webkit-box;
+    display: box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    box-pack: center;
+    justify-content: center;
+    -webkit-justify-content: center;
+}
+.flexbox.v_center:not(.vertical) {
+    display: -webkit-box;
+    display: box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+}
+.flexbox.v_center.vertical {
+    display: -webkit-box;
+    display: box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    box-orient: vertical;
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    box-pack: center;
+    justify-content: center;
+    -webkit-justify-content: center;
+    flex-direction: column;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+}
+.flexbox.center {
+    display: -webkit-box;
+    display: box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    box-align: center;
+    box-pack: center;
+    align-items: center;
+    -webkit-align-items: center;
+    justify-content: center;
+    -webkit-justify-content: center;
+}
+/* start 弹性布局*/
+/* @date: 2015/7/3 14:54:56; */
+/* @author: zhaoye; */
+.flexbox {
+    display: -webkit-box;
+    display: box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+.flexbox.reverse{
+    flex-direction: row-reverse;
+    -webkit-flex-direction: row-reverse;
+    -ms-direction: row-reverse;
+    -webkit-box-direction: reverse;
+    -moz-box-direction: reverse;
+    box-direction: reverse;
+}
+.flex1,
+.flexitem {
+    display: block;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+.flex2{
+    display: block;
+    -webkit-box-flex: 2;
+    -moz-box-flex: 2;
+    -webkit-flex: 2;
+    flex: 2;
+}
+.flex3{
+    display: block;
+    -webkit-box-flex: 3;
+    -moz-box-flex: 3;
+    -webkit-flex: 3;
+    flex: 3;
+}
+.flex4{
+    display: block;
+    -webkit-box-flex: 4;
+    -moz-box-flex: 4;
+    -webkit-flex: 4;
+    flex: 4;
+}
+.flex5{
+    display: block;
+    -webkit-box-flex: 5;
+    -moz-box-flex: 5;
+    -webkit-flex: 5;
+    flex: 5;
+}
+.flex6{
+    display: block;
+    -webkit-box-flex: 6;
+    -moz-box-flex: 6;
+    -webkit-flex: 6;
+    flex: 6;
+}
+.flex7{
+    display: block;
+    -webkit-box-flex: 7;
+    -moz-box-flex: 7;
+    -webkit-flex: 7;
+    flex: 7;
+}
+.flex8{
+    display: block;
+    -webkit-box-flex: 8;
+    -moz-box-flex: 8;
+    -webkit-flex:8;
+    flex: 8;
+}
+.flex9{
+    display: block;
+    -webkit-box-flex: 9;
+    -moz-box-flex: 9;
+    -webkit-flex:9;
+    flex: 9;
+}
+/*end*/
+
+/*栅格 start 2015/8/10 14:36:31*/
+.grid {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+}
+.grid .row {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+}
+
+.grid .column_1,
+.grid .column_2,
+.grid .column_3,
+.grid .column_4,
+.grid .column_5,
+.grid .column_6,
+.grid .column_7,
+.grid .column_8,
+.grid .column_9,
+.grid .column_10,
+.grid .column_11,
+.grid .column_12,
+.grid .column1,
+.grid .column2,
+.grid .column3,
+.grid .column4,
+.grid .column5,
+.grid .column6,
+.grid .column7,
+.grid .column8,
+.grid .column9,
+.grid .column10,
+.grid .column11,
+.grid .column12 {
+    box-sizing: border-box;
+    display: block;
+    float: left;
+}
+.grid,
+.grid .row,
+.grid .column_1:before,
+.grid .column_2:before,
+.grid .column_3:before,
+.grid .column_4:before,
+.grid .column_5:before,
+.grid .column_6:before,
+.grid .column_7:before,
+.grid .column_8:before,
+.grid .column_9:before,
+.grid .column_10:before,
+.grid .column_11:before,
+.grid .column_12:before,
+.grid .column1:before,
+.grid .column2:before,
+.grid .column3:before,
+.grid .column4:before,
+.grid .column5:before,
+.grid .column6:before,
+.grid .column7:before,
+.grid .column8:before,
+.grid .column9:before,
+.grid .column10:before,
+.grid .column11:before,
+.grid .column12:before {
+    content: " ";
+    display: table;
+}
+.grid,
+.grid .column_1:after,
+.grid .column_2:after,
+.grid .column_3:after,
+.grid .column_4:after,
+.grid .column_5:after,
+.grid .column_6:after,
+.grid .column_7:after,
+.grid .column_8:after,
+.grid .column_9:after,
+.grid .column_10:after,
+.grid .column_11:after,
+.grid .column_12:after,
+.grid .column1:after,
+.grid .column2:after,
+.grid .column3:after,
+.grid .column4:after,
+.grid .column5:after,
+.grid .column6:after,
+.grid .column7:after,
+.grid .column8:after,
+.grid .column9:after,
+.grid .column10:after,
+.grid .column11:after,
+.grid .column12:after {
+    clear: both;
+}
+
+.grid .column_1,
+.grid .column1{
+    width: 8.33333333%;
+}
+.grid .column_2,
+.grid .column2{
+    width: 16.66666667%;
+}
+.grid .column_3,
+.grid .column3{
+    width: 25%;
+}
+.grid .column_4,
+.grid .column4{
+    width: 33.33333333%;
+}
+.grid .column_5,
+.grid .column5{
+    width: 41.66666667%;
+}
+.grid .column_6,
+.grid .column6{
+    width: 50%;
+}
+.grid .column_7,
+.grid .column7{
+    width: 58.33333333%;
+}
+.grid .column_8,
+.grid .column8{
+    width: 66.66666667%;
+}
+.grid .column_9,
+.grid .column9{
+    width: 75%;
+}
+.grid .column_10,
+.grid .column10{
+    width: 83.33333333%;
+}
+.grid .column_11,
+.grid .column11{
+    width: 91.66666667%;
+}
+.grid .column_12,
+.grid .column12{
+    width: 100%;
+}
+
+.grid2:after,
+.grid3:after,
+.grid4:after,
+.grid5:after,
+.grid6:after,
+.grid7:after,
+.grid8:after,
+.grid9:after,
+.grid10:after,
+.grid11:after,
+.grid12:after {
+    content: " ";
+    display: table;
+    clear: both;
+}
+
+.grid12>*,
+.grid11>*,
+.grid10>*,
+.grid9>*,
+.grid8>*,
+.grid7>*,
+.grid6>*,
+.grid6>*,
+.grid5>*,
+.grid4>*,
+.grid3>*,
+.grid2>* {
+    box-sizing: border-box;
+    display: block;
+    float: left;
+}
+
+.grid12>*:before,
+.grid11>*:before,
+.grid10>*:before,
+.grid9>*:before,
+.grid8>*:before,
+.grid7>*:before,
+.grid6>*:before,
+.grid5>*:before,
+.grid4>*:before,
+.grid3>*:before,
+.grid2>*:before{
+    content: " ";
+    display: table;
+}
+
+.grid12>*:after,
+.grid11>*:after,
+.grid10>*:after,
+.grid9>*:after,
+.grid8>*:after,
+.grid7>*:after,
+.grid6>*:after,
+.grid5>*:after,
+.grid4>*:after,
+.grid3>*:after,
+.grid2>*:after{
+    clear:both;
+}
+
+.grid12>* {
+    width: 8.333333333%;
+}
+.grid11>* {
+    width: 9.0909090909%;
+}
+.grid10>* {
+    width: 10%;
+}
+.grid9>* {
+    width: 11.11111111%;
+}
+.grid8>* {
+    width: 12.5%;
+}
+.grid7>* {
+    width: 14.28571428%;
+}
+.grid6>* {
+    width: 16.66666667%;
+}
+.grid5>* {
+    width: 20%;
+}
+.grid4>* {
+    width: 25%;
+}
+.grid3>* {
+    width: 33.33333333%;
+}
+.grid2>* {
+    width: 50%;
+}
+/*end*/
