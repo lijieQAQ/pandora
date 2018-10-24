@@ -3,13 +3,11 @@ import axios from 'axios'
 /**
  * http配置
  */
-const baseUrl = 'localhost'
+const baseUrl = 'http://36.110.3.130:7777/'
 
 const instance = axios.create({
   timeout: 10000,
-  withCredentials: true, // 是否允许带cookie这些
   headers: {
-    'X-Requested-With': 'XMLHttpRequest',
     'Content-Type': 'application/json;charset=UTF-8'
   }
 })
@@ -21,7 +19,7 @@ instance.interceptors.request.use(
     if (config.url.indexOf('http') < 0) {
       config.url = baseUrl + config.url
     }
-    // 若是有做鉴权token , 就给头部带上token
+    // // 若是有做鉴权token , 就给头部带上token
     if (localStorage.token) {
       config.headers.Authorization = localStorage.token
     }
