@@ -1,12 +1,16 @@
 <template>
   <div id="bmwProduct">
-    bmwProductbmwProductbmwProductbmwProductbmwProductbmwProduct
+    <MasterDataContain></MasterDataContain>
   </div>
 </template>
 
 <script>
+import MasterDataContain from '../../components/MasterDataContain'
 export default {
-  name: 'bmwProduct'
+  name: 'bmwProduct',
+  components: {
+    MasterDataContain
+  },
 }
 </script>
 

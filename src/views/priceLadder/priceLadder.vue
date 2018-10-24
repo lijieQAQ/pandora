@@ -1,11 +1,13 @@
 <template>
   <div id="priceLadder">
     <Main></Main>
+    <PriceLadderContain></PriceLadderContain>
   </div>
 </template>
 
 <script>
 import Main from '../../components/Main'
+import PriceLadderContain from '../../components/PriceLadderContain'
 
 export default {
   name: 'priceLadder',
@@ -13,9 +15,17 @@ export default {
     return {}
   },
   components: {
-    Main
+    Main,
+    PriceLadderContain
   },
-  methods: {}
+  mounted: function() {
+      this.initComponent();
+
+      this.changeDefaultVal();
+  },
+  methods: {
+    
+  }
 }
 </script>
 
