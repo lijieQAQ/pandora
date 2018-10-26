@@ -43,7 +43,6 @@ export default {
   },
   methods: {
     handleSelect () {
-      debugger
       if (this.activeIndex === '1') {
         this.$router.push({path: `/priceLadder`})
       } else if (this.activeIndex === '3') {

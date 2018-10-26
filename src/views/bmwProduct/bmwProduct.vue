@@ -10,7 +10,7 @@ export default {
   name: 'bmwProduct',
   components: {
     MasterDataContain
-  },
+  }
 }
 </script>
 

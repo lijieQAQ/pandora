@@ -7,7 +7,6 @@
     width='100%'
     top='0vh'
     show-close=false
-    @close='closeDialog'
   >
 
     <div class="sixColumnTop">
@@ -19,7 +18,7 @@
       <!-- 点击关闭模态框 -->
       <span id="closeModel" @click="handleRemoveAllColumn(menuhub.blockList.length)">Clear all</span>
       <!-- 新加的clearAll功能 -->
-      <span id="clearAllMultiSelection"><img src="../assets/images/delete-icon.png"></span>
+      <span id="clearAllMultiSelection" @click="closeDialog"><img src="../assets/images/delete-icon.png"></span>
     </div>
     <div class="SixColumnBottom">
       <div class="sixColumnLeft">
@@ -55,9 +54,9 @@
             <draggable v-model="menuhub.blockList">
             <li v-for="(carLane, i) in menuhub.blockList" v-bind:class="getMenuhubBgColorClass(carLane.brandNameEn)">
               <div class="vehicleBoxTit">
-                <div class="left"> 
-                  <img v-bind:src="'../assets/images/' + carLane.brandNameEn + '.png'"/> 
-                  <span>{{carLane.bmwFlg ? carLane.seriesNameEn : carLane.model}}</span> 
+                <div class="left">
+                  <img v-bind:src="'../assets/images/' + carLane.brandNameEn + '.png'"/>
+                  <span>{{carLane.bmwFlg ? carLane.seriesNameEn : carLane.model}}</span>
                 </div>
                 <div class="right">
                   <img src="../assets/images/addSix.png" class="edit" @click="openMenuhubNewCar(carLane, i)">
@@ -174,11 +173,12 @@ export default {
     this.getCmpBrandList();
   },
   mounted () {
-    this.incomponent();
+    this.incomponent()
   },
   methods: {
     closeDialog () {
-
+      this.addNewVehicleMaskVisible = false
+      this.$emit('closeDialog', this.addNewVehicleMaskVisible)
     },
     getMenuhubBgColorClass: function (brand) {
       if (brand === 'BMW') {
@@ -193,6 +193,7 @@ export default {
     handleDblClick : function(brand, seriesOrModel, eseriesOrEngine, bmwFlg) {
       var self = this;
         var nowdate = (new Date()).format("yyyymm");
+
         var promise = this.searchRowDetailCommon(
                         brand,
                         seriesOrModel,
@@ -365,7 +366,6 @@ export default {
       this.menuhub.blockList.splice(idx, 1);
     },
     selectContainShow: function(){
-        console.log($);
         $(".selectContain").attr('class','selectContainShow');
      },
      selectContainHide: function(){
@@ -429,15 +429,14 @@ export default {
       if (setFlg) {
             return;
           }
-          console.log('kkkkkkkk')
-          console.log($('#sidebar'))
+          console.log($('.sixColumnMain').html())
           $('#sidebar>ul>li>a').each(function() {
 //            if (!$(this).parent().hasClass('current')) {
 //              $(this).parent().find('ul:first').hide();
 //            } else {
 //              currentMenu = $(this);
-//            }          
-              $(this).parent().find('ul:first').hide();           
+//            }
+              $(this).parent().find('ul:first').hide();
               currentMenu = $(this);
               $(this).click(function() {
 //              $('#sidebar>ul>li.current').removeClass('current');
@@ -481,7 +480,7 @@ export default {
 
           setFlg = true;
     },
-   
+
 
   },
   components: {

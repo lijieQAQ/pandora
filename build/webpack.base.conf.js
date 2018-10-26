@@ -41,12 +41,12 @@ module.exports = {
   },
   //
   plugins: [
-              new webpack.optimize.CommonsChunkPlugin('common.js'),
-              new webpack.ProvidePlugin({
-                  $: "jquery",
-                  jQuery: "jquery"
-              })
-           ],
+    new webpack.optimize.CommonsChunkPlugin('common.js'),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery'
+    })
+  ],
   //
   module: {
     rules: [
@@ -71,7 +71,7 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        loader: "style-loader!css-loader!less-loader",
+        loader: 'style-loader!css-loader!less-loader',
 
       },
       {

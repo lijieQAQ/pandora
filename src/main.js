@@ -7,8 +7,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/styleHign.css'
 import http from './common/js/http'
 import App from './App'
-import $ from 'jquery'
-
+import 'jquery'
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 // axios封装
