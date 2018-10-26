@@ -30,10 +30,9 @@
                     </el-select>
                   </template>
                 </div>
-                <div class="arrowDown"></div>
               </div>
             </div>
-            <!-- <div class="control-group">
+            <div class="control-group">
               <div class="controls input-append">
                 <label for="name"><b class="text-danger">*</b>{{ addRow.brand ? (addRow.isBmwProduct ? "Series" : "Model") : "Series/Model" }} </label>
                 <div id="seriesAndModel">
@@ -64,7 +63,7 @@
                 <div class="arrowDown"></div>
               </div>
             </div>
-            <div class="control-group">
+         <!--    <div class="control-group">
               <div class="controls input-append date form_datetime" data-link-field="dtp_input1" id="menuhubAddRowDate" v-if="!addRow.addCarShowFlg">
                 <label for="name"><b class="text-danger">*</b>Date </label>
                 <input id="dateBorderColor" size="16" type="text" v-bind:value="initDate.format('mmm yyyy')" readonly>
@@ -281,7 +280,6 @@
 }
 .editModal{
     width:820px;
-    height:810px;
     background: #fff;
 }
 .editModal .modal-header{
@@ -306,4 +304,39 @@
     height: 1px;
     background: linear-gradient(to right, #7BA0F1, #64C3EE, #fff);
 }
+.editModal .modal-content,.editModal .modal-body{
+    overflow:hidden;
+}
+.modal-content {
+	position: relative;
+	background-color: #fff;
+	border: 0px solid #999;
+	border-radius: 0px;
+	outline: 0;
+	box-shadow: none;
+}
+.editModal .select-box {
+	width: 182px;
+	margin: 30px 34px 0 44px;
+	float: left;
+}
+.select-box .control-group{
+	margin-bottom:30px;
+}
+.editModal .control-group{
+	clear: both;
+	overflow: hidden;
+	position: relative;
+	height: 46px;
+}
+.editModal label{
+	font-size: 14px; 
+	color: #666; 
+	font-weight: normal;
+}
+.editModal .text-danger {
+	color: #f80000;
+	font-weight: normal;
+}
+
 </style>

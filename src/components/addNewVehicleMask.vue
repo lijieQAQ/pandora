@@ -162,6 +162,7 @@ export default {
 
       bmwSeriesList: [],
       bmwESeriesList: [],
+      cmpBrandList: [],
     }
   },
   props: {
@@ -170,6 +171,7 @@ export default {
   created () {
     this.getBmwSeriesList();
     this.getBmwESeriesList();
+    this.getCmpBrandList();
   },
   mounted () {
     this.incomponent();
@@ -187,40 +189,47 @@ export default {
         return 'bg-red'
       }
     },
+    //fuben
     handleDblClick : function(brand, seriesOrModel, eseriesOrEngine, bmwFlg) {
+      var self = this;
         var nowdate = (new Date()).format("yyyymm");
-        
-        this.searchRowDetailCommon(
+        var promise = this.searchRowDetailCommon(
                         brand,
                         seriesOrModel,
                         eseriesOrEngine,
                         nowdate,
-                        bmwFlg,
-                        function(prdList,self){
-                     // 处理百分比数据
-                      for(var i in prdList){
-                        prdList[i].showMixPercentage = prdList[i].mixPercentage * 100;
-                        prdList[i].showDiscountPercentage = prdList[i].discountPercentage * 100;
-                      }
-                      var block = {
-                      brandNameEn: brand,
-                      bmwFlg: bmwFlg,
-                      seriesNameEn: bmwFlg ? seriesOrModel : "",
-                      eseriesNameEn: bmwFlg ? eseriesOrEngine : "",
-                      model: bmwFlg ? "" : seriesOrModel,
-                      engine: bmwFlg ? "" : eseriesOrEngine,
-                      yearMonth: nowdate,
-                      yearMonthForShow: new Date(),
-                      cars: prdList,
-                      checkAll: true,
-                      isIndeterminate: true,
-                      checkedCars: prdList,
-                    };
-                    self.menuhub.blockList.push(block);
-        });
+                        bmwFlg);
+        var prdList = [];
 
-    },
-    searchRowDetailCommon : function(brand, seriesOrModel, eseriesOrEngine, yearMonth, bwmFlg, f) {
+        promise.then(function(val){
+          prdList = val;
+          for(var i in prdList){
+            prdList[i].showMixPercentage = prdList[i].mixPercentage * 100;
+            prdList[i].showDiscountPercentage = prdList[i].discountPercentage * 100;
+          }
+          var block = {
+            brandNameEn: brand,
+            bmwFlg: bmwFlg,
+            seriesNameEn: bmwFlg ? seriesOrModel : "",
+            eseriesNameEn: bmwFlg ? eseriesOrEngine : "",
+            model: bmwFlg ? "" : seriesOrModel,
+            engine: bmwFlg ? "" : eseriesOrEngine,
+            yearMonth: nowdate,
+            yearMonthForShow: new Date(),
+            cars: prdList,
+            checkAll: true,
+            isIndeterminate: true,
+            checkedCars: prdList,
+          };
+
+          self.menuhub.blockList.push(block);
+
+        });
+        // 处理百分比数据
+
+        
+      },
+    searchRowDetailCommon : function(brand, seriesOrModel, eseriesOrEngine, yearMonth, bwmFlg) {
         if (!brand) {
           return;
         }
@@ -233,16 +242,17 @@ export default {
         if (!yearMonth) {
           return;
         }
+
         var myProductList = [];
         if (bwmFlg) {
-          myProductList = this.searchBmwProductRowDetail(brand, seriesOrModel, eseriesOrEngine, yearMonth, f);
+         myProductList = this.searchBmwProductRowDetail(brand, seriesOrModel, eseriesOrEngine, yearMonth);
         } else {
-          myProductList = this.searchCmpProductRowDetail(brand, seriesOrModel, eseriesOrEngine, yearMonth, f);
+         myProductList = this.searchCmpProductRowDetail(brand, seriesOrModel, eseriesOrEngine, yearMonth);
         }
         return myProductList;
-        
-    },
-    searchBmwProductRowDetail: function (brand, series, eSeries, addRowDate, f) {
+      },
+
+    searchBmwProductRowDetail: function (brand, series, eSeries, addRowDate) {
         var self = this;
         var dataArray = {};
         dataArray['enabled'] = 'true';
@@ -253,7 +263,10 @@ export default {
             break;
           }
         }
+
         dataArray['bmwESeries.bmwSeries.id'] = '= ' + seriesId;
+
+
         var eSeriesId = -1;
         for (var i in self.bmwESeriesList) {
           var curESeries =  self.bmwESeriesList[i];
@@ -262,19 +275,66 @@ export default {
             break;
           }
         }
+
         dataArray['bmwESeries.id'] = '= ' + eSeriesId;
         dataArray['yearMonth'] = '= ' + addRowDate;
         dataArray['sort'] = 'rrPrice,desc';
         dataArray['size'] = 9999
         var returnList = [];
 
-      self.$http.get('repo/bmwProducts/list',{params: dataArray}).then(res => {
-            if (res.status == 200) {
-              f(res.data.bmwProducts,self);  
-            }
+        return new Promise(function(resolve, reject) {
+            self.$http.get('repo/bmwProducts/list',{params: dataArray}).then(res => {
+                  if (res.status == 200) {
+                    resolve(res.data.bmwProducts)
+                  }
+            })
         })
-
     },
+    searchCmpProductRowDetail: function (brand, model, engine, addRowDate) {
+          var self = this;
+          var dataArray = {};
+          dataArray['enabled'] = 'true';
+          var brandId = -1;
+          for (var i in self.cmpBrandList) {
+            if (brand === self.cmpBrandList[i].nameEn) {
+              brandId = self.cmpBrandList[i].id;
+              break;
+            }
+          }
+          dataArray['cmpBrand.id'] = '= ' + brandId;
+          dataArray['model'] = '= ' + model;
+          dataArray['modelRange'] = '= ' + engine;
+          dataArray['yearMonth'] = '= ' + addRowDate;
+          dataArray['sort'] = 'rrPrice,desc';
+          dataArray['size'] = 9999
+          var returnList = [];
+
+          return new Promise(function(resolve, reject) {
+            self.$http.get('repo/cmpProducts/list',{params: dataArray}).then(res => {
+                  if (res.status == 200) {
+                    resolve(res.data.cmpProducts)
+                  }
+            })
+          })
+    },
+    getCmpBrandList: function() {
+        var self = this;
+        var dataArray = {};
+        dataArray['enabled'] = 'true';
+        dataArray['size'] = 9999;
+        dataArray['sort'] = 'id';
+
+
+        self.$http.get('repo/cmpBrands/list', {
+            params: dataArray
+          }).then(res => {
+            if (res.status == 200) {
+              self.cmpBrandList = res.data.cmpBrands;
+              self.brandList = self.brandList.concat(self.cmpBrandList);
+            }
+         })
+    },
+     
     openMenuhubNewCar : function(block, idx) {
         this.menuhub.editCar = {
               bmwFlg: block.bmwFlg,
