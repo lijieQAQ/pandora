@@ -18,11 +18,6 @@ export default {
     Main,
     PriceLadderContain
   },
-  mounted: function() {
-      this.initComponent();
-
-      this.changeDefaultVal();
-  },
   methods: {
     
   }

@@ -48,3 +48,17 @@
   .el-icon-close:before{
     content: ''
   }
+  .AddNewVehicleBox ul li .vehicleBoxTit .right .datepicker .el-input--suffix .el-input__inner{
+  width:100px;
+  padding-right:0px;
+  border:none;
+}
+.AddNewVehicleBox ul li .vehicleBoxTit .right .datepicker .el-date-editor{
+  width:100px;
+}
+.el-icon-circle-close:before{
+  content: ''
+}
+.el-button:focus, .el-button:hover{
+  color:#000;
+}
