@@ -19,7 +19,6 @@ export default {
     PriceLadderContain
   },
   methods: {
-    
   }
 }
 </script>

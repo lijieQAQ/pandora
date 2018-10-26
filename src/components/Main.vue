@@ -56,13 +56,14 @@
 
     </div>
     <!-- priceInfoTitle 结束 -->
-    <add-new-vehicle-mask :addNewVehicleMaskVisible="addNewVehicleMaskVisible"></add-new-vehicle-mask>
+    <add-new-vehicle-mask :addNewVehicleMaskVisible="addNewVehicleMaskVisible" @closeDialog="closeDialog"></add-new-vehicle-mask>
 
   </div>
 </template>
 
 <script>
 import addNewVehicleMask from './addNewVehicleMask'
+import CarScreen from '../common/js/carscreen.js'
 
 export default {
   name: 'main',
@@ -72,7 +73,14 @@ export default {
       value4: ''
     }
   },
-  methods: {},
+  methods: {
+    closeDialog: function () {
+      this.addNewVehicleMaskVisible = false
+    }
+  },
+  mounted () {
+    console.log(CarScreen)
+  },
   components: {
     addNewVehicleMask
   }
