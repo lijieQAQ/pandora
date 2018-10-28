@@ -7,7 +7,7 @@
     width='100%'
     top='0vh'
     show-close=false
-  >
+    >
 
     <div class="sixColumnTop">
       <h3 class="leftTit">Select Vehicles</h3>
@@ -64,6 +64,7 @@
                     <el-date-picker
                       v-model="value4"
                       type="month"
+
                       v-bind:placeholder=initDate
                       format="M/yyyy"
                       :editable="false"
@@ -116,13 +117,14 @@
 
     <span slot="footer" class="dialog-footer"></span>
   </el-dialog>
-    <add-new-vehicle-assem :addNewVehicleAssemVisible="addNewVehicleAssemVisible"></add-new-vehicle-assem>
+    <add-new-vehicle-assem :addNewVehicleAssemVisible="addNewVehicleAssemVisible" :brandList="brandList" :bmwBrandList="bmwBrandList" :bmwSeriesList="bmwSeriesList" :cmpBrandList="cmpBrandList" :cmpModelList="cmpModelList" :cmpModelRangeList="cmpModelRangeList" :bmwESeriesList="bmwESeriesList" :menuhub="menuhub"></add-new-vehicle-assem>
   </div>
 
 </template>
 
 <script>
 import { format } from '../common/js/dateFormat.js'
+import { accounting } from '../common/js/accounting.min.js'
 import addNewVehicleAssem from './addNewVehicleAssem'
 
 export default {
@@ -158,27 +160,81 @@ export default {
           carIndex: 0
         }
       },
-
+      bmwBrandList: [],
       bmwSeriesList: [],
       bmwESeriesList: [],
       cmpBrandList: [],
+      cmpModelList:[],
+      cmpModelRangeList:[],
+      brandList: [],
     }
   },
   props: {
     addNewVehicleMaskVisible: Boolean
   },
   created () {
+    this.getBmwBrandList();
     this.getBmwSeriesList();
     this.getBmwESeriesList();
     this.getCmpBrandList();
+    this.getCmpModelList();
+    this.getCmpModelRangeList();
+
   },
   mounted () {
     this.incomponent()
   },
   methods: {
+    showSideList (){
+       var setFlg = false;
+
+       if (setFlg) {
+            return;
+          }
+       console.log(111)
+       console.log($('.sixColumnTop'))
+
+       $('#sidebar>ul>li>a').each(function() {
+              $(this).parent().find('ul:first').hide();
+              currentMenu = $(this);
+              $(this).click(function() {
+                if (currentMenu != null && currentMenu.text() != $(this).text()) {
+                    currentMenu.parent().find('ul:first').slideUp();
+                }
+                if (currentMenu != null && currentMenu.text() == $(this).text()) {
+                    currentMenu.parent().find('ul:first').slideUp();
+                    currentMenu = null;
+                } else {
+                    currentMenu = $(this);
+                    currentMenu.parent().find('ul:first').slideDown();
+                }
+                return false;
+               });
+       });
+       $('#sidebar>ul>li>ul>li>a').each(function() {
+              $(this).parent().find('ul:first').hide();
+              currentChildMenu = $(this);
+              $(this).click(function() {
+                if (currentChildMenu != null && currentChildMenu.text() != $(this).text()) {
+                  currentChildMenu.parent().find('ul:first').slideUp();
+                }
+                if (currentChildMenu != null && currentChildMenu.text() == $(this).text()) {
+                  currentChildMenu.parent().find('ul:first').slideUp();
+                  currentChildMenu = null;
+                } else {
+                  currentChildMenu = $(this);
+                  currentChildMenu.parent().find('ul:first').slideDown();
+                }
+                return false;
+              });
+       });
+
+       setFlg = true;
+    },
     closeDialog () {
       this.addNewVehicleMaskVisible = false
       this.$emit('closeDialog', this.addNewVehicleMaskVisible)
+
     },
     getMenuhubBgColorClass: function (brand) {
       if (brand === 'BMW') {
@@ -204,7 +260,18 @@ export default {
 
         promise.then(function(val){
           prdList = val;
-          for(var i in prdList){
+          console.log(1111)
+          console.log(val);
+          self.pushMenuhubBlockList(val,brand,bmwFlg,nowdate,seriesOrModel,eseriesOrEngine);
+        });
+
+       
+        // 处理百分比数据
+
+        
+      },
+    pushMenuhubBlockList : function(prdList,brand,bmwFlg,nowdate,seriesOrModel,eseriesOrEngine){
+       for(var i in prdList){
             prdList[i].showMixPercentage = prdList[i].mixPercentage * 100;
             prdList[i].showDiscountPercentage = prdList[i].discountPercentage * 100;
           }
@@ -223,13 +290,8 @@ export default {
             checkedCars: prdList,
           };
 
-          self.menuhub.blockList.push(block);
-
-        });
-        // 处理百分比数据
-
-        
-      },
+          this.menuhub.blockList.push(block);
+    },
     searchRowDetailCommon : function(brand, seriesOrModel, eseriesOrEngine, yearMonth, bwmFlg) {
         if (!brand) {
           return;
@@ -251,7 +313,7 @@ export default {
          myProductList = this.searchCmpProductRowDetail(brand, seriesOrModel, eseriesOrEngine, yearMonth);
         }
         return myProductList;
-      },
+    },
 
     searchBmwProductRowDetail: function (brand, series, eSeries, addRowDate) {
         var self = this;
@@ -318,6 +380,22 @@ export default {
             })
           })
     },
+    getBmwBrandList: function() {
+        var self = this;
+        var dataArray = {};
+        dataArray['enabled'] = 'true';
+        dataArray['size'] = 9999;
+        dataArray['sort'] = 'id';
+
+        self.$http.get('repo/bmwBrands/list', {
+            params: dataArray
+          }).then(res => {
+            if (res.status == 200) {
+              self.bmwBrandList = res.data.bmwBrands;
+              self.brandList = self.brandList.concat(self.bmwBrandList);
+            }
+         })
+    },
     getCmpBrandList: function() {
         var self = this;
         var dataArray = {};
@@ -335,7 +413,34 @@ export default {
             }
          })
     },
-     
+    getCmpModelList: function () {
+        var self = this;
+        var dataArray = {}
+        dataArray['size'] = 9999
+        dataArray['sort'] = 'brandNameEn,nameEn'
+
+        self.$http.get('repo/cmpModelVs/list', {
+            params: dataArray
+          }).then(res => {
+            if (res.status == 200) {
+              self.cmpModelList = res.data.cmpModelVs
+            }
+         })
+    },
+    getCmpModelRangeList: function () {
+          var self = this;
+          var dataArray = {}
+          dataArray['size'] = 9999
+          dataArray['sort'] = 'brandNameEn,model,nameEn'
+
+          self.$http.get('repo/cmpModelRangeVs/list', {
+            params: dataArray
+          }).then(res => {
+            if (res.status == 200) {
+              self.cmpModelRangeList = res.data.cmpModelRangeVs
+            }
+         })
+      },
     openMenuhubNewCar : function(block, idx) {
         this.menuhub.editCar = {
               bmwFlg: block.bmwFlg,
@@ -415,70 +520,17 @@ export default {
               self.bmwESeriesList =  res.data.bmwESeries
             }
          })
-      },
+    },
     incomponent: function(){
+      console.log(111)
+      console.log($('sixColumnMain').html())
+      console.log($('sixColumnTop').html())
       this.$http.post('priceladder/retrieveMenuList', {
       }).then(res => {
         if (res.status == 200) {
           this.menuhub.menuList = res.data
         }
-     })
-
-      var setFlg = false;
-
-      if (setFlg) {
-            return;
-          }
-          console.log($('.sixColumnMain').html())
-          $('#sidebar>ul>li>a').each(function() {
-//            if (!$(this).parent().hasClass('current')) {
-//              $(this).parent().find('ul:first').hide();
-//            } else {
-//              currentMenu = $(this);
-//            }
-              $(this).parent().find('ul:first').hide();
-              currentMenu = $(this);
-              $(this).click(function() {
-//              $('#sidebar>ul>li.current').removeClass('current');
-                if (currentMenu != null && currentMenu.text() != $(this).text()) {
-                    currentMenu.parent().find('ul:first').slideUp();
-                }
-                if (currentMenu != null && currentMenu.text() == $(this).text()) {
-                    currentMenu.parent().find('ul:first').slideUp();
-                    currentMenu = null;
-                } else {
-                    currentMenu = $(this);
-  //                  currentMenu.parent().addClass('current');
-                    currentMenu.parent().find('ul:first').slideDown();
-                }
-                return false;
-               });
-          });
-          $('#sidebar>ul>li>ul>li>a').each(function() {
-//            if (!$(this).parent().hasClass('current')) {
-//              $(this).parent().find('ul:first').hide();
-//            } else {
-//              currentChildMenu = $(this);
-              $(this).parent().find('ul:first').hide();
-              currentChildMenu = $(this);
-              $(this).click(function() {
-//              $('#sidebar>ul>li>ul>li.current').removeClass('current');
-              if (currentChildMenu != null && currentChildMenu.text() != $(this).text()) {
-                currentChildMenu.parent().find('ul:first').slideUp();
-              }
-              if (currentChildMenu != null && currentChildMenu.text() == $(this).text()) {
-                currentChildMenu.parent().find('ul:first').slideUp();
-                currentChildMenu = null;
-              } else {
-                currentChildMenu = $(this);
-//                currentChildMenu.parent().addClass('current');
-                currentChildMenu.parent().find('ul:first').slideDown();
-              }
-              return false;
-            });
-          });
-
-          setFlg = true;
+      })
     },
 
 
@@ -933,4 +985,5 @@ export default {
   font-size: 16px;
   font-weight: inherit;
 }
+
 </style>
