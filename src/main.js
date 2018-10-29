@@ -9,7 +9,7 @@ import http from './common/js/http'
 import App from './App'
 import 'jquery'
 import VueNumeric from 'vue-numeric'
-import VeeValidate from 'vee-validate'
+import VeeValidate, { Validator } from 'vee-validate'
 import locale from 'element-ui/lib/locale/lang/en'
 
 Vue.use(ElementUI, { locale })
@@ -18,9 +18,7 @@ Vue.use(ElementUI)
 Vue.use(VueNumeric)
 Vue.use(VeeValidate)
 
-VeeValidate.localize('zh_CN')
-
-VeeValidate.extend('exists', {
+Validator.extend('exists', {
   messages: {
     zh_CN: function (field) {
       return '文件不存在或没有内容'
@@ -170,7 +168,7 @@ const dictionary = {
   }
 }
 
-VeeValidate.extend('compareTime', {
+Validator.extend('compareTime', {
   messages: {
     zh_CN: function (field) {
       return '开始时间不能大于结束时间'
@@ -189,7 +187,7 @@ VeeValidate.extend('compareTime', {
 })
 
 // POI表单导入页面
-VeeValidate.extend('exists', {
+Validator.extend('exists', {
   messages: {
     zh_CN: function (field) {
       return '文件不存在或没有内容'
@@ -206,7 +204,7 @@ VeeValidate.extend('exists', {
 })
 
 // 供应商一览页面/工作日历一览页面
-VeeValidate.extend('timeHM', {
+Validator.extend('timeHM', {
   messages: {
     zh_CN: function (field) {
       return '注意时间格式(例:09:23)'
@@ -218,11 +216,11 @@ VeeValidate.extend('timeHM', {
 })
 
 // 密码的校验规则
-VeeValidate.extend('password', {
+Validator.extend('password', {
   messages: {
     zh_CN: function (field) {
       return 'Non-compatible Password.'
-    },
+    }
   },
   validate: function (value) {
     // return value.length !== 0 && /^(0[0-9]|1[0-9]|2[0-9]|30):([0-5][0-9])$/.test(value)
@@ -255,9 +253,7 @@ VeeValidate.extend('password', {
     return true
   }
 })
-
-VeeValidate.updateDictionary(dictionary)
-
+Validator.localize(dictionary)
 
 // axios封装
 Vue.use(http)
