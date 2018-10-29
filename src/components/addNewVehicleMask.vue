@@ -102,7 +102,7 @@
                         <el-tooltip open-delay="1000" class="item" effect="dark" v-bind:content="car.carNameEn" placement="top-start">
                           <el-button class="name">{{car.carNameEn}}</el-button>
                         </el-tooltip>
-                        <!-- <span class="price">{{accounting.formatMoney(car.rrPrice, "¥", 0)}}</span> -->
+                         <span class="price">{{accounting.formatMoney(car.rrPrice, "¥", 0)}}</span>
                       </p>
                     </el-checkbox>
                   </el-checkbox-group>
@@ -125,6 +125,7 @@
 <script>
 import { format } from '../common/js/dateFormat.js'
 import addNewVehicleAssem from './addNewVehicleAssem'
+import accounting from 'accounting'
 
 
 export default {
@@ -167,6 +168,7 @@ export default {
       cmpModelList:[],
       cmpModelRangeList:[],
       brandList: [],
+      accounting: accounting
     }
   },
   props: {
@@ -180,12 +182,10 @@ export default {
     this.getCmpModelList();
     this.getCmpModelRangeList();
 
-
   },
   mounted () {
     this.incomponent()
-    console.log("accounting111")
-    console.log(accounting)
+    console.log(accounting.formatMoney('1223123', "¥", 0))
   },
   methods: {
     showSideList (){
@@ -268,10 +268,10 @@ export default {
           self.pushMenuhubBlockList(val,brand,bmwFlg,nowdate,seriesOrModel,eseriesOrEngine);
         });
 
-       
+
         // 处理百分比数据
 
-        
+
       },
     pushMenuhubBlockList : function(prdList,brand,bmwFlg,nowdate,seriesOrModel,eseriesOrEngine){
        for(var i in prdList){

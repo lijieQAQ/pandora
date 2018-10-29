@@ -10,8 +10,6 @@ import App from './App'
 import 'jquery'
 import VueNumeric from 'vue-numeric'
 import VeeValidate from 'vee-validate'
-import accounting from 'accounting'
-
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
@@ -23,9 +21,9 @@ Vue.use(http)
 new Vue({
   el: '#app',
   router,
-  components: { 
-  	App ,
-  	VueNumeric,
+  components: {
+    App,
+    VueNumeric
   },
   template: '<App/>'
 })
