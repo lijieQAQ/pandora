@@ -10,7 +10,9 @@ import App from './App'
 import 'jquery'
 import VueNumeric from 'vue-numeric'
 import VeeValidate from 'vee-validate'
+import locale from 'element-ui/lib/locale/lang/en'
 
+Vue.use(ElementUI, { locale })
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(VueNumeric)
