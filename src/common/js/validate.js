@@ -1,30 +1,32 @@
-VeeValidate.Validator.localize('zh_CN');
+import VeeValidate from 'vee-validate'
 
-VeeValidate.Validator.extend('exists', {
+VeeValidate.localize('zh_CN')
+
+VeeValidate.extend('exists', {
   messages: {
-    zh_CN: function(field) {return '文件不存在或没有内容'},
+    zh_CN: function (field) {
+      return '文件不存在或没有内容'
+    }
   },
-  validate: function (value ) {
+  validate: function (value) {
     for (let i = 0; i < value.length; i++) {
       if (value[i].size <= 0) {
         return false
       }
     }
     return true
-  },
+  }
 })
 
-Vue.use(VeeValidate);
-
-//自定义validate
+// 自定义validate
 const dictionary = {
   zh_CN: {
     messages: {
       required: function (field) {
         if (field === '角色' || field === '所属公司' || field === '文件' ||
-        field === '性别' || field === '出生日期' || field === '所属外协' ||
-        field === '种类' || field === '开始工区' || field === '结束工区' ||
-        field === '供应商' || field === '担当') {
+          field === '性别' || field === '出生日期' || field === '所属外协' ||
+          field === '种类' || field === '开始工区' || field === '结束工区' ||
+          field === '供应商' || field === '担当') {
           return '请选择' + field
         } else if (field === '请在地图上选择工区区域') {
           return field
@@ -32,9 +34,15 @@ const dictionary = {
           return 'Please input ' + field + '. '
         }
       },
-      alpha_dash: function(field) {return field + '只能输入字母数字破折号下划线'},
-      email: function(field) {return 'Please enter the accurate ' + field + '. '},
-      mimes: function(field) {return '请选择有效的文件类型：*.xlsx *.xls'},
+      alpha_dash: function (field) {
+        return field + '只能输入字母数字破折号下划线'
+      },
+      email: function (field) {
+        return 'Please enter the accurate ' + field + '. '
+      },
+      mimes: function (field) {
+        return '请选择有效的文件类型：*.xlsx *.xls'
+      },
     },
     attributes: {
       // 动态监控页面-START
@@ -138,17 +146,19 @@ const dictionary = {
       // 车辆一览-END
       // 线路分组管理-START
       'addRouteGroup.companyId': '所属外协',
-      'addRouteGroup.groupName': '组名',
+      'addRouteGroup.groupName': '组名'
       // 线路分组管理-END
-    },
-  },
+    }
+  }
 }
 
-VeeValidate.Validator.extend('compareTime', {
+VeeValidate.extend('compareTime', {
   messages: {
-    zh_CN: function (field ){return '开始时间不能大于结束时间'},
+    zh_CN: function (field) {
+      return '开始时间不能大于结束时间'
+    }
   },
-  validate: function (value, args)  {
+  validate: function (value, args) {
     var t11 = args[0].split(':')
     var t21 = value.split(':')
 
@@ -157,40 +167,46 @@ VeeValidate.Validator.extend('compareTime', {
     } else {
       return true
     }
-  },
+  }
 })
 
 // POI表单导入页面
-VeeValidate.Validator.extend('exists', {
+VeeValidate.extend('exists', {
   messages: {
-    zh_CN: function (field ){return '文件不存在或没有内容'},
+    zh_CN: function (field) {
+      return '文件不存在或没有内容'
+    }
   },
-  validate: function (value ) {
+  validate: function (value) {
     for (let i = 0; i < value.length; i++) {
       if (value[i].size <= 0) {
         return false
       }
     }
     return true
-  },
+  }
 })
 
 // 供应商一览页面/工作日历一览页面
-VeeValidate.Validator.extend('timeHM', {
+VeeValidate.extend('timeHM', {
   messages: {
-    zh_CN: function (field){return  '注意时间格式(例:09:23)'},
+    zh_CN: function (field) {
+      return '注意时间格式(例:09:23)'
+    }
   },
-  validate:function (value, args)  {
+  validate: function (value, args) {
     return value.length !== 0 && /^(0[0-9]|1[0-9]|2[0-9]|30):([0-5][0-9])$/.test(value)
-  },
+  }
 })
 
 // 密码的校验规则
-VeeValidate.Validator.extend('password', {
+VeeValidate.extend('password', {
   messages: {
-    zh_CN: function (field ){return 'Non-compatible Password.'},
+    zh_CN: function (field) {
+      return 'Non-compatible Password.'
+    },
   },
-  validate: function (value ){
+  validate: function (value) {
     // return value.length !== 0 && /^(0[0-9]|1[0-9]|2[0-9]|30):([0-5][0-9])$/.test(value)
     var num = 0
     var rule1 = /\d+/
@@ -219,7 +235,8 @@ VeeValidate.Validator.extend('password', {
       return false
     }
     return true
-  },
+  }
 })
 
-VeeValidate.Validator.updateDictionary(dictionary)
+VeeValidate.updateDictionary(dictionary)
+export default VeeValidate
