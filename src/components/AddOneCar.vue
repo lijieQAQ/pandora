@@ -52,7 +52,7 @@
         </div>
         <div class="controls input-append widthHalf">
           <label for="name">Discount(%) </label>
-          <!-- <span class="discount">{{ accounting.toFixed(((addRow.addCar.rrPrice - addRow.addCar.tsPrice) / addRow.addCar.rrPrice * 100), 2) }}%</span> -->
+          <span class="discount">{{ accounting.toFixed(((addRow.addCar.rrPrice - addRow.addCar.tsPrice) / addRow.addCar.rrPrice * 100), 2) }}%</span>
         </div>
       </div>
 
@@ -75,11 +75,14 @@
 </template>
 
 <script type="text/javascript">
+import accounting from 'accounting'
+
 
   export default{
   	name:'AddOneCar',
   	data(){
   	  return{
+        accounting: accounting,
 
   	  }
   	},

@@ -95,6 +95,7 @@
     padding-left: 18px;
 }
 .el-checkbox__input.is-checked + .el-checkbox__label {
+    width:90%;
     color: #666;
 }
 .editModal .modal-footer .btnCancel {
@@ -187,4 +188,13 @@ input {
 .ctWord {
     border-left: 1px solid #e5e5e5;
     color: #1c69d4;
+}
+.discount {
+    display: inline-block;
+    width: 134px;
+    padding-left: 2px;
+    margin-left: 23px;
+    border-bottom: 1px solid #e8e8e8;
+    font-size: 12px;
+    color: #666666;
 }

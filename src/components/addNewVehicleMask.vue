@@ -11,7 +11,7 @@
 
     <div class="sixColumnTop">
       <h3 class="leftTit">Select Vehicles</h3>
-      <button type="submit" class="sixNext" style="display: block;">Compare</button>
+      <button type="submit" class="sixNext" style="display: block;" @click="handleSubmit()"">Compare</button>
       <a href="javascript:void(0)" class="addNewVehicleBtn" @click="addNewVehicleAssemVisible = true">Add New Vehicle</a>
       <span class="titDesc">Number of E-series Selected:<span class="titDescNum">{{menuhub.blockList.length}}</span><img
         src="../assets/images/car.png"/></span>
@@ -121,7 +121,6 @@
   </div>
 
 </template>
-<script type="application/javascript" src="../commom/js/accounting.min.js"></script>
 <script>
 import { format } from '../common/js/dateFormat.js'
 import addNewVehicleAssem from './addNewVehicleAssem'
@@ -535,6 +534,7 @@ export default {
         }
       })
     },
+   
 
 
   },
@@ -914,6 +914,9 @@ export default {
   overflow-y: auto;
 }
 .vehicleCheckBox .el-checkbox-group .el-checkbox__input{margin-top:-2px;}
+.AddNewVehicleBox .vehicleCheckBox .el-checkbox-group:nth-child(2){
+  width:90%;
+}
 .AddNewVehicleBox .vehicleCheckBox .el-checkbox-group .text {
   width: 100%;
   overflow: hidden;
@@ -988,5 +991,10 @@ export default {
   font-size: 16px;
   font-weight: inherit;
 }
-
+.sixColumnMain .vehicleCheckBox .el-checkbox-group .el-checkbox__label{
+  width:100% !important;
+}
+.AddNewVehicleBox .vehicleCheckBox .el-checkbox-group .price {
+    float: right;
+}
 </style>

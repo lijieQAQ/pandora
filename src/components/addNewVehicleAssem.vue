@@ -93,7 +93,7 @@
 	                <div style="margin: 15px 0;"></div>
 	                <el-checkbox-group v-model="addRow.selectedProduct" @change="handleSelectedProductChange">
 	                  <el-checkbox v-for="item in addRow.productList" :label="item" :key="item" :value="item">{{item.nickname}}
-	                  	<!-- <span class="carPrice">{{ accounting.formatMoney(item.rrPrice, "¥", 0) }}</span> -->
+	                  	<span class="carPrice">{{ accounting.formatMoney(item.rrPrice, "¥", 0) }}</span>
 	                  </el-checkbox>
 	                </el-checkbox-group>
               </template>
@@ -120,6 +120,7 @@
 
 <script type="text/javascript">
 	import AddOneCar from './AddOneCar'
+import accounting from 'accounting'
 	export default{
 		name:'addNewVehicleAssem',
 		data(){
@@ -129,7 +130,8 @@
        		},
 		  	// initDate:(new Date()).format("myyyy"),
 		  	brandList:[],
-		  	titleList:[],
+				titleList:[],
+				accounting: accounting,
 			addRow: {
 	          brand: "",
 	          seriesOrModel: "",
