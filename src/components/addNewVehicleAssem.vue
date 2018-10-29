@@ -99,7 +99,7 @@
               </template>
             </div>
           </div>
-          <AddOneCar :addRow="addRow" :menuhub="menuhub"></AddOneCar>
+          <AddOneCar :addRow="addRow" :menuhub="menuhub" @showAddNewCar="showAddNewCar"></AddOneCar>
           </div>
 
           

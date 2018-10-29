@@ -121,11 +121,11 @@
   </div>
 
 </template>
-
+<script type="application/javascript" src="../commom/js/accounting.min.js"></script>
 <script>
 import { format } from '../common/js/dateFormat.js'
-import { accounting } from '../common/js/accounting.min.js'
 import addNewVehicleAssem from './addNewVehicleAssem'
+
 
 export default {
   name: 'addNewVehicleMask',
@@ -180,9 +180,12 @@ export default {
     this.getCmpModelList();
     this.getCmpModelRangeList();
 
+
   },
   mounted () {
     this.incomponent()
+    console.log("accounting111")
+    console.log(accounting)
   },
   methods: {
     showSideList (){

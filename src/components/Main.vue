@@ -62,8 +62,13 @@
 </template>
 
 <script>
+import VueNumeric from 'vue-numeric'
 import addNewVehicleMask from './addNewVehicleMask'
 import CarScreen from '../common/js/carscreen.js'
+import accounting from 'accounting'
+import VeeValidate, { Validator } from 'vee-validate';
+
+
 
 export default {
   name: 'main',
@@ -79,7 +84,7 @@ export default {
     }
   },
   mounted () {
-    console.log(CarScreen)
+
   },
   components: {
     addNewVehicleMask

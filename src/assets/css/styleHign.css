@@ -43,7 +43,8 @@
     height:23px;
   }
   .el-select .el-input--suffix .el-input__suffix .el-input__suffix-inner .el-input__icon{
-    line-height: 23px;
+    line-height: 0px;
+    height: 21px;
   }
   .el-dialog--center{
     height:529px;
@@ -165,4 +166,25 @@ input {
 .editModal .text-danger {
     color: #f80000;
     font-weight: normal;
+}
+.editModal .input-append .el-input--suffix .inputErrorTwo {
+    border: 1px solid #f80000;
+}
+.checkTwoBtnBox {
+    border: 1px solid #e5e5e5;
+    border-top: 0px;
+    overflow: hidden;
+}
+.checkTwoBtn {
+    width: 254px;
+    font-size: 14px;
+    color: #999;
+    float: left;
+    height: 36px;
+    background: #fff;
+    border: 0;
+}
+.ctWord {
+    border-left: 1px solid #e5e5e5;
+    color: #1c69d4;
 }
