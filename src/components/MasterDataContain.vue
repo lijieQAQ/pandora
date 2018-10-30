@@ -2,7 +2,7 @@
 	<div class="zhangliang need">
 	  <MasterDataHeaderMenu></MasterDataHeaderMenu>
 	  <MasterDataLeftColumn></MasterDataLeftColumn>
-	  <MasterDataRightColumn></MasterDataRightColumn>
+	  <router-view/>
 
 	</div>
 </template>
@@ -10,7 +10,6 @@
 <script type="text/javascript">
 	import MasterDataHeaderMenu from './MasterDataHeaderMenu';
 	import MasterDataLeftColumn from './MasterDataLeftColumn';
-	import MasterDataRightColumn from './MasterDataRightColumn'
 	export default{
 	  name: 'MasterDataContain',
  	    data(){
@@ -21,7 +20,6 @@
   	  components: {
     	MasterDataHeaderMenu,
     	MasterDataLeftColumn,
-    	MasterDataRightColumn
   	  },
   	  methods:{
 

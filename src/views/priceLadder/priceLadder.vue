@@ -1,13 +1,15 @@
 <template>
   <div id="priceLadder">
     <Main></Main>
-    <PriceLadderContain></PriceLadderContain>
+    <!-- <PriceLadderContain></PriceLadderContain> -->
+    <PriceBox></PriceBox>
   </div>
 </template>
 
 <script>
 import Main from '../../components/Main'
 import PriceLadderContain from '../../components/PriceLadderContain'
+import PriceBox from '../../components/PriceBox'
 
 export default {
   name: 'priceLadder',
@@ -16,7 +18,8 @@ export default {
   },
   components: {
     Main,
-    PriceLadderContain
+    PriceLadderContain,
+    PriceBox
   },
   methods: {
   }

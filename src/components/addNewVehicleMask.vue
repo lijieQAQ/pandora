@@ -11,7 +11,7 @@
 
     <div class="sixColumnTop">
       <h3 class="leftTit">Select Vehicles</h3>
-      <button type="submit" class="sixNext" style="display: block;" @click="handleSubmit()"">Compare</button>
+      <button type="submit" class="sixNext" style="display: block;" @click="handleSubmit(),addNewVehicleAssemVisible = false">Compare</button>
       <a href="javascript:void(0)" class="addNewVehicleBtn" @click="addNewVehicleAssemVisible = true">Add New Vehicle</a>
       <span class="titDesc">Number of E-series Selected:<span class="titDescNum">{{menuhub.blockList.length}}</span><img
         src="../assets/images/car.png"/></span>
@@ -116,6 +116,7 @@
     </div>
 
     <span slot="footer" class="dialog-footer"></span>
+    <!-- <add-New-Vehicle-Assem :addNewVehicleAssemVisible="addNewVehicleAssemVisible"></add-New-Vehicle-Assem> -->
   </el-dialog>
     <add-new-vehicle-assem :addNewVehicleAssemVisible="addNewVehicleAssemVisible" :brandList="brandList" :bmwBrandList="bmwBrandList" :bmwSeriesList="bmwSeriesList" :cmpBrandList="cmpBrandList" :cmpModelList="cmpModelList" :cmpModelRangeList="cmpModelRangeList" :bmwESeriesList="bmwESeriesList" :menuhub="menuhub"></add-new-vehicle-assem>
   </div>
@@ -134,6 +135,7 @@ export default {
       addNewVehicleAssemVisible: false,
       initDate: (new Date()).format("m/yyyy"),
       value4: '',
+      carScreen: {},
       menuhub: {
         defaultSelection: true,
         menuList: [],
@@ -174,6 +176,7 @@ export default {
     addNewVehicleMaskVisible: Boolean
   },
   created () {
+    // this.carScreen = new CarScreen();
     this.getBmwBrandList();
     this.getBmwSeriesList();
     this.getBmwESeriesList();
@@ -533,6 +536,19 @@ export default {
           this.menuhub.menuList = res.data
         }
       })
+    },
+    handleSubmit : function() {
+        // this.tpShowFlg = false;
+        //this.carScreen.clear();
+        //for (var i in this.menuhub.blockList) {
+          //var block = this.menuhub.blockList[i];
+          //block.cars = block.checkedCars;
+         // block.checkedCars = [];
+          //this.carScreen.addCarLane(block);
+       //}
+       // this.createArrow();
+        // 关闭当前menu 页面
+        // window.forwarePage(this.tpShowFlg);
     },
    
 

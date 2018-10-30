@@ -198,3 +198,37 @@ input {
     font-size: 12px;
     color: #666666;
 }
+.carPrice {
+    position: absolute;
+    right: 20px;
+}
+.masterModal .select-box .form_datetime .el-date-editor input{
+    height: 25px;
+    padding-left:0px;
+    border:none;
+    width:190px;
+}
+.masterModal .select-box .form_datetime .el-date-editor .el-input__prefix .el-icon-date:before{
+content:'';
+}
+.uploadBox .upload-demo .el-upload {
+    margin: 0 auto;
+    width: 100%;
+    margin-top: 70px;
+    text-align: center;
+    cursor: pointer;
+    outline: 0;
+}
+.dashed .upload-demo .el-upload-list--text {
+    padding: 10px 20px 15px 20px;
+    height: auto;
+    margin: 0 auto;
+    border: 1px solid #e5e5e5;
+    background: #fff;
+}
+.el-icon-document::before {
+    content: url(../images/file-icon.png) !important;
+}
+.el-icon-arrow-up {
+    background: url(../images/icon-arrow.png) center center/15px 8px no-repeat;
+}

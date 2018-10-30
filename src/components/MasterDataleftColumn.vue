@@ -1,10 +1,14 @@
 <template>
   <div class="leftMenu" id="leftMenu">
     <div class="tabMenu">
-      <ul>
+      <!-- <ul>
         <li><a href="bmwProduct.html" class="active">BMW Data</a></li>
         <li><a href="#">Competitors Data</a></li>
-      </ul>
+      </ul> -->
+			<el-menu :default-active="activeIndex" router class="el-menu-demo" mode="vertical" @open="handleSelect">
+          <el-menu-item index="/bmwProduct/masterDateBmw" route>BMW Data</el-menu-item>
+          <el-menu-item index="/bmwProduct/masterDateCmp">Competitors Data</el-menu-item>
+        </el-menu>
     </div>
   </div>
 </template>
@@ -14,11 +18,20 @@
 		name:'MasterDataLeftColumn',
 		data(){
 			return{
-
+				activeIndex: 'masterDateBmw'
 			}
 		},
 		methods:{
-
+			handleSelect () {
+				alert(this.activeIndex)
+				if (this.activeIndex === '1') {
+					alert(1111)
+					this.$router.push({path: `/bmwProduct/masterDateBmw`})
+				} else if (this.activeIndex === '2') {
+					alert(222)
+					this.$router.push({path: `/bmwProduct/masterDateCmp`})
+				}
+			}
 		}
 	}
 </script>

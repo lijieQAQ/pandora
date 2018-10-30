@@ -1,5 +1,5 @@
 <template>
-  <div class="priceLadderNoData">
+  <div class="priceLadderNoData" v-if="carScreen.curCarLanes.length == 0 && carScreen.currentPageIndex == 0">
   	<img src="../assets/images/nodataNew.png" data-toggle="modal" data-target="#AddNewVehicle" style="width:123px;height:123px">
   	<span class="addNewVeh">Add New Vehicle</span>
   </div>

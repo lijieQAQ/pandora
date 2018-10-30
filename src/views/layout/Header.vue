@@ -10,9 +10,9 @@
           <!--&lt;!&ndash; <li><a href="#">Report</a></li> &ndash;&gt;-->
         <!--</ul>-->
         <el-menu :default-active="activeIndex" router class="el-menu-demo" mode="horizontal" @open="handleSelect">
-          <el-menu-item index="priceLadder" route>Price Ladder</el-menu-item>
+          <el-menu-item index="/priceLadder" route>Price Ladder</el-menu-item>
           <el-menu-item index="2" disabled>Report</el-menu-item>
-          <el-menu-item index="bmwProduct">Master Data</el-menu-item>
+          <el-menu-item index="/bmwProduct">Master Data</el-menu-item>
         </el-menu>
       </div>
       <div class="master-user">

@@ -214,6 +214,18 @@ Validator.extend('timeHM', {
     return value.length !== 0 && /^(0[0-9]|1[0-9]|2[0-9]|30):([0-5][0-9])$/.test(value)
   }
 })
+//自定义
+Validator.extend('isnumber', {
+  messages: {
+    en: function(field) {return 'The ' + field + ' field is required.'},
+  },
+  validate: function (value) {
+	  if(typeof(value) == "number"){
+		  return value <= 0 ? false : true; 
+	  }
+    return false
+  },
+})
 
 // 密码的校验规则
 Validator.extend('password', {
@@ -253,7 +265,45 @@ Validator.extend('password', {
     return true
   }
 })
+const custom = {
+  en : {
+    attributes: {
+      'menuhub.addRow.addCar.carNameEn' : 'Variant',
+      'menuhub.addRow.addCar.nickname'  : 'Variant(Short)',
+      'menuhub.addRow.addCar.model'     : 'Model',
+      'menuhub.addRow.addCar.packageCode': 'PC',
+      'menuhub.addRow.addCar.engine': 'Engine',
+      'menuhub.addRow.addCar.rrPrice': 'MSRP',
+      'menuhub.addRow.addCar.tsPrice': 'T/P',
+      'menuhub.editCar.carNameEn': 'Variant',
+      'menuhub.editCar.nickname': 'Variant(Short)',
+      'menuhub.editCar.model': 'Model',
+      'menuhub.editCar.packageCode': 'PC',
+      'menuhub.editCar.engine': 'Engine',
+      'menuhub.editCar.rrPrice': 'MSRP',
+      'menuhub.editCar.tsPrice': 'T/P',
+      'editCar.carNameEn': 'Variant',
+      'editCar.nickname': 'Variant(Short)',
+      'editCar.model': 'Model',
+      'editCar.packageCode': 'PC',
+      'editCar.engine': 'Engine',
+      'editCar.rrPrice': 'MSRP',
+      'editCar.tsPrice': 'T/P',
+      'addRow.addCar.carNameEn' : 'Variant',
+      'addRow.addCar.nickname'  : 'Variant(Short)',
+      'addRow.addCar.model'     : 'Model',
+      'addRow.addCar.packageCode': 'PC',
+      'addRow.addCar.engine': 'Engine',
+      'addRow.addCar.rrPrice': 'MSRP',
+      'addRow.addCar.tsPrice': 'T/P',
+      'changeCarB.rrPrice': 'MSRP',
+      'changeCarA.rrPrice': 'MSRP',
+
+    },
+  },
+}
 Validator.localize(dictionary)
+Validator.localize(custom)
 
 // axios封装
 Vue.use(http)

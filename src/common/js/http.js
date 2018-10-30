@@ -3,7 +3,8 @@ import axios from 'axios'
 /**
  * http配置
  */
-const baseUrl = 'http://36.110.3.130:7777/'
+// const baseUrl = 'http://36.110.3.130:7777/'
+const baseUrl = 'http://localhost:8080/'
 
 
 const instance = axios.create({

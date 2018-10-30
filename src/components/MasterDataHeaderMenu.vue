@@ -2,26 +2,36 @@
   	<div class="headerMenu">
         <div class="titleMenu">Menu</div>
         <div class="infoTitleText">BMW Data</div>
-        <div class="buttonBox"> <a href="javascript:void(0)" class="btn upload"  @click="openUploadPage">Upload</a>
+        <div class="buttonBox"> <a href="javascript:void(0)" class="btn upload"  @click="masterDataUploadVisible=true">Upload</a>
           <!-- <a href="javascript:void(0)" class="btn download" v-on:click="doExport">Download</a> </div> -->
-          <a href="javascript:void(0)" class="btn download">Download</a> </div>
+          <a href="javascript:void(0)" class="btn download">Download</a> 
+				</div>
+				<MasterDataUpload :masterDataUploadVisible="masterDataUploadVisible"></MasterDataUpload>
       </div>
 </template>
 
 <script>
-
+import MasterDataUpload from './MasterDataUpload'
 export default {
   name: 'MasterDataHeaderMenu',
   data(){
   	return {
-
+			masterDataUploadVisible:false
   	}
   },
   components: {
-    
-  },
-  methods:{
+    MasterDataUpload
+	},
 
+  methods:{
+		// openUploadPage: function () {
+		// 		this.masterDataUploadVisible = true
+    //     this.$refs.upload.clearFiles()
+    //     this.checkMessages = []
+    //     $('.masterModal').show()
+    //     $('.uploadSuccess').hide()
+    //     this.handleRemove()
+		// },
   }
 }
 </script>

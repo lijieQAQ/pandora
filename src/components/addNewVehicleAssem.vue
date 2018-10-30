@@ -3,7 +3,7 @@
   <el-dialog
     :visible.sync="addNewVehicleAssemVisible"
     center
-    width='45%'
+    width='48%'
     top='20vh'
     show-close=false
     id="menuAddNewColumnMask"
@@ -107,12 +107,13 @@
 
       <div class="modal-footer">
         <div class="btnBox">
-          <button type="submit" class="btn btn-default btnCancel" data-dismiss="modal" @click="closeAddNewCarModal">Cancel</button>
-          <button type="button" class="btn btn-primary btnConfirm" v-bind:class="{ noUseBtn : (addRow.selectedProduct.length == 0) }" v-bind:disabled="addRow.selectedProduct.length == 0" @click="confirmMenuhubAddRow(),createArrow()" >Submit</button>
+          <button type="submit" class="btn btn-default btnCancel" data-dismiss="modal" @click="closeAddNewCarModal()">Cancel</button>
+          <button type="button" class="btn btn-primary btnConfirm" v-bind:class="{ noUseBtn : (addRow.selectedProduct.length == 0) }" v-bind:disabled="addRow.selectedProduct.length == 0" @click="confirmMenuhubAddRow(),closeAddNewCarModal()">Submit</button>
         </div>
       </div>
     </div>
     <span slot="footer" class="dialog-footer"></span>
+		
   </el-dialog>
 
 
@@ -120,14 +121,14 @@
 
 <script type="text/javascript">
 	import AddOneCar from './AddOneCar'
-import accounting from 'accounting'
+  import accounting from 'accounting'
 	export default{
 		name:'addNewVehicleAssem',
 		data(){
 		  return{
 		  	form: {
-            regDateBeg: new Date(),//这个日期参数
-       		},
+					regDateBeg: new Date(),//这个日期参数
+				},
 		  	// initDate:(new Date()).format("myyyy"),
 		  	brandList:[],
 				titleList:[],
@@ -183,11 +184,12 @@ import accounting from 'accounting'
 		},
 		components:{
 			AddOneCar
-  		},
+  	},
 		methods:{
 		  closeAddNewCarModal:function(){
-		  	 this.addNewVehicleAssemVisible = false
-             this.$emit('closeAddNewCarModal', this.addNewVehicleAssemVisible)
+				
+				this.addNewVehicleAssemVisible = false
+				this.$emit('closeAddNewCarModal', this.addNewVehicleAssemVisible)
 		  },
 		  initAddCar : function() {
 	         this.addRow = {
@@ -280,8 +282,8 @@ import accounting from 'accounting'
 	         var self = this;
 	         //更改
 	         this.addRow.selectedESeriesOrEngine = "";
-		     this.addRow.isIndeterminate = true;
-		     this.addRow.selectAll = false;
+		       this.addRow.isIndeterminate = true;
+		       this.addRow.selectAll = false;
 	         var addRowDateValue = this.form.regDateBeg;
 
 	         if (!this.addRow.eseriesOrEngine) {
@@ -371,7 +373,7 @@ import accounting from 'accounting'
 	          }
 	          this.menuhub.blockList.push(block);
 	        }
-	          this.closeAddNewCarModal();
+	          
           },
           showAddNewCar : function(showFlg, menuhubFlg) {
 	         if (!showFlg) {
@@ -469,7 +471,7 @@ import accounting from 'accounting'
 	margin:220px auto;
 }
 .editModal{
-    width:820px;
+    width:860px;
     background: #fff;
 }
 .editModal .modal-header{
@@ -510,7 +512,7 @@ import accounting from 'accounting'
 }
 .editModal .select-box {
 	width: 182px;
-	margin: 30px 34px 0 32px;
+	margin: 30px 34px 0 23px;
 	float: left;
 	border: none;
 }
@@ -538,8 +540,8 @@ import accounting from 'accounting'
     margin-top: 7%;
 }
 .checkBox{
-	width: 511px;
-	margin-right: 32px;
+	width: 533px;
+	margin-right: 37px;
 	float: right;
 }
 a:hover, a:visited, a:link, a:active {

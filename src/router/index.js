@@ -4,6 +4,9 @@ import login from '@/views/login/login'
 import Layout from '@/views/layout/Layout'
 import priceLadder from '@/views/priceLadder/priceLadder'
 import bmwProduct from '@/views/bmwProduct/bmwProduct'
+import MasterDataBmw from '@/components/MasterDataBmw'
+import MasterDataCmp from '@/components/MasterDataCmp'
+
 
 Vue.use(Router)
 
@@ -20,7 +23,17 @@ export default new Router({
         },
         {
           path: 'bmwProduct',
-          component: bmwProduct
+          component: bmwProduct,
+          children: [
+            {
+              path: 'masterDateBmw',
+              component: MasterDataBmw
+            },
+            {
+              path: 'masterDateCmp',
+              component: MasterDataCmp
+            },
+          ]
         }]
     },
     {
