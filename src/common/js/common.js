@@ -1,18 +1,18 @@
-$(document).ready(function () {
-  if (commonJs.getCookie('accessKey')) {
-    // Logged in
-    //        localStorage.token = getCookie('accessKey')
-    //        localStorage.role = getCookie('role')
-    //        localStorage.displayName = decodeURI(getCookie('displayName'))
-    //        localStorage.companyId = getCookie('companyId')
-    //        this.userName = localStorage.displayName
-    //        this.menuList = this.generateMenuList(localStorage.role)
-  } else if (window.location.pathname != '/front/login.html') {
-    // Not logged in yet or JWT was expired.
-    // Go to login page
-    window.location.href = '/front/login.html'
-  }
-});
+// $(document).ready(function () {
+//   if (commonJs.getCookie('accessKey')) {
+//     // Logged in
+//     //        localStorage.token = getCookie('accessKey')
+//     //        localStorage.role = getCookie('role')
+//     //        localStorage.displayName = decodeURI(getCookie('displayName'))
+//     //        localStorage.companyId = getCookie('companyId')
+//     //        this.userName = localStorage.displayName
+//     //        this.menuList = this.generateMenuList(localStorage.role)
+//   } else if (window.location.pathname != '/front/login.html') {
+//     // Not logged in yet or JWT was expired.
+//     // Go to login page
+//     window.location.href = '/front/login.html'
+//   }
+// });
 
 var commonJs = {
   listSize: 13,
@@ -36,7 +36,9 @@ var commonJs = {
       errors = '您没有该操作权限'
     } else if (result.response !== undefined && result.response.data !== undefined && result.response.data.errors !== undefined && result.response.data.errors !== null) {
       errors = result.response.data.errors
-        .map(function (cur) { return cur.message })
+        .map(function (cur) {
+          return cur.message
+        })
         .reduce(function (total, cur, i) {
           if (i > 0) {
             total += '\n'
@@ -45,7 +47,9 @@ var commonJs = {
         })
     } else if (result.responseJSON !== undefined && result.responseJSON.errors !== undefined && result.responseJSON.errors !== null) {
       errors = result.responseJSON.errors
-        .map(function (cur) { return cur.message })
+        .map(function (cur) {
+          return cur.message
+        })
         .reduce(function (total, cur, i) {
           if (i > 0) {
             total += '\n'
@@ -65,10 +69,10 @@ var commonJs = {
   },
 
   /**
-     * 休息时间不能同时为空check
-     * true：checkOK
-     * false：checkErr
-     */
+   * 休息时间不能同时为空check
+   * true：checkOK
+   * false：checkErr
+   */
   restTimeCheck: function (restTimeList) {
     var err = true
     if (restTimeList.length > 0) {
@@ -88,10 +92,10 @@ var commonJs = {
   },
 
   /**
-     * 巡回顺序不能为空check,必须有2个出发和结束顺序
-     * true：checkOK
-     * false：checkErr
-     */
+   * 巡回顺序不能为空check,必须有2个出发和结束顺序
+   * true：checkOK
+   * false：checkErr
+   */
   locationCntCheck: function (locationIdList) {
     var err = false
     if (locationIdList.length > 0) {
@@ -138,32 +142,32 @@ var commonJs = {
     this.setCookie('accessKey', '', -1)
     this.setCookie('displayName', '', -1)
     this.setCookie('companyId', '', -1)
-    window.location.href = 'login.html'
+    //window.location.href = 'login.html'
     return false
   },
-  
-  saveDataChecking: function(eventName){
-      var wsUrl = '/dataChecking/saveDataChecking'
-      var route = {
-        "userName": localStorage.username,
-        "eventName": eventName
-      }
-      $.ajax({
-        url: wsUrl,
-        contentType: 'application/json;charset=utf-8',
-        type: 'POST',
-        data: JSON.stringify(route),
-        dataType: 'json',
-        cache: false,
-        async: false,
-        beforeSend: function (request) {
-          request.setRequestHeader('Authorization', localStorage.token)
-        },
-      }).success(function (res) {
-    	  
-      }).error(function (error) {
-    	  
-      });
+
+  saveDataChecking: function (eventName) {
+    var wsUrl = '/dataChecking/saveDataChecking'
+    var route = {
+      'userName': localStorage.username,
+      'eventName': eventName
+    }
+    $.ajax({
+      url: wsUrl,
+      contentType: 'application/json;charset=utf-8',
+      type: 'POST',
+      data: JSON.stringify(route),
+      dataType: 'json',
+      cache: false,
+      async: false,
+      beforeSend: function (request) {
+        request.setRequestHeader('Authorization', localStorage.token)
+      },
+    }).success(function (res) {
+
+    }).error(function (error) {
+
+    })
   }
 
 }

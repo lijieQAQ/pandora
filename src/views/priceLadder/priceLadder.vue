@@ -1,7 +1,7 @@
 <template>
   <div id="priceLadder">
     <Main></Main>
-    <PriceLadderContain></PriceLadderContain>
+    <price-ladder-contain></price-ladder-contain>
   </div>
 </template>
 
