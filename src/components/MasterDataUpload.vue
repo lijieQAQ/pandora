@@ -121,6 +121,13 @@
     props: {
       masterDataUploadVisible: Boolean
     },
+    computed: {
+      headers: function () {
+        return {
+          'Authorization': localStorage.token
+        }
+      }
+    },
     methods:{
       handleRemove: function (file, fileList) {
         this.checkMessages = []
@@ -140,6 +147,7 @@
         }
       },
       handleSuccess: function (response, file, fileList) {
+        alert(response,file,fileList)
         // $('#uploadModal').modal('hide')
         if (response.success == '0') {
           // this.$refs.upload.clearFiles()
@@ -196,11 +204,15 @@
       doImport2: function () {
         var uploadDate = this.value4
         if (uploadDate) {
-          this.upLoadData.yearMonth = uploadDate.format('yyyymm', null)
+          this.upLoadData.yearMonth = uploadDate.format("yyyymm")
         }
+        alert(11111)
         this.$refs.upload.submit()
+        alert(2222)
         $('#doImport').attr("disabled", true);
+        alert(333)
       },
+     
     }
 
   }

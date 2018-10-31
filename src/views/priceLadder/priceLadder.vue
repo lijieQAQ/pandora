@@ -1,8 +1,7 @@
 <template>
   <div id="priceLadder">
     <Main></Main>
-    <!-- <PriceLadderContain></PriceLadderContain> -->
-    <PriceBox></PriceBox>
+    <PriceLadderContain></PriceLadderContain>
   </div>
 </template>
 

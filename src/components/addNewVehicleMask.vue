@@ -62,10 +62,9 @@
                   <img src="../assets/images/addSix.png" class="edit" @click="openMenuhubNewCar(carLane, i)">
                   <div class="datepicker" v-bind:id="'blockDate' + i">
                     <el-date-picker
-                      v-model="value4"
+                      v-model= date[i]
+                      @change="(value) => blockTimeChange(value, i)"
                       type="month"
-
-                      v-bind:placeholder=initDate
                       format="M/yyyy"
                       :editable="false"
                       >
@@ -133,8 +132,7 @@ export default {
   data () {
     return {
       addNewVehicleAssemVisible: false,
-      initDate: (new Date()).format("m/yyyy"),
-      value4: '',
+      date:[new Date(),new Date(),new Date(),new Date(),new Date(),new Date(),new Date(),new Date(),new Date(),new Date(),new Date(),new Date(),new Date(),new Date()],
       carScreen: {},
       menuhub: {
         defaultSelection: true,
@@ -187,18 +185,23 @@ export default {
   },
   mounted () {
     this.incomponent()
-    console.log(accounting.formatMoney('1223123', "¥", 0))
+  },
+  updated () {
+    
   },
   methods: {
+    openAlert:function() {
+      this.$message({
+      message: 'there is no data in this month. Please click on other months.',
+      type: 'warning',
+      });
+    },
     showSideList (){
        var setFlg = false;
 
        if (setFlg) {
             return;
           }
-       console.log(111)
-       console.log($('.sixColumnTop'))
-
        $('#sidebar>ul>li>a').each(function() {
               $(this).parent().find('ul:first').hide();
               currentMenu = $(this);
@@ -236,6 +239,70 @@ export default {
 
        setFlg = true;
     },
+    blockTimeChange(val,i){
+      var self = this
+      var selectDate = val.format("yyyymm");
+      if (selectDate === new Date().format("yyyymm")) {
+        return;
+      }
+     
+     var cBlock = this.menuhub.blockList[i];
+     this.yearMonthLast = cBlock.yearMonth;
+     if (!cBlock) {
+       return;
+     }
+     cBlock.yearMonth = selectDate;
+     cBlock.yearMonthForShow = val;
+     var prdList = [];
+     if (cBlock.bmwFlg) {
+      
+      var promise = self.searchBmwProductRowDetail(
+            cBlock.brandNameEn,
+            cBlock.seriesNameEn,
+            cBlock.eseriesNameEn,
+            cBlock.yearMonth);
+      } else {
+      var promise = self.searchCmpProductRowDetail(
+              cBlock.brandNameEn,
+              cBlock.model,
+              cBlock.engine,
+              cBlock.yearMonth);
+      }
+        promise.then(function(val){
+        cBlock.cars = val || [];
+        cBlock.checkedCars = val;
+        if(cBlock.checkedCars.length == 0){
+        // self.dialogVisible = true;
+        self.openAlert();
+        cBlock.yearMonth = new Date().format('yyyymm');
+        cBlock.yearMonthForShow = new Date();
+        if (cBlock.bmwFlg) {
+        promise = self.searchBmwProductRowDetail(
+              cBlock.brandNameEn,
+              cBlock.seriesNameEn,
+              cBlock.eseriesNameEn,
+              cBlock.yearMonth);
+      } else {
+        promise = self.searchCmpProductRowDetail(
+              cBlock.brandNameEn,
+              cBlock.model,
+              cBlock.engine,
+              cBlock.yearMonth);
+      }
+      promise.then(function(val){
+        cBlock.cars = val || [];
+        cBlock.checkedCars = val;
+        self.menuhub.blockList[i] = cBlock;
+        self.date[i] = new Date();
+      })
+      
+    }
+        
+      });
+     
+    
+      
+    },
     closeDialog () {
       this.addNewVehicleMaskVisible = false
       this.$emit('closeDialog', this.addNewVehicleMaskVisible)
@@ -265,8 +332,6 @@ export default {
 
         promise.then(function(val){
           prdList = val;
-          console.log(1111)
-          console.log(val);
           self.pushMenuhubBlockList(val,brand,bmwFlg,nowdate,seriesOrModel,eseriesOrEngine);
         });
 
@@ -349,16 +414,17 @@ export default {
         dataArray['sort'] = 'rrPrice,desc';
         dataArray['size'] = 9999
         var returnList = [];
-
         return new Promise(function(resolve, reject) {
             self.$http.get('repo/bmwProducts/list',{params: dataArray}).then(res => {
                   if (res.status == 200) {
                     resolve(res.data.bmwProducts)
+                    
                   }
             })
         })
     },
     searchCmpProductRowDetail: function (brand, model, engine, addRowDate) {
+        alert("zhixing")
           var self = this;
           var dataArray = {};
           dataArray['enabled'] = 'true';
@@ -381,6 +447,8 @@ export default {
             self.$http.get('repo/cmpProducts/list',{params: dataArray}).then(res => {
                   if (res.status == 200) {
                     resolve(res.data.cmpProducts)
+                   
+                    
                   }
             })
           })
@@ -527,9 +595,6 @@ export default {
          })
     },
     incomponent: function(){
-      console.log(111)
-      console.log($('sixColumnMain').html())
-      console.log($('sixColumnTop').html())
       this.$http.post('priceladder/retrieveMenuList', {
       }).then(res => {
         if (res.status == 200) {
