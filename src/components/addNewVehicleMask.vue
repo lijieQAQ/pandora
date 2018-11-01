@@ -140,10 +140,11 @@
 
 </template>
 <script>
-import {format} from '../common/js/dateFormat.js'
+import format from '../common/js/dateFormat'
 import addNewVehicleAssem from './addNewVehicleAssem'
 import accounting from 'accounting'
-
+import store from '../store'
+import Bus from '../common/js/Bus'
 export default {
   name: 'addNewVehicleMask',
   data () {
@@ -613,15 +614,16 @@ export default {
     },
     handleSubmit: function () {
       this.tpShowFlg = false
-      this.carScreen.clear()
+      store.commit('CLEAR_CARSCREEN')
       for (var i in this.menuhub.blockList) {
         var block = this.menuhub.blockList[i]
         block.cars = block.checkedCars
         block.checkedCars = []
-        this.carScreen.addCarLane(block)
+        store.commit('ADD_CARSCREEN', block)
       }
-      this.$store.store.commit('UPDATE_CARSCREEN', this.carScreen)
-      console.log(this.$store.store.carScreen)
+      this.addNewVehicleMaskVisible = false
+      Bus.$emit('operating', 'compare')
+      console.log(this.$store.state.carScreen)
     }
   },
   components: {
