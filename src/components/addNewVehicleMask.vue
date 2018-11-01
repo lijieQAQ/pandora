@@ -11,11 +11,14 @@
 
       <div class="sixColumnTop">
         <h3 class="leftTit">Select Vehicles</h3>
-        <button type="submit" class="sixNext" style="display: block;" @click="handleSubmit(),addNewVehicleAssemVisible = false">Compare</button>
-        <a href="javascript:void(0)" class="addNewVehicleBtn" @click="addNewVehicleAssemVisible = true">Add New Vehicle</a>
-        <span class="titDesc">Number of E-series Selected:<span class="titDescNum">{{menuhub.blockList.length}}</span><img
-          src="../assets/images/car.png"/>
-        </span>
+        <button type="submit" class="sixNext" style="display: block;"
+                @click="handleSubmit(),addNewVehicleAssemVisible = false">Compare
+        </button>
+        <a href="javascript:void(0)" class="addNewVehicleBtn" @click="addNewVehicleAssemVisible = true">Add New
+          Vehicle</a>
+        <span class="titDesc">Number of E-series Selected:<span
+          class="titDescNum">{{menuhub.blockList.length}}</span><img
+          src="../assets/images/car.png"/></span>
         <!-- 点击关闭模态框 -->
         <span id="closeModel" @click="handleRemoveAllColumn(menuhub.blockList.length)">Clear all</span>
         <!-- 新加的clearAll功能 -->
@@ -35,11 +38,16 @@
                   <span class="icoArrowTop"></span>
                 </a>
                 <ul>
-                  <li v-for="(subMenu, j) in menu.subMenuList"> <a href="javascript:void(0)">{{ subMenu.seriesOrModel }}</a>
+                  <li v-for="(subMenu, j) in menu.subMenuList"><a href="javascript:void(0)">{{ subMenu.seriesOrModel
+                    }}</a>
                     <ul>
                       <li v-for="(detail, k) in subMenu.eseriesOrEngineList">
-                        <el-tooltip open-delay="1000" class="item" effect="dark" v-bind:content="detail" placement="top" offsetY="10">
-                          <el-button v-on:click="handleDblClick(menu.brandNameEn, subMenu.seriesOrModel, detail, menu.bmwFlg)" class="eseriesOrModerRangeName">{{detail}}</el-button>
+                        <el-tooltip open-delay="1000" class="item" effect="dark" v-bind:content="detail" placement="top"
+                                    offsetY="10">
+                          <el-button
+                            v-on:click="handleDblClick(menu.brandNameEn, subMenu.seriesOrModel, detail, menu.bmwFlg)"
+                            class="eseriesOrModerRangeName">{{detail}}
+                          </el-button>
                         </el-tooltip>
                       </li>
                     </ul>
@@ -53,50 +61,68 @@
           <div class="AddNewVehicleBox">
             <ul ref='parant'>
               <draggable v-model="menuhub.blockList">
-              <li v-for="(carLane, i) in menuhub.blockList" v-bind:class="getMenuhubBgColorClass(carLane.brandNameEn)">
-                <div class="vehicleBoxTit">
-                  <div class="left">
-                    <img v-bind:src="'../assets/images/' + carLane.brandNameEn + '.png'"/>
-                    <span>{{carLane.bmwFlg ? carLane.seriesNameEn : carLane.model}}</span>
-                  </div>
-                  <div class="right">
-                    <img src="../assets/images/addSix.png" class="edit" @click="openMenuhubNewCar(carLane, i)">
-                    <div class="datepicker" v-bind:id="'blockDate' + i">
-                      <el-date-picker
-                        v-model= date[i]
-                        @change="(value) => blockTimeChange(value, i)"
-                        type="month"
-                        format="M/yyyy"
-                        :editable="false"
-                      >
-                      </el-date-picker>
+                <li v-for="(carLane, i) in menuhub.blockList"
+                    v-bind:class="getMenuhubBgColorClass(carLane.brandNameEn)">
+                  <div class="vehicleBoxTit">
+                    <div class="left">
+                      <img v-bind:src="'../assets/images/' + carLane.brandNameEn + '.png'"/>
+                      <span>{{carLane.bmwFlg ? carLane.seriesNameEn : carLane.model}}</span>
                     </div>
-                    <span id="closeDate">
-                      <img src="../assets/images/delSix.png" class="closeIcon" @click="handleRemoveColumn(i)">
-                    </span>
+                    <div class="right">
+                      <img src="../assets/images/addSix.png" class="edit" @click="openMenuhubNewCar(carLane, i)">
+                      <div class="datepicker" v-bind:id="'blockDate' + i">
+                        <el-date-picker
+                          v-model=date[i]
+                          @change="(value) => blockTimeChange(value, i)"
+                          type="month"
+                          format="M/yyyy"
+                          :editable="false"
+                        >
+                        </el-date-picker>
+                        <!-- <el-date-picker type="month" placeholder="选择月" size="mini"  align="center" default-value v-bind:id="'blockDate' + i">
+                        </el-date-picker> -->
+                        <!-- <form action="" class="form-horizontal">
+                          <fieldset>
+                            <div class="control-group">
+                              <div v-bind:id="'blockDate' + i" class="controls input-append date form_datetime my-date" data-date-format="mm yyyy" data-link-field="dtp_input1">
+                                <input size="16" type="text" style="border:none;font-size:14px" value="" readonly>
+
+                                <span class="add-on"><i class="icon-th"></i></span> </div>
+                              </div>
+                          </fieldset>
+                        </form> -->
+                      </div>
+                      <span id="closeDate">
+                    <img src="../assets/images/delSix.png" class="closeIcon" @click="handleRemoveColumn(i)">
+                  </span>
+                    </div>
                   </div>
-                </div>
-                <div class="vehicleCheckBox">
-                  <div class="selectedTip">
-                    <span class="selectContain">Number of Vehicles Selected:</span>
-                    <span class="selectedNum" v-on:mouseover="selectContainShow()" v-on:mouseout="selectContainHide()">{{carLane.checkedCars.length}}</span>
-                  </div>
-                  <template>
-                    <el-checkbox :indeterminate="carLane.isIndeterminate" v-model="carLane.checkAll" @change="handleCheckAllChange($event, carLane)">{{carLane.bmwFlg ? carLane.eseriesNameEn : carLane.engine}}
-                    </el-checkbox>
-                    <el-checkbox-group v-model="carLane.checkedCars" @change="handleCheckedCarsChange($event, carLane)">
-                      <el-checkbox v-for="car in carLane.cars" :label="car" :key="car" :value="car">
-                        <p class="text">
-                          <el-tooltip open-delay="1000" class="item" effect="dark" v-bind:content="car.carNameEn" placement="top-start">
-                            <el-button class="name">{{car.carNameEn}}</el-button>
-                          </el-tooltip>
-                          <span class="price">{{accounting.formatMoney(car.rrPrice, "¥", 0)}}</span>
-                        </p>
+                  <div class="vehicleCheckBox">
+                    <div class="selectedTip">
+                      <span class="selectContain">Number of Vehicles Selected:</span>
+                      <span class="selectedNum" v-on:mouseover="selectContainShow()"
+                            v-on:mouseout="selectContainHide()">{{carLane.checkedCars.length}}</span>
+                    </div>
+                    <template>
+                      <el-checkbox :indeterminate="carLane.isIndeterminate" v-model="carLane.checkAll"
+                                   @change="handleCheckAllChange($event, carLane)">{{carLane.bmwFlg ?
+                        carLane.eseriesNameEn : carLane.engine}}
                       </el-checkbox>
-                    </el-checkbox-group>
-                  </template>
-                </div>
-              </li>
+                      <el-checkbox-group v-model="carLane.checkedCars"
+                                         @change="handleCheckedCarsChange($event, carLane)">
+                        <el-checkbox v-for="car in carLane.cars" :label="car" :key="car" :value="car">
+                          <p class="text">
+                            <el-tooltip open-delay="1000" class="item" effect="dark" v-bind:content="car.carNameEn"
+                                        placement="top-start">
+                              <el-button class="name">{{car.carNameEn}}</el-button>
+                            </el-tooltip>
+                            <span class="price">{{accounting.formatMoney(car.rrPrice, '¥', 0)}}</span>
+                          </p>
+                        </el-checkbox>
+                      </el-checkbox-group>
+                    </template>
+                  </div>
+                </li>
               </draggable>
             </ul>
           </div>
@@ -104,496 +130,501 @@
       </div>
 
       <span slot="footer" class="dialog-footer"></span>
-    <!-- <add-New-Vehicle-Assem :addNewVehicleAssemVisible="addNewVehicleAssemVisible"></add-New-Vehicle-Assem> -->
+      <!-- <add-New-Vehicle-Assem :addNewVehicleAssemVisible="addNewVehicleAssemVisible"></add-New-Vehicle-Assem> -->
     </el-dialog>
-    <add-new-vehicle-assem :addNewVehicleAssemVisible="addNewVehicleAssemVisible" :brandList="brandList" :bmwBrandList="bmwBrandList" :bmwSeriesList="bmwSeriesList" :cmpBrandList="cmpBrandList" :cmpModelList="cmpModelList" :cmpModelRangeList="cmpModelRangeList" :bmwESeriesList="bmwESeriesList" :menuhub="menuhub"></add-new-vehicle-assem>
+    <add-new-vehicle-assem :addNewVehicleAssemVisible="addNewVehicleAssemVisible" :brandList="brandList"
+                           :bmwBrandList="bmwBrandList" :bmwSeriesList="bmwSeriesList" :cmpBrandList="cmpBrandList"
+                           :cmpModelList="cmpModelList" :cmpModelRangeList="cmpModelRangeList"
+                           :bmwESeriesList="bmwESeriesList" :menuhub="menuhub"></add-new-vehicle-assem>
   </div>
 </template>
 <script>
-  import { format } from '../common/js/dateFormat.js'
-  import addNewVehicleAssem from './addNewVehicleAssem'
-  import accounting from 'accounting'
+import {format} from '../common/js/dateFormat.js'
+import addNewVehicleAssem from './addNewVehicleAssem'
+import accounting from 'accounting'
 
-
-  export default {
-    name: 'addNewVehicleMask',
-    data () {
-      return {
-        addNewVehicleAssemVisible: false,
-        date:[new Date(),new Date(),new Date(),new Date(),new Date(),new Date(),new Date(),new Date(),new Date(),new Date(),new Date(),new Date(),new Date(),new Date()],
-        carScreen: {},
-        menuhub: {
-          defaultSelection: true,
-          menuList: [],
-          blockList: [],
-          editCar: {
-            bmwFlg: true,
-            brandNameEn: '',
-            seriesNameEn: '',
-            eseriesNameEn: '',
-            packageCode: '',
-            model: '',
-            engine: '',
-            rrPrice: 0,
-            tsPrice: 0,
-            carNameEn: '',
-            nickname: '',
-            mixPercentage: 0,
-            discountPercentage: 0,
-            powerHP: 0,
-            showMixPercentage: 0,
-            showDiscountPercentage: 0,
-            yearMonth: '',
-            laneIndex: 0,
-            carIndex: 0
-          }
-        },
-        bmwBrandList: [],
-        bmwSeriesList: [],
-        bmwESeriesList: [],
-        cmpBrandList: [],
-        cmpModelList:[],
-        cmpModelRangeList:[],
-        brandList: [],
-        accounting: accounting
-      }
-    },
-    props: {
-      addNewVehicleMaskVisible: Boolean
-    },
-    created () {
-      // this.carScreen = new CarScreen();
-      this.getBmwBrandList();
-      this.getBmwSeriesList();
-      this.getBmwESeriesList();
-      this.getCmpBrandList();
-      this.getCmpModelList();
-      this.getCmpModelRangeList();
-
-    },
-    mounted () {
-      this.incomponent()
-    },
-    updated () {
-      
-    },
-    methods: {
-      openAlert:function() {
-        this.$message({
-        message: 'there is no data in this month. Please click on other months.',
-        type: 'warning',
-        });
-      },
-      showSideList (){
-        var setFlg = false;
-        if (setFlg) {
-              return;
-        }
-        $('#sidebar>ul>li>a').each(function() {
-          $(this).parent().find('ul:first').hide();
-            currentMenu = $(this);
-          $(this).click(function() {
-            if (currentMenu != null && currentMenu.text() != $(this).text()) {
-              currentMenu.parent().find('ul:first').slideUp();
-            }
-            if (currentMenu != null && currentMenu.text() == $(this).text()) {
-              currentMenu.parent().find('ul:first').slideUp();
-              currentMenu = null;
-            } else {
-              currentMenu = $(this);
-              currentMenu.parent().find('ul:first').slideDown();
-            }
-            return false;
-          });
-        });
-        $('#sidebar>ul>li>ul>li>a').each(function() {
-          $(this).parent().find('ul:first').hide();
-            currentChildMenu = $(this);
-          $(this).click(function() {
-            if (currentChildMenu != null && currentChildMenu.text() != $(this).text()) {
-              currentChildMenu.parent().find('ul:first').slideUp();
-            }
-            if (currentChildMenu != null && currentChildMenu.text() == $(this).text()) {
-              currentChildMenu.parent().find('ul:first').slideUp();
-              currentChildMenu = null;
-            } else {
-              currentChildMenu = $(this);
-              currentChildMenu.parent().find('ul:first').slideDown();
-            }
-            return false;
-          });
-        });
-        setFlg = true;
-      },
-      blockTimeChange(val,i){
-        var self = this
-        var selectDate = val.format("yyyymm");
-        if (selectDate === new Date().format("yyyymm")) {
-          return;
-        }
-      
-        var cBlock = this.menuhub.blockList[i];
-        this.yearMonthLast = cBlock.yearMonth;
-        if (!cBlock) {
-          return;
-        }
-        cBlock.yearMonth = selectDate;
-        cBlock.yearMonthForShow = val;
-        var prdList = [];
-        if (cBlock.bmwFlg) {
-          var promise = self.searchBmwProductRowDetail(
-            cBlock.brandNameEn,
-            cBlock.seriesNameEn,
-            cBlock.eseriesNameEn,
-            cBlock.yearMonth);
-        } else {
-        var promise = self.searchCmpProductRowDetail(
-          cBlock.brandNameEn,
-          cBlock.model,
-          cBlock.engine,
-          cBlock.yearMonth);
-        }
-        promise.then(function(val){
-          cBlock.cars = val || [];
-          cBlock.checkedCars = val;
-          if(cBlock.checkedCars.length == 0){
-            // self.dialogVisible = true;
-            self.openAlert();
-            cBlock.yearMonth = new Date().format('yyyymm');
-            cBlock.yearMonthForShow = new Date();
-            if (cBlock.bmwFlg) {
-            promise = self.searchBmwProductRowDetail(
-              cBlock.brandNameEn,
-              cBlock.seriesNameEn,
-              cBlock.eseriesNameEn,
-              cBlock.yearMonth);
-            } else {
-              promise = self.searchCmpProductRowDetail(
-                cBlock.brandNameEn,
-                cBlock.model,
-                cBlock.engine,
-                cBlock.yearMonth);
-            }
-            promise.then(function(val){
-              cBlock.cars = val || [];
-              cBlock.checkedCars = val;
-              self.menuhub.blockList[i] = cBlock;
-              self.date[i] = new Date();
-            })
-          }
-        });
-        
-      
-        
-      },
-      closeDialog () {
-        this.addNewVehicleMaskVisible = false
-        this.$emit('closeDialog', this.addNewVehicleMaskVisible)
-      },
-      getMenuhubBgColorClass: function (brand) {
-        if (brand === 'BMW') {
-          return 'bg-blue'
-        } else if (brand === 'Audi') {
-          return 'bg-green'
-        } else if (brand === 'MB') {
-          return 'bg-red'
-        }
-      },
-      //fuben
-      handleDblClick : function(brand, seriesOrModel, eseriesOrEngine, bmwFlg) {
-        var self = this;
-          var nowdate = (new Date()).format("yyyymm");
-
-          var promise = this.searchRowDetailCommon(
-            brand,
-            seriesOrModel,
-            eseriesOrEngine,
-            nowdate,
-            bmwFlg);
-          var prdList = [];
-
-          promise.then(function(val){
-            prdList = val;
-            self.pushMenuhubBlockList(val,brand,bmwFlg,nowdate,seriesOrModel,eseriesOrEngine);
-          });
-          // 处理百分比数据
-      },
-      pushMenuhubBlockList : function(prdList,brand,bmwFlg,nowdate,seriesOrModel,eseriesOrEngine){
-        for(var i in prdList){
-          prdList[i].showMixPercentage = prdList[i].mixPercentage * 100;
-          prdList[i].showDiscountPercentage = prdList[i].discountPercentage * 100;
-        }
-        var block = {
-          brandNameEn: brand,
-          bmwFlg: bmwFlg,
-          seriesNameEn: bmwFlg ? seriesOrModel : "",
-          eseriesNameEn: bmwFlg ? eseriesOrEngine : "",
-          model: bmwFlg ? "" : seriesOrModel,
-          engine: bmwFlg ? "" : eseriesOrEngine,
-          yearMonth: nowdate,
-          yearMonthForShow: new Date(),
-          cars: prdList,
-          checkAll: true,
-          isIndeterminate: true,
-          checkedCars: prdList,
-        };
-
-        this.menuhub.blockList.push(block);
-      },
-      searchRowDetailCommon : function(brand, seriesOrModel, eseriesOrEngine, yearMonth, bwmFlg) {
-        if (!brand) {
-          return;
-        }
-        if (!seriesOrModel) {
-          return;
-        }
-        if (!eseriesOrEngine) {
-          return;
-        }
-        if (!yearMonth) {
-          return;
-        }
-
-        var myProductList = [];
-        if (bwmFlg) {
-          myProductList = this.searchBmwProductRowDetail(brand, seriesOrModel, eseriesOrEngine, yearMonth);
-        } else {
-          myProductList = this.searchCmpProductRowDetail(brand, seriesOrModel, eseriesOrEngine, yearMonth);
-        }
-        return myProductList;
-      },
-
-      searchBmwProductRowDetail: function (brand, series, eSeries, addRowDate) {
-        var self = this;
-        var dataArray = {};
-        dataArray['enabled'] = 'true';
-        var seriesId = -1;
-        for (var i in self.bmwSeriesList) {
-          if (series === self.bmwSeriesList[i].nameEn) {
-            seriesId = self.bmwSeriesList[i].id;
-            break;
-          }
-        }
-        dataArray['bmwESeries.bmwSeries.id'] = '= ' + seriesId;
-        var eSeriesId = -1;
-        for (var i in self.bmwESeriesList) {
-          var curESeries =  self.bmwESeriesList[i];
-          if (curESeries.bmwSeries.id == seriesId && eSeries === curESeries.nameEn) {
-            eSeriesId = curESeries.id;
-            break;
-          }
-        }
-
-        dataArray['bmwESeries.id'] = '= ' + eSeriesId;
-        dataArray['yearMonth'] = '= ' + addRowDate;
-        dataArray['sort'] = 'rrPrice,desc';
-        dataArray['size'] = 9999
-        var returnList = [];
-        return new Promise(function(resolve, reject) {
-          self.$http.get('repo/bmwProducts/list',{params: dataArray}).then(res => {
-            if (res.status == 200) {
-              resolve(res.data.bmwProducts)
-              
-            }
-          })
-        })
-      },
-      searchCmpProductRowDetail: function (brand, model, engine, addRowDate) {
-        var self = this;
-        var dataArray = {};
-        dataArray['enabled'] = 'true';
-        var brandId = -1;
-        for (var i in self.cmpBrandList) {
-          if (brand === self.cmpBrandList[i].nameEn) {
-            brandId = self.cmpBrandList[i].id;
-            break;
-          }
-        }
-        dataArray['cmpBrand.id'] = '= ' + brandId;
-        dataArray['model'] = '= ' + model;
-        dataArray['modelRange'] = '= ' + engine;
-        dataArray['yearMonth'] = '= ' + addRowDate;
-        dataArray['sort'] = 'rrPrice,desc';
-        dataArray['size'] = 9999
-        var returnList = [];
-
-        return new Promise(function(resolve, reject) {
-          self.$http.get('repo/cmpProducts/list',{params: dataArray}).then(res => {
-            if (res.status == 200) {
-              resolve(res.data.cmpProducts)
-            }
-          })
-        })
-      },
-      getBmwBrandList: function() {
-        var self = this;
-        var dataArray = {};
-        dataArray['enabled'] = 'true';
-        dataArray['size'] = 9999;
-        dataArray['sort'] = 'id';
-
-        self.$http.get('repo/bmwBrands/list', {
-          params: dataArray
-        }).then(res => {
-          if (res.status == 200) {
-            self.bmwBrandList = res.data.bmwBrands;
-            self.brandList = self.brandList.concat(self.bmwBrandList);
-          }
-        })
-      },
-      getCmpBrandList: function() {
-        var self = this;
-        var dataArray = {};
-        dataArray['enabled'] = 'true';
-        dataArray['size'] = 9999;
-        dataArray['sort'] = 'id';
-
-
-        self.$http.get('repo/cmpBrands/list', {
-          params: dataArray
-        }).then(res => {
-          if (res.status == 200) {
-            self.cmpBrandList = res.data.cmpBrands;
-            self.brandList = self.brandList.concat(self.cmpBrandList);
-          }
-        })
-      },
-      getCmpModelList: function () {
-        var self = this;
-        var dataArray = {}
-        dataArray['size'] = 9999
-        dataArray['sort'] = 'brandNameEn,nameEn'
-
-        self.$http.get('repo/cmpModelVs/list', {
-          params: dataArray
-        }).then(res => {
-          if (res.status == 200) {
-            self.cmpModelList = res.data.cmpModelVs
-          }
-        })
-      },
-      getCmpModelRangeList: function () {
-        var self = this;
-        var dataArray = {}
-        dataArray['size'] = 9999
-        dataArray['sort'] = 'brandNameEn,model,nameEn'
-
-        self.$http.get('repo/cmpModelRangeVs/list', {
-          params: dataArray
-        }).then(res => {
-          if (res.status == 200) {
-            self.cmpModelRangeList = res.data.cmpModelRangeVs
-          }
-        })
-      },
-      openMenuhubNewCar : function(block, idx) {
-        this.menuhub.editCar = {
-          bmwFlg: block.bmwFlg,
-          brandNameEn: block.brandNameEn,
-          seriesNameEn: block.seriesNameEn,
-          eseriesNameEn: block.eseriesNameEn,
-          packageCode: block.packageCode,
-          model: block.model,
-          engine: block.engine,
+export default {
+  name: 'addNewVehicleMask',
+  data () {
+    return {
+      addNewVehicleAssemVisible: false,
+      date: [new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date()],
+      carScreen: this.$store.state.carScreen,
+      menuhub: {
+        defaultSelection: true,
+        menuList: [],
+        blockList: [],
+        editCar: {
+          bmwFlg: true,
+          brandNameEn: '',
+          seriesNameEn: '',
+          eseriesNameEn: '',
+          packageCode: '',
+          model: '',
+          engine: '',
           rrPrice: 0,
           tsPrice: 0,
-          carNameEn: "",
-          nickname: "",
+          carNameEn: '',
+          nickname: '',
           mixPercentage: 0,
           discountPercentage: 0,
           powerHP: 0,
           showMixPercentage: 0,
           showDiscountPercentage: 0,
-          yearMonth: block.yearMonth,
-          yearMonthForShow : block.yearMonthForShow.format('mmm yyyy'),
-          laneIndex : idx,
-          carIndex : 0,
-        };
-        this.clearValidator();
-        // $('#menuhubEditCar').modal('show');
-      },
-      handleRemoveColumn : function(idx) {
-        this.menuhub.blockList.splice(idx, 1);
-      },
-      selectContainShow: function(){
-        $(".selectContain").attr('class','selectContainShow');
-      },
-      selectContainHide: function(){
-        $(".selectContainShow").attr('class','selectContain');
-      },
-      handleCheckAllChange:function(val, block) {
-        block.checkedCars = val ? block.cars : [];
-        block.isIndeterminate = false;
-      },
-      handleCheckedCarsChange:function(value, block) {
-        var checkedCount = block.checkedCars.length;
-        block.checkAll = checkedCount === block.cars.length;
-        block.isIndeterminate = checkedCount > 0 && checkedCount < block.cars.length;
-      },
-      handleRemoveAllColumn :function(idx) {
-        for(let i = 0; i <= idx; i++){
-          this.menuhub.blockList.splice(0, 1);
+          yearMonth: '',
+          laneIndex: 0,
+          carIndex: 0
         }
       },
-      getBmwSeriesList: function () {
-        var self = this;
-        var dataArray = {}
-        dataArray['enabled'] = 'true'
-        dataArray['size'] = 9999
-        dataArray['sort'] = 'nameEn'
-        //
-        self.$http.get('repo/bmwSeries/list', {
-          params: dataArray
-        }).then(res => {
-          if (res.status == 200) {
-            self.bmwSeriesList =  res.data.bmwSeries
-          }
-        })
-          //
-      },
-      getBmwESeriesList: function () {
-        var self = this;
-        var dataArray = {}
-        dataArray['enabled'] = 'true'
-        dataArray['size'] = 9999
-        dataArray['sort'] = 'nameEn'
+      bmwBrandList: [],
+      bmwSeriesList: [],
+      bmwESeriesList: [],
+      cmpBrandList: [],
+      cmpModelList: [],
+      cmpModelRangeList: [],
+      brandList: [],
+      accounting: accounting
+    }
+  },
+  props: {
+    addNewVehicleMaskVisible: Boolean
+  },
+  created () {
+    // this.carScreen = new CarScreen();
+    this.getBmwBrandList()
+    this.getBmwSeriesList()
+    this.getBmwESeriesList()
+    this.getCmpBrandList()
+    this.getCmpModelList()
+    this.getCmpModelRangeList()
 
-        self.$http.get('repo/bmwESeries/list', {
-          params: dataArray
-        }).then(res => {
-          if (res.status == 200) {
-            self.bmwESeriesList =  res.data.bmwESeries
-          }
-        })
-      },
-      incomponent: function(){
-        this.$http.post('priceladder/retrieveMenuList', {
-        }).then(res => {
-          if (res.status == 200) {
-            this.menuhub.menuList = res.data
-          }
-        })
-      },
-      handleSubmit : function() {
-        // this.tpShowFlg = false;
-        // this.carScreen.clear();
-        // for (var i in this.menuhub.blockList) {
-        //   var block = this.menuhub.blockList[i];
-        //   block.cars = block.checkedCars;
-        //   block.checkedCars = [];
-        //   this.carScreen.addCarLane(block);
-        // }
-        //  this.createArrow();
-        // 关闭当前menu 页面
-        // window.forwarePage(this.tpShowFlg);
-      },
-    
+  },
+  mounted () {
+    this.incomponent()
+  },
+  updated () {
 
+  },
+  methods: {
+    openAlert: function () {
+      this.$message({
+        message: 'there is no data in this month. Please click on other months.',
+        type: 'warning',
+      })
+    },
+    showSideList () {
+      var setFlg = false
+
+      if (setFlg) {
+        return
+      }
+      $('#sidebar>ul>li>a').each(function () {
+        $(this).parent().find('ul:first').hide()
+        currentMenu = $(this)
+        $(this).click(function () {
+          if (currentMenu != null && currentMenu.text() != $(this).text()) {
+            currentMenu.parent().find('ul:first').slideUp()
+          }
+          if (currentMenu != null && currentMenu.text() == $(this).text()) {
+            currentMenu.parent().find('ul:first').slideUp()
+            currentMenu = null
+          } else {
+            currentMenu = $(this)
+            currentMenu.parent().find('ul:first').slideDown()
+          }
+          return false
+        })
+      })
+      $('#sidebar>ul>li>ul>li>a').each(function () {
+        $(this).parent().find('ul:first').hide()
+        currentChildMenu = $(this)
+        $(this).click(function () {
+          if (currentChildMenu != null && currentChildMenu.text() != $(this).text()) {
+            currentChildMenu.parent().find('ul:first').slideUp()
+          }
+          if (currentChildMenu != null && currentChildMenu.text() == $(this).text()) {
+            currentChildMenu.parent().find('ul:first').slideUp()
+            currentChildMenu = null
+          } else {
+            currentChildMenu = $(this)
+            currentChildMenu.parent().find('ul:first').slideDown()
+          }
+          return false
+        })
+      })
+
+      setFlg = true
+    },
+    blockTimeChange (val, i) {
+      var self = this
+      var selectDate = val.format('yyyymm')
+      if (selectDate === new Date().format('yyyymm')) {
+        return
+      }
+
+      var cBlock = this.menuhub.blockList[i]
+      this.yearMonthLast = cBlock.yearMonth
+      if (!cBlock) {
+        return
+      }
+      cBlock.yearMonth = selectDate
+      cBlock.yearMonthForShow = val
+      var prdList = []
+      if (cBlock.bmwFlg) {
+
+        var promise = self.searchBmwProductRowDetail(
+          cBlock.brandNameEn,
+          cBlock.seriesNameEn,
+          cBlock.eseriesNameEn,
+          cBlock.yearMonth)
+      } else {
+        var promise = self.searchCmpProductRowDetail(
+          cBlock.brandNameEn,
+          cBlock.model,
+          cBlock.engine,
+          cBlock.yearMonth)
+      }
+      promise.then(function (val) {
+        cBlock.cars = val || []
+        cBlock.checkedCars = val
+        if (cBlock.checkedCars.length == 0) {
+          // self.dialogVisible = true;
+          self.openAlert()
+          cBlock.yearMonth = new Date().format('yyyymm')
+          cBlock.yearMonthForShow = new Date()
+          if (cBlock.bmwFlg) {
+            promise = self.searchBmwProductRowDetail(
+              cBlock.brandNameEn,
+              cBlock.seriesNameEn,
+              cBlock.eseriesNameEn,
+              cBlock.yearMonth)
+          } else {
+            promise = self.searchCmpProductRowDetail(
+              cBlock.brandNameEn,
+              cBlock.model,
+              cBlock.engine,
+              cBlock.yearMonth)
+          }
+          promise.then(function (val) {
+            cBlock.cars = val || []
+            cBlock.checkedCars = val
+            self.menuhub.blockList[i] = cBlock
+            self.date[i] = new Date()
+          })
+
+        }
+
+      })
 
     },
-    components: {
-      addNewVehicleAssem,
+    closeDialog () {
+      this.addNewVehicleMaskVisible = false
+      this.$emit('closeDialog', this.addNewVehicleMaskVisible)
+
+    },
+    getMenuhubBgColorClass: function (brand) {
+      if (brand === 'BMW') {
+        return 'bg-blue'
+      } else if (brand === 'Audi') {
+        return 'bg-green'
+      } else if (brand === 'MB') {
+        return 'bg-red'
+      }
+    },
+    //fuben
+    handleDblClick: function (brand, seriesOrModel, eseriesOrEngine, bmwFlg) {
+      var self = this
+      var nowdate = (new Date()).format('yyyymm')
+
+      var promise = this.searchRowDetailCommon(
+        brand,
+        seriesOrModel,
+        eseriesOrEngine,
+        nowdate,
+        bmwFlg)
+      var prdList = []
+
+      promise.then(function (val) {
+        prdList = val
+        self.pushMenuhubBlockList(val, brand, bmwFlg, nowdate, seriesOrModel, eseriesOrEngine)
+      })
+
+      // 处理百分比数据
+
+    },
+    pushMenuhubBlockList: function (prdList, brand, bmwFlg, nowdate, seriesOrModel, eseriesOrEngine) {
+      for (var i in prdList) {
+        prdList[i].showMixPercentage = prdList[i].mixPercentage * 100
+        prdList[i].showDiscountPercentage = prdList[i].discountPercentage * 100
+      }
+      var block = {
+        brandNameEn: brand,
+        bmwFlg: bmwFlg,
+        seriesNameEn: bmwFlg ? seriesOrModel : '',
+        eseriesNameEn: bmwFlg ? eseriesOrEngine : '',
+        model: bmwFlg ? '' : seriesOrModel,
+        engine: bmwFlg ? '' : eseriesOrEngine,
+        yearMonth: nowdate,
+        yearMonthForShow: new Date(),
+        cars: prdList,
+        checkAll: true,
+        isIndeterminate: true,
+        checkedCars: prdList,
+      }
+
+      this.menuhub.blockList.push(block)
+    },
+    searchRowDetailCommon: function (brand, seriesOrModel, eseriesOrEngine, yearMonth, bwmFlg) {
+      if (!brand) {
+        return
+      }
+      if (!seriesOrModel) {
+        return
+      }
+      if (!eseriesOrEngine) {
+        return
+      }
+      if (!yearMonth) {
+        return
+      }
+
+      var myProductList = []
+      if (bwmFlg) {
+        myProductList = this.searchBmwProductRowDetail(brand, seriesOrModel, eseriesOrEngine, yearMonth)
+      } else {
+        myProductList = this.searchCmpProductRowDetail(brand, seriesOrModel, eseriesOrEngine, yearMonth)
+      }
+      return myProductList
+    },
+
+    searchBmwProductRowDetail: function (brand, series, eSeries, addRowDate) {
+      var self = this
+      var dataArray = {}
+      dataArray['enabled'] = 'true'
+      var seriesId = -1
+      for (var i in self.bmwSeriesList) {
+        if (series === self.bmwSeriesList[i].nameEn) {
+          seriesId = self.bmwSeriesList[i].id
+          break
+        }
+      }
+
+      dataArray['bmwESeries.bmwSeries.id'] = '= ' + seriesId
+
+      var eSeriesId = -1
+      for (var i in self.bmwESeriesList) {
+        var curESeries = self.bmwESeriesList[i]
+        if (curESeries.bmwSeries.id == seriesId && eSeries === curESeries.nameEn) {
+          eSeriesId = curESeries.id
+          break
+        }
+      }
+
+      dataArray['bmwESeries.id'] = '= ' + eSeriesId
+      dataArray['yearMonth'] = '= ' + addRowDate
+      dataArray['sort'] = 'rrPrice,desc'
+      dataArray['size'] = 9999
+      var returnList = []
+      return new Promise(function (resolve, reject) {
+        self.$http.get('repo/bmwProducts/list', {params: dataArray}).then(res => {
+          if (res.status == 200) {
+            resolve(res.data.bmwProducts)
+
+          }
+        })
+      })
+    },
+    searchCmpProductRowDetail: function (brand, model, engine, addRowDate) {
+      alert('zhixing')
+      var self = this
+      var dataArray = {}
+      dataArray['enabled'] = 'true'
+      var brandId = -1
+      for (var i in self.cmpBrandList) {
+        if (brand === self.cmpBrandList[i].nameEn) {
+          brandId = self.cmpBrandList[i].id
+          break
+        }
+      }
+      dataArray['cmpBrand.id'] = '= ' + brandId
+      dataArray['model'] = '= ' + model
+      dataArray['modelRange'] = '= ' + engine
+      dataArray['yearMonth'] = '= ' + addRowDate
+      dataArray['sort'] = 'rrPrice,desc'
+      dataArray['size'] = 9999
+      var returnList = []
+
+      return new Promise(function (resolve, reject) {
+        self.$http.get('repo/cmpProducts/list', {params: dataArray}).then(res => {
+          if (res.status == 200) {
+            resolve(res.data.cmpProducts)
+
+          }
+        })
+      })
+    },
+    getBmwBrandList: function () {
+      var self = this
+      var dataArray = {}
+      dataArray['enabled'] = 'true'
+      dataArray['size'] = 9999
+      dataArray['sort'] = 'id'
+
+      self.$http.get('repo/bmwBrands/list', {
+        params: dataArray
+      }).then(res => {
+        if (res.status == 200) {
+          self.bmwBrandList = res.data.bmwBrands
+          self.brandList = self.brandList.concat(self.bmwBrandList)
+        }
+      })
+    },
+    getCmpBrandList: function () {
+      var self = this
+      var dataArray = {}
+      dataArray['enabled'] = 'true'
+      dataArray['size'] = 9999
+      dataArray['sort'] = 'id'
+
+      self.$http.get('repo/cmpBrands/list', {
+        params: dataArray
+      }).then(res => {
+        if (res.status == 200) {
+          self.cmpBrandList = res.data.cmpBrands
+          self.brandList = self.brandList.concat(self.cmpBrandList)
+        }
+      })
+    },
+    getCmpModelList: function () {
+      var self = this
+      var dataArray = {}
+      dataArray['size'] = 9999
+      dataArray['sort'] = 'brandNameEn,nameEn'
+
+      self.$http.get('repo/cmpModelVs/list', {
+        params: dataArray
+      }).then(res => {
+        if (res.status == 200) {
+          self.cmpModelList = res.data.cmpModelVs
+        }
+      })
+    },
+    getCmpModelRangeList: function () {
+      var self = this
+      var dataArray = {}
+      dataArray['size'] = 9999
+      dataArray['sort'] = 'brandNameEn,model,nameEn'
+
+      self.$http.get('repo/cmpModelRangeVs/list', {
+        params: dataArray
+      }).then(res => {
+        if (res.status == 200) {
+          self.cmpModelRangeList = res.data.cmpModelRangeVs
+        }
+      })
+    },
+    openMenuhubNewCar: function (block, idx) {
+      this.menuhub.editCar = {
+        bmwFlg: block.bmwFlg,
+        brandNameEn: block.brandNameEn,
+        seriesNameEn: block.seriesNameEn,
+        eseriesNameEn: block.eseriesNameEn,
+        packageCode: block.packageCode,
+        model: block.model,
+        engine: block.engine,
+        rrPrice: 0,
+        tsPrice: 0,
+        carNameEn: '',
+        nickname: '',
+        mixPercentage: 0,
+        discountPercentage: 0,
+        powerHP: 0,
+        showMixPercentage: 0,
+        showDiscountPercentage: 0,
+        yearMonth: block.yearMonth,
+        yearMonthForShow: block.yearMonthForShow.format('mmm yyyy'),
+        laneIndex: idx,
+        carIndex: 0,
+      }
+      this.clearValidator()
+      // $('#menuhubEditCar').modal('show');
+    },
+    handleRemoveColumn: function (idx) {
+      this.menuhub.blockList.splice(idx, 1)
+    },
+    selectContainShow: function () {
+      $('.selectContain').attr('class', 'selectContainShow')
+    },
+    selectContainHide: function () {
+      $('.selectContainShow').attr('class', 'selectContain')
+    },
+    handleCheckAllChange: function (val, block) {
+      block.checkedCars = val ? block.cars : []
+      block.isIndeterminate = false
+    },
+    handleCheckedCarsChange: function (value, block) {
+      var checkedCount = block.checkedCars.length
+      block.checkAll = checkedCount === block.cars.length
+      block.isIndeterminate = checkedCount > 0 && checkedCount < block.cars.length
+    },
+    handleRemoveAllColumn: function (idx) {
+      for (let i = 0; i <= idx; i++) {
+        this.menuhub.blockList.splice(0, 1)
+      }
+    },
+    getBmwSeriesList: function () {
+      var self = this
+      var dataArray = {}
+      dataArray['enabled'] = 'true'
+      dataArray['size'] = 9999
+      dataArray['sort'] = 'nameEn'
+      //
+      self.$http.get('repo/bmwSeries/list', {
+        params: dataArray
+      }).then(res => {
+        if (res.status == 200) {
+          self.bmwSeriesList = res.data.bmwSeries
+        }
+      })
+      //
+    },
+    getBmwESeriesList: function () {
+      var self = this
+      var dataArray = {}
+      dataArray['enabled'] = 'true'
+      dataArray['size'] = 9999
+      dataArray['sort'] = 'nameEn'
+
+      self.$http.get('repo/bmwESeries/list', {
+        params: dataArray
+      }).then(res => {
+        if (res.status == 200) {
+          self.bmwESeriesList = res.data.bmwESeries
+        }
+      })
+    },
+    incomponent: function () {
+      this.$http.post('priceladder/retrieveMenuList', {}).then(res => {
+        if (res.status == 200) {
+          this.menuhub.menuList = res.data
+        }
+      })
+    },
+    handleSubmit: function () {
+      this.tpShowFlg = false
+      this.carScreen.clear()
+      for (var i in this.menuhub.blockList) {
+        var block = this.menuhub.blockList[i]
+        block.cars = block.checkedCars
+        block.checkedCars = []
+        this.carScreen.addCarLane(block)
+      }
+      this.$store.store.commit('UPDATE_CARSCREEN', this.carScreen)
+      console.log(this.$store.store.carScreen)
     }
+  },
+  components: {
+    addNewVehicleAssem
   }
 </script>
 
@@ -826,19 +857,21 @@
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+
   .sixColumnRight {
     float: right;
     width: 85%;
-    height:97%;
+    height: 97%;
     margin-left: 0.7%;
     /*height: 871px;*/
     /*overflow: auto;*/
     /*position:relative;*/
-    left:230px;
-    top:-736px;
+    left: 230px;
+    top: -736px;
     max-height: 874px;
     overflow-y: scroll;
   }
+
   .sixColumnRight .sixColumnRightTit {
     border-bottom: #dcdcdc solid 1px;
     height: 78px;
@@ -846,13 +879,15 @@
     overflow: hidden;
     margin-bottom: 0px;
   }
+
   .AddNewVehicleBox {
     /*height: 845px;*/
     /*margin-bottom: 25px;*/
     overflow: hidden;
     position: relative;
-    top:0px;
+    top: 0px;
   }
+
   .AddNewVehicleBox ul li {
     position: relative;
     width: 32%;
@@ -865,74 +900,90 @@
     background: #fff;
     box-shadow: 0 2px 4px 0 #BFBFC3;;
   }
-  .AddNewVehicleBox ul li.bg-blue{
+
+  .AddNewVehicleBox ul li.bg-blue {
     border-top: 5px solid #3577B1;
   }
-  .AddNewVehicleBox ul li.bg-red{
+
+  .AddNewVehicleBox ul li.bg-red {
     border-top: 5px solid #DB3B3B;
   }
-  .AddNewVehicleBox ul li.bg-green{
+
+  .AddNewVehicleBox ul li.bg-green {
     border-top: 5px solid #59AA39;
   }
+
   .AddNewVehicleBox ul li .vehicleBoxTit {
-    height:56px;
+    height: 56px;
     position: relative;
     padding: 15px 0 10px 0;
     margin: 0 20px 0 14px;
     overflow: hidden;
     border-bottom: 2px solid transparent;
   }
-  .AddNewVehicleBox ul li .vehicleBoxTit::after{
+
+  .AddNewVehicleBox ul li .vehicleBoxTit::after {
     content: '';
     position: absolute;
     top: 50px;
     left: 40px;
     display: inline-block;
-    width:417px;
+    width: 417px;
     height: 2px;
-    background: linear-gradient(to right, #036EAD , #F7F9FB);
+    background: linear-gradient(to right, #036EAD, #F7F9FB);
   }
+
   .AddNewVehicleBox ul li .left {
     float: left;
   }
+
   .AddNewVehicleBox ul li .left span {
     font-size: 16px;
     margin-left: 10px;
   }
+
   .AddNewVehicleBox ul li .right {
     float: right;
   }
+
   .AddNewVehicleBox ul li .right .edit, .AddNewVehicleBox ul li .datepicker {
     float: left;
   }
+
   .AddNewVehicleBox ul li .right .edit {
     margin: 2px 8px 0 0;
     cursor: pointer;
   }
+
   .AddNewVehicleBox ul li .right .closeIcon {
-    width:16px;
+    width: 16px;
     height: 16px;
     cursor: pointer;
   }
+
   .AddNewVehicleBox ul li .datepicker {
     margin-right: 7px;
-    border:none;
+    border: none;
     font-size: 14px;
     margin-top: -11px;
   }
-  .AddNewVehicleBox ul li .vehicleBoxTit .right .datepicker .form-horizontal fieldset .control-group .input-append input{
-    padding-left:19px;
-    background:url(../assets/images/rili.png) no-repeat;
+
+  .AddNewVehicleBox ul li .vehicleBoxTit .right .datepicker .form-horizontal fieldset .control-group .input-append input {
+    padding-left: 19px;
+    background: url(../assets/images/rili.png) no-repeat;
     background-size: 14px 13px;
     background-position-y: 4px;
+
   }
 
-  .datepicker{
+  .datepicker {
     position: relative;
   }
+
   .AddNewVehicleBox ul li:nth-child(3n+3) {
     margin-right: 0;
   }
+
   .vehicleCheckBox {
     margin: 10px 20px 0 14px;
     position: relative;
@@ -958,19 +1009,23 @@
     font-size: 16px;
     margin-right: 16px;
   }
+
   .AddNewVehicleBox .vehicleCheckBox .el-checkbox-group {
-    top:0px;
+    top: 0px;
     height: 315px;
     width: 100%;
     overflow-x: hidden;
     overflow-y: auto;
   }
-  .vehicleCheckBox .el-checkbox-group .el-checkbox__input{
-    margin-top:-2px;
+
+  .vehicleCheckBox .el-checkbox-group .el-checkbox__input {
+    margin-top: -2px;
   }
-  .AddNewVehicleBox .vehicleCheckBox .el-checkbox-group:nth-child(2){
-    width:90%;
+
+  .AddNewVehicleBox .vehicleCheckBox .el-checkbox-group:nth-child(2) {
+    width: 90%;
   }
+
   .AddNewVehicleBox .vehicleCheckBox .el-checkbox-group .text {
     width: 100%;
     overflow: hidden;
@@ -982,35 +1037,42 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    width:74%;
+    width: 74%;
     text-align: left;
-    padding:0px;
-    border:none;
+    padding: 0px;
+    border: none;
     font-size: 20px;
   }
-  .AddNewVehicleBox .vehicleCheckBox .el-checkbox-group .name:hover{
-    color:#606266;
-    border-color:#fff;
+
+  .AddNewVehicleBox .vehicleCheckBox .el-checkbox-group .name:hover {
+    color: #606266;
+    border-color: #fff;
     background-color: #fff;
   }
-  .sixColumnMain .vehicleCheckBox .el-checkbox-group .el-checkbox__label{
-    width: 100%!important;
+
+  .sixColumnMain .vehicleCheckBox .el-checkbox-group .el-checkbox__label {
+    width: 100% !important;
   }
+
   .AddNewVehicleBox .vehicleCheckBox .el-checkbox-group .price {
     float: right;
   }
-  .AddNewVehicleBox .vehicleCheckBox .el-checkbox+.el-checkbox {
+
+  .AddNewVehicleBox .vehicleCheckBox .el-checkbox + .el-checkbox {
     margin-left: 0;
   }
-  .AddNewVehicleBox .el-checkbox{
-    margin-bottom:10px;
+
+  .AddNewVehicleBox .el-checkbox {
+    margin-bottom: 10px;
     padding-left: 8px;
     width: 100%
   }
-  .AddNewVehicleBox .vehicleCheckBox .el-checkbox__inner::before{
-    display: none!important;
+
+  .AddNewVehicleBox .vehicleCheckBox .el-checkbox__inner::before {
+    display: none !important;
   }
-  .AddNewVehicleBox .vehicleCheckBox .el-checkbox__inner::after{
+
+  .AddNewVehicleBox .vehicleCheckBox .el-checkbox__inner::after {
     -webkit-box-sizing: content-box;
     box-sizing: content-box;
     content: "";
@@ -1027,28 +1089,32 @@
     -webkit-transition: -webkit-transform .15s ease-in .05s;
     transition: -webkit-transform .15s ease-in .05s;
     transition: transform .15s ease-in .05s;
-    transition: transform .15s ease-in .05s,-webkit-transform .15s ease-in .05s;
+    transition: transform .15s ease-in .05s, -webkit-transform .15s ease-in .05s;
     -webkit-transform-origin: center;
     transform-origin: center;
     transform: rotate(45deg) scaleY(1);
     display: inline;
   }
-  .selectContain{
+
+  .selectContain {
     width: 100px;
     height: 30px;
     display: none;
   }
-  .selectContainShow{
+
+  .selectContainShow {
     width: 100px;
     height: 30px;
     color: #72adff;
     font-size: 16px;
     font-weight: inherit;
   }
-  .sixColumnMain .vehicleCheckBox .el-checkbox-group .el-checkbox__label{
-    width:100% !important;
+
+  .sixColumnMain .vehicleCheckBox .el-checkbox-group .el-checkbox__label {
+    width: 100% !important;
   }
+
   .AddNewVehicleBox .vehicleCheckBox .el-checkbox-group .price {
-      float: right;
+    float: right;
   }
 </style>

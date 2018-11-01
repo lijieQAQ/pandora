@@ -52,10 +52,8 @@
 </template>
 
 <script>
-  import VueNumeric from 'vue-numeric'
-  import addNewVehicleMask from './addNewVehicleMask'
-  import CarScreen from '../common/js/carscreen.js'
-  import VeeValidate, { Validator } from 'vee-validate';
+import addNewVehicleMask from './addNewVehicleMask'
+
 export default {
   name: 'main',
   data () {

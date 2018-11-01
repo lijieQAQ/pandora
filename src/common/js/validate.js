@@ -1,8 +1,10 @@
-import VeeValidate from 'vee-validate'
+import VeeValidate, {Validator} from 'vee-validate'
+import locale from 'element-ui/lib/locale/lang/en'
+import Vue from 'vue'
+Vue.use(VeeValidate)
+Validator.localize('locale', locale)
 
-VeeValidate.localize('zh_CN')
-
-VeeValidate.extend('exists', {
+Validator.extend('exists', {
   messages: {
     zh_CN: function (field) {
       return '文件不存在或没有内容'
@@ -152,7 +154,7 @@ const dictionary = {
   }
 }
 
-VeeValidate.extend('compareTime', {
+Validator.extend('compareTime', {
   messages: {
     zh_CN: function (field) {
       return '开始时间不能大于结束时间'
@@ -171,7 +173,7 @@ VeeValidate.extend('compareTime', {
 })
 
 // POI表单导入页面
-VeeValidate.extend('exists', {
+Validator.extend('exists', {
   messages: {
     zh_CN: function (field) {
       return '文件不存在或没有内容'
@@ -188,7 +190,7 @@ VeeValidate.extend('exists', {
 })
 
 // 供应商一览页面/工作日历一览页面
-VeeValidate.extend('timeHM', {
+Validator.extend('timeHM', {
   messages: {
     zh_CN: function (field) {
       return '注意时间格式(例:09:23)'
@@ -198,13 +200,27 @@ VeeValidate.extend('timeHM', {
     return value.length !== 0 && /^(0[0-9]|1[0-9]|2[0-9]|30):([0-5][0-9])$/.test(value)
   }
 })
+// 自定义
+Validator.extend('isnumber', {
+  messages: {
+    en: function (field) {
+      return 'The ' + field + ' field is required.'
+    }
+  },
+  validate: function (value) {
+    if (typeof(value) == 'number') {
+      return value <= 0 ? false : true
+    }
+    return false
+  }
+})
 
 // 密码的校验规则
-VeeValidate.extend('password', {
+Validator.extend('password', {
   messages: {
     zh_CN: function (field) {
       return 'Non-compatible Password.'
-    },
+    }
   },
   validate: function (value) {
     // return value.length !== 0 && /^(0[0-9]|1[0-9]|2[0-9]|30):([0-5][0-9])$/.test(value)
@@ -237,6 +253,41 @@ VeeValidate.extend('password', {
     return true
   }
 })
-
-VeeValidate.updateDictionary(dictionary)
-export default VeeValidate
+const custom = {
+  en: {
+    attributes: {
+      'menuhub.addRow.addCar.carNameEn': 'Variant',
+      'menuhub.addRow.addCar.nickname': 'Variant(Short)',
+      'menuhub.addRow.addCar.model': 'Model',
+      'menuhub.addRow.addCar.packageCode': 'PC',
+      'menuhub.addRow.addCar.engine': 'Engine',
+      'menuhub.addRow.addCar.rrPrice': 'MSRP',
+      'menuhub.addRow.addCar.tsPrice': 'T/P',
+      'menuhub.editCar.carNameEn': 'Variant',
+      'menuhub.editCar.nickname': 'Variant(Short)',
+      'menuhub.editCar.model': 'Model',
+      'menuhub.editCar.packageCode': 'PC',
+      'menuhub.editCar.engine': 'Engine',
+      'menuhub.editCar.rrPrice': 'MSRP',
+      'menuhub.editCar.tsPrice': 'T/P',
+      'editCar.carNameEn': 'Variant',
+      'editCar.nickname': 'Variant(Short)',
+      'editCar.model': 'Model',
+      'editCar.packageCode': 'PC',
+      'editCar.engine': 'Engine',
+      'editCar.rrPrice': 'MSRP',
+      'editCar.tsPrice': 'T/P',
+      'addRow.addCar.carNameEn': 'Variant',
+      'addRow.addCar.nickname': 'Variant(Short)',
+      'addRow.addCar.model': 'Model',
+      'addRow.addCar.packageCode': 'PC',
+      'addRow.addCar.engine': 'Engine',
+      'addRow.addCar.rrPrice': 'MSRP',
+      'addRow.addCar.tsPrice': 'T/P',
+      'changeCarB.rrPrice': 'MSRP',
+      'changeCarA.rrPrice': 'MSRP'
+    }
+  }
+}
+Validator.localize(dictionary)
+Validator.localize(custom)
