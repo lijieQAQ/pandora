@@ -11,6 +11,7 @@
 
 <script>
 import CompareContent from './CompareContent'
+import Bus from '../common/js/Bus'
 
 export default {
   name: 'PriceLadderContain',
@@ -20,7 +21,12 @@ export default {
     }
   },
   mounted () {
-    console.log(this.carScreen)
+    Bus.$on('operating', status => {
+      if (status === 'compare') {
+        this.carScreen = this.$store.state.carScreen
+        console.log(this.carScreen)
+      }
+    })
   },
   components: {
     CompareContent

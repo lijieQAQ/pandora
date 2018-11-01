@@ -1,3 +1,4 @@
+import * as d3 from 'd3'
 /**
  * Show of PriceLadder
  * Parameters:options
@@ -36,7 +37,7 @@ CarScreen.prototype = {
       return false
     }
     this.carLanes.push(carLane)
-    this.rescale()
+    // this.rescale()
     return true
   },
 
@@ -58,7 +59,7 @@ CarScreen.prototype = {
     if (((pageIndex + 1) * this.maxRowNumEveryPage) > len) {
       return [pageIndex * this.maxRowNumEveryPage, len]
     }
-    //0  5
+    // 0  5
     return [(pageIndex * this.maxRowNumEveryPage), ((pageIndex + 1) * this.maxRowNumEveryPage)]
   },
 
