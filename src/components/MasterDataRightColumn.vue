@@ -15,7 +15,7 @@ import MasterDataBmw from './MasterDataBmw'
 		},
 		components: {
     	MasterDataBmw,
-  	    },
+		},
 		methods:{
 
 		}

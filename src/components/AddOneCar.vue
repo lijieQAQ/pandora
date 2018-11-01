@@ -75,15 +75,12 @@
 </template>
 
 <script type="text/javascript">
-import accounting from 'accounting'
-
-
+  import accounting from 'accounting'
   export default{
   	name:'AddOneCar',
   	data(){
   	  return{
         accounting: accounting,
-
   	  }
   	},
   	props:{
@@ -102,22 +99,22 @@ import accounting from 'accounting'
         if (self.addRow.isBmwProduct) {
           console.log(2222)
           validation = Promise.all([
-                this.$validator.validate("menuhub.addRow.addCar.carNameEn"),
-                this.$validator.validate("menuhub.addRow.addCar.nickname"),
-                this.$validator.validate("menuhub.addRow.addCar.model"),
-                this.$validator.validate("menuhub.addRow.addCar.packageCode"),
-                this.$validator.validate("menuhub.addRow.addCar.rrPrice"),
-                this.$validator.validate("menuhub.addRow.addCar.tsPrice")
+            this.$validator.validate("menuhub.addRow.addCar.carNameEn"),
+            this.$validator.validate("menuhub.addRow.addCar.nickname"),
+            this.$validator.validate("menuhub.addRow.addCar.model"),
+            this.$validator.validate("menuhub.addRow.addCar.packageCode"),
+            this.$validator.validate("menuhub.addRow.addCar.rrPrice"),
+            this.$validator.validate("menuhub.addRow.addCar.tsPrice")
           ]);
         } else {
           console.log(2222)
           validation = Promise.all([
-                this.$validator.validate("menuhub.addRow.addCar.carNameEn"),
-                this.$validator.validate("menuhub.addRow.addCar.nickname"),
-                this.$validator.validate("menuhub.addRow.addCar.model"),
-                this.$validator.validate("menuhub.addRow.addCar.engine"),
-                this.$validator.validate("menuhub.addRow.addCar.rrPrice"),
-                this.$validator.validate("menuhub.addRow.addCar.tsPrice")
+            this.$validator.validate("menuhub.addRow.addCar.carNameEn"),
+            this.$validator.validate("menuhub.addRow.addCar.nickname"),
+            this.$validator.validate("menuhub.addRow.addCar.model"),
+            this.$validator.validate("menuhub.addRow.addCar.engine"),
+            this.$validator.validate("menuhub.addRow.addCar.rrPrice"),
+            this.$validator.validate("menuhub.addRow.addCar.tsPrice")
           ]);
         }
         validation.then(function(result) {
@@ -128,9 +125,8 @@ import accounting from 'accounting'
             console.log(4444)
             validFlg = validFlg && result[i];
           }
-        var validation = true;
+          var validation = true;
           if (validFlg) {
-
             self.addRow.addCar.bmwFlg = self.addRow.isBmwProduct;
             self.addRow.addCar.mixPercentage = self.addRow.addCar.showMixPercentage / 100;
             self.addRow.addCar.showDiscountPercentage = self.computeDiscountPercentage(self.addRow.addCar.rrPrice, self.addRow.addCar.tsPrice);
@@ -151,10 +147,10 @@ import accounting from 'accounting'
 </script>
 
 <style scoped lang="less">
-#checkBoxTwo, #checkBoxThree {
+  #checkBoxTwo, #checkBoxThree {
     padding: 20px 10px 0 10px;
-}
-#checkBox, #checkBoxTwo, #checkBoxThree {
+  }
+  #checkBox, #checkBoxTwo, #checkBoxThree {
     width: 511px;
     height: 312px;
     margin: 6px 0 0 0;
@@ -163,6 +159,6 @@ import accounting from 'accounting'
     position: relative;
     border-radius: 4px;
     background: #FFF;
-}
+  }
 
 </style>

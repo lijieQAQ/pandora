@@ -1,107 +1,99 @@
 <template>
-   <el-dialog
+  <el-dialog
     :visible.sync="masterDataUploadVisible"
     center
     class="sixColumnMain"
     width='45%'
     top='15vh'
     show-close=false
-    >
-       <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <!-- upload model -->
-            <div class="modal-dialog masterModal" id="uploadDialog">
-              <div class="modal-header">
-                <h4 class="modal-title">
-                  <span class="iconTitle"></span>
-                  Upload
-                  <div class="underline"></div>
-                </h4>
-              </div>
-
-              <div class="modal-content" >
-                <div class="modal-body">
-                  <fieldset class="select-box">
-                    <label for="name">Select Upload Month</label>
-                    <div class="control-group">
-                      <div id="uploadDate" class="controls input-append date form_datetime" data-link-field="dtp_input1">
-                        <el-date-picker
-                          v-model="value4"
-                          type="month"
-                          format="MM/yyyy"
-                          @change="changeDate"
-                          placeholder="选择月">
-                        </el-date-picker>
-                        <!-- <span class="add-on"><i class="icon-th"></i></span>  -->
-                      </div>
-                    </div>
-                  </fieldset>
-                  <div class="uploadBox dashed">
-                    <!--drag 支持拖拽--><!--------action处是接口哟～～～-------->
-                    <el-upload
-                            class="upload-demo"
-                            action="/bmw/product/upload"
-                            ref="upload"
-                            :on-remove="handleRemove"
-                            :multiple="false"
-                            :show-file-list="true"
-                            :on-progress="handleProgress"
-                            :on-success="handleSuccess"
-                            :on-error="handleError"
-                            :on-change="handleChange"
-                            accept=".xls,.xlsx"
-                            :before-upload="beforeAvatarUpload"
-                            :file-list="fileList"
-                            :auto-upload="false"
-                            :data="upLoadData"
-                            :headers="headers"
-                            :limit="1"
-                            name="excel">
-                      <el-button size="small" type="primary"></el-button>
-                      <div slot="tip" class="el-upload__tip color555" style="font-size: 18px">Drop files here to upload or choose files</div>
-                      <div slot="tip" class="el-upload__tip color999" style="opacity: 0.5;margin-top:0">Only support Excel format with size limit of 5MB</div>
-                    </el-upload>
-                    <!-- <div class="masterTip" v-if="checkMessages.length != 0">
-                      上传成功不显示，失败显示错误信息
-                      <div class="masterTipTop">Clank!</div>
-                      <div class="masterTipBottom">
-                        <li v-for="(d,i) in checkMessages">
-                          <a href="javascript:void(0)">
-                            <span class="cicle"></span>{{d}}</a>
-                        </li>
-                      </div>
-                    </div> -->
-                  </div>
+  >
+    <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <!-- upload model -->
+      <div class="modal-dialog masterModal" id="uploadDialog">
+        <div class="modal-header">
+          <h4 class="modal-title">
+            <span class="iconTitle"></span>
+              Upload
+            <div class="underline"></div>
+          </h4>
+        </div>
+        <div class="modal-content" >
+          <div class="modal-body">
+            <fieldset class="select-box">
+              <label for="name">Select Upload Month</label>
+              <div class="control-group">
+                <div id="uploadDate" class="controls input-append date form_datetime" data-link-field="dtp_input1">
+                  <el-date-picker
+                    v-model="value4"
+                    type="month"
+                    format="MM/yyyy"
+                    @change="changeDate"
+                    placeholder="选择月">
+                  </el-date-picker>
+                  <!-- <span class="add-on"><i class="icon-th"></i></span>  -->
                 </div>
-                <div class="modal-footer">
-                  <div class="btnBox">
-                    <button id="doImportCancel" type="submit" class="btn btn-default" @click="masterDataUploadVisible=false">Cancel</button>
-                    <button id="doImport" type="button" class="btn btn-primary" data-toggle="modal" @click="doImport2()" disabled>Confirm</button>
-                    <div class="modal fade" id="myBtn" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
-                  </div>
+              </div>
+            </fieldset>
+            <div class="uploadBox dashed">
+              <!--drag 支持拖拽--><!--------action处是接口哟～～～-------->
+              <el-upload
+                class="upload-demo"
+                action="/bmw/product/upload"
+                ref="upload"
+                :on-remove="handleRemove"
+                :multiple="false"
+                :show-file-list="true"
+                :on-progress="handleProgress"
+                :on-success="handleSuccess"
+                :on-error="handleError"
+                :on-change="handleChange"
+                accept=".xls,.xlsx"
+                :before-upload="beforeAvatarUpload"
+                :file-list="fileList"
+                :auto-upload="false"
+                :data="upLoadData"
+                :headers="headers"
+                :limit="1"
+                name="excel">
+                <el-button size="small" type="primary"></el-button>
+                <div slot="tip" class="el-upload__tip color555" style="font-size: 18px">Drop files here to upload or choose files</div>
+                <div slot="tip" class="el-upload__tip color999" style="opacity: 0.5;margin-top:0">Only support Excel format with size limit of 5MB</div>
+              </el-upload>
+              <div class="masterTip" v-if="checkMessages.length != 0">
+                <!-- 上传成功不显示，失败显示错误信息 -->
+                <div class="masterTipTop">Clank!</div>
+                <div class="masterTipBottom">
+                  <li v-for="(d,i) in checkMessages">
+                    <a href="javascript:void(0)">
+                      <span class="cicle"></span>{{d}}</a>
+                  </li>
                 </div>
               </div>
             </div>
-            <!-- upload success tip -->
-            <!--上传成功，成功信息-->
-            <div class="modal-dialog uploadSuccess" style="display: none">
-              <div class="modal-content">
-                <div class="modal-body">
-                  <p>Upload Save Successful!</p>
-                  <img src="../assets/images/uploadSuccessfulIcon.png"> 
-                </div>
-              </div>
-            </div>
-            <!-- /.modal -->
           </div>
-
-
-
-    
-    
+          <div class="modal-footer">
+            <div class="btnBox">
+              <button id="doImportCancel" type="submit" class="btn btn-default" @click="masterDataUploadVisible=false">Cancel</button>
+              <button id="doImport" type="button" class="btn btn-primary" data-toggle="modal" @click="doImport2()" disabled>Confirm</button>
+              <div class="modal fade" id="myBtn" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- upload success tip -->
+      <!--上传成功，成功信息-->
+      <div class="modal-dialog uploadSuccess" style="display: none">
+        <div class="modal-content">
+          <div class="modal-body">
+            <p>Upload Save Successful!</p>
+            <img src="../assets/images/uploadSuccessfulIcon.png"> 
+          </div>
+        </div>
+      </div>
+      <!-- /.modal -->
+    </div>
     <span slot="footer" class="dialog-footer"></span>
   </el-dialog>
-  
-
 </template>
 
 <script>
@@ -160,7 +152,6 @@
           if (response.error) {
             this.checkMessages.push(response.error);
           }
-
           for (var k = 0; response.checkMessages && k < response.checkMessages.length; k++) {
             var megLines = response.checkMessages[k];
             for (var j = 0; megLines && j < megLines.length; j++) {
@@ -187,10 +178,8 @@
         }
       },
       beforeAvatarUpload: function (file) {
-
         const isExcel = (file.type === "application/vnd.ms-excel" || file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
         const isLt5M = file.size / 1024 / 1024 / 1024 / 1024 / 1024 < 5;
-
         if (!isExcel) {
           // 上传文件只能是 xls、xlsx 格式!
           this.$message.error('Can only upload files in xls or xlsx format!');
@@ -206,13 +195,9 @@
         if (uploadDate) {
           this.upLoadData.yearMonth = uploadDate.format("yyyymm")
         }
-        alert(11111)
         this.$refs.upload.submit()
-        alert(2222)
         $('#doImport').attr("disabled", true);
-        alert(333)
       },
-     
     }
 
   }
@@ -227,7 +212,6 @@
     font-size: 18px;
     color: #606060;
   }
-
   .modal-title {
     margin: 0 30px !important;
     padding: 15px;
@@ -246,73 +230,73 @@
     width: 100%;
     height: 1px;
     background: linear-gradient(to right, #7BA0F1, #64C3EE, #fff);
- }
- .modal-content {
+  }
+  .modal-content {
     position: relative;
     background-color: #fff;
     border: 0px solid #999;
     border-radius: 0px;
     outline: 0;
     box-shadow: none;
-}
-.masterModal .modal-body {
+  }
+  .masterModal .modal-body {
     font-size: 14px;
     color: #333;
     padding: 20px;
     padding-top: 0;
-}
-.masterModal .select-box {
+  }
+  .masterModal .select-box {
     margin-left: 25px;
     min-width: 0;
     padding: 0;
     border: 0;
-}
-.masterModal .select-box label {
+  }
+  .masterModal .select-box label {
     line-height: 25px;
     font-weight: normal;
     color: #5d5f57;
     float: left;
-}
-.masterModal .select-box .form_datetime .el-date-editor {
+  }
+  .masterModal .select-box .form_datetime .el-date-editor {
     width: 190px;
     height: 25px;
     border: #d8d8d8 1px solid;
     padding-left: 10px;
     float: left;
     margin-left: 10px;
-}
-.masterModal .select-box .form_datetime .add-on{
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background:  url(../assets/images/min-date-cion.png) 80% 80% no-repeat;;
-}
-.masterModal .dashed {
+  }
+  .masterModal .select-box .form_datetime .add-on{
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background:  url(../assets/images/min-date-cion.png) 80% 80% no-repeat;;
+  }
+  .masterModal .dashed {
     border: solid 1px #D9D9D9 !important;
     border-radius: 4px;
-}
+  }
 
-.masterModal .uploadBox, .masterModal .uploading {
+  .masterModal .uploadBox, .masterModal .uploading {
     width: 664px;
     height: 294px;
     margin: 0 auto;
     background: #F2F3F9;
     margin-top: 20px;
     color: #D9D9D9;
-}
-.uploadBox .upload-demo {
+  }
+  .uploadBox .upload-demo {
     height: auto;
     margin: 0 auto;
-}
-.uploadBox .upload-demo .el-upload__tip {
+  }
+  .uploadBox .upload-demo .el-upload__tip {
     font-size: 18px;
     text-align: center;
     margin-top:7px;
-}
-.color555 {
+  }
+  .color555 {
     color: #606060 !important;
-}
-.uploadBox .el-button--primary, .uploadBox .el-button--primary:hover, .uploadBox .el-button--primary:active, .el-button--primary.is-active, .el-button--primary:focus {
+  }
+  .uploadBox .el-button--primary, .uploadBox .el-button--primary:hover, .uploadBox .el-button--primary:active, .el-button--primary.is-active, .el-button--primary:focus {
     background-size: 44px;
     background-image: url(../assets/images/uploadIconNew.png);
     background-repeat: no-repeat;
@@ -323,34 +307,34 @@
     margin: 0 auto;
     border: none;
     text-align: center;
-}
-.uploadBox .el-upload__input {
+  }
+  .uploadBox .el-upload__input {
     display: none !important;
-}
-.uploadBox .upload-demo .el-upload__tip {
+  }
+  .uploadBox .upload-demo .el-upload__tip {
     font-size: 14px;
     text-align: center;
-}
-.masterModal .modal-footer {
+  }
+  .masterModal .modal-footer {
     display: block;
     width: 756px;
     height: 92px;
     border: none;
     padding: 0;
-}
-.masterModal .modal-footer .btnBox {
+  }
+  .masterModal .modal-footer .btnBox {
     width: 300px;
     margin-top: 20px !important;
     margin: 0 auto;
-}
-.headerMenu .buttonBox .masterModal .modal-footer #doImportCancel {
+  }
+  .headerMenu .buttonBox .masterModal .modal-footer #doImportCancel {
     float: left;
     margin-right: 60px;
     color: #999;
     background: #f7faf9;
     border: #dfe5e6 solid 1px;
-}
-.headerMenu .buttonBox .masterModal .modal-footer .btnBox .btn {
+  }
+  .headerMenu .buttonBox .masterModal .modal-footer .btnBox .btn {
     width: 120px;
     height: 34px;
     border-radius: 3px;
@@ -358,8 +342,8 @@
     font-size: 16px;
     border: 0px;
     margin: 0 0 20px 0;
-}
-.headerMenu .buttonBox .btn {
+  }
+  .headerMenu .buttonBox .btn {
     margin-top: 10px;
     padding: 0;
     width: 142px;
@@ -372,14 +356,14 @@
     color: #656b6a;
     text-align: center;
     font-size: 18px;
-}
-.headerMenu .buttonBox .masterModal .modal-footer .btn-primary {
+  }
+  .headerMenu .buttonBox .masterModal .modal-footer .btn-primary {
     float: left;
     color: #fff;
     background-image: linear-gradient(-90deg, #2D9DEA 0%, #1464D0 100%);
-}
+  }
 
-.headerMenu .buttonBox .masterModal .modal-footer .btn {
+  .headerMenu .buttonBox .masterModal .modal-footer .btn {
     width: 120px;
     height: 34px;
     border-radius: 3px;
@@ -387,8 +371,8 @@
     font-size: 16px;
     border: 0px;
     margin: 0 0 20px 0;
-}
-.headerMenu .buttonBox .btn {
+  }
+  .headerMenu .buttonBox .btn {
     margin-top: 10px;
     padding: 0;
     width: 142px;
@@ -401,7 +385,7 @@
     color: #656b6a;
     text-align: center;
     font-size: 18px;
-}
+  }
 
 </style>
 

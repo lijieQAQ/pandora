@@ -1,6 +1,6 @@
 <template>
-	<div>
-		<div class="rightContent" id="rightContent">
+    <div>
+        <div class="rightContent" id="rightContent">
             <div class="rightBox" id="rightBox">
                 <div class="infoTitle">
                 </div>
@@ -112,7 +112,7 @@
                 <!-- <paginator v-bind:page-count="pageInfo.pageCount"  v-bind:init-page="pageInfo.initPage" @toggle-page="togglePage($event)" ref="paginator"></paginator> -->
             </div>
         </div>
-	</div>
+    </div>
 </template>
 
 <script type="text/javascript">

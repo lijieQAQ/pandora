@@ -1,18 +1,16 @@
 <template>
-
   <div class="main">
     <!-- priceInfoTitle 开始 -->
     <div class="priceInfoTitle">
       <div class="memuAdd" id="addNewVehicleMask" @click="addNewVehicleMaskVisible = true">
         <i class="menu" id="AddNewVehicle"></i>
       </div>
-
       <p>Select Vehicles</p>
       <div class="select-box" style="position: relative;">
         <div class="versionCloseIcon" @click="clearVersion()"></div>
         <label></label>
         <el-select class="select" v-model="version" allow-create="" default-first-option placeholder="Select version"
-                   @change="loadVersion(),createArrow()" @clear="clearAll()">
+          @change="loadVersion(),createArrow()" @clear="clearAll()">
           <el-option
             v-for="item in versionList"
             :key="item.id"
@@ -23,9 +21,9 @@
       </div>
 
       <span class="saveTime">
-            <span class="savTimTex">Saved Time:</span>
-            <span class="saveTimeBorderB"><b id="showSavedTime">{{nowDate}}</b></span>
-          </span>
+        <span class="savTimTex">Saved Time:</span>
+        <span class="saveTimeBorderB"><b id="showSavedTime">{{nowDate}}</b></span>
+      </span>
       <el-date-picker
         v-model="value4"
         type="month"
@@ -33,7 +31,6 @@
         @change="changeDate"
         placeholder="选择月">
       </el-date-picker>
-
       <div class="checkbox">
         <!-- `checked` 为 true 或 false -->
         <label>
@@ -42,35 +39,23 @@
       </div>
       <!-- 以下为checkbox,需要留着 -->
       <div class="buttonBox">
-
-        <a href="javascript:void(0)" class="btn"
-
-           @click="fadeCor()">Save</a>
-
-        <a href="javascript:void(0)" class="btn"
-        >Clear all</a>
-
-        <a href="javascript:void(0)"
-           class="btn gray download"
-        >Export</a>
+        <a href="javascript:void(0)" class="btn" @click="fadeCor()">Save</a>
+        <a href="javascript:void(0)" class="btn">Clear all</a>
+        <a href="javascript:void(0)" class="btn gray download">Export</a>
       </div>
       <!-- 以上为checkbox结束,需要留着 -->
 
     </div>
     <!-- priceInfoTitle 结束 -->
     <add-new-vehicle-mask :addNewVehicleMaskVisible="addNewVehicleMaskVisible" @closeDialog="closeDialog"></add-new-vehicle-mask>
-
   </div>
 </template>
 
 <script>
-import VueNumeric from 'vue-numeric'
-import addNewVehicleMask from './addNewVehicleMask'
-import CarScreen from '../common/js/carscreen.js'
-import VeeValidate, { Validator } from 'vee-validate';
-
-
-
+  import VueNumeric from 'vue-numeric'
+  import addNewVehicleMask from './addNewVehicleMask'
+  import CarScreen from '../common/js/carscreen.js'
+  import VeeValidate, { Validator } from 'vee-validate';
 export default {
   name: 'main',
   data () {
