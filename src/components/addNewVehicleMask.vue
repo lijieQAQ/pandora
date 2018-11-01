@@ -255,68 +255,7 @@ export default {
 
       setFlg = true
     },
-    blockTimeChange (val, i) {
-      var self = this
-      var selectDate = val.format('yyyymm')
-      if (selectDate === new Date().format('yyyymm')) {
-        return
-      }
-
-      var cBlock = this.menuhub.blockList[i]
-      this.yearMonthLast = cBlock.yearMonth
-      if (!cBlock) {
-        return
-      }
-      cBlock.yearMonth = selectDate
-      cBlock.yearMonthForShow = val
-      var prdList = []
-      if (cBlock.bmwFlg) {
-
-        var promise = self.searchBmwProductRowDetail(
-          cBlock.brandNameEn,
-          cBlock.seriesNameEn,
-          cBlock.eseriesNameEn,
-          cBlock.yearMonth)
-      } else {
-        var promise = self.searchCmpProductRowDetail(
-          cBlock.brandNameEn,
-          cBlock.model,
-          cBlock.engine,
-          cBlock.yearMonth)
-      }
-      promise.then(function (val) {
-        cBlock.cars = val || []
-        cBlock.checkedCars = val
-        if (cBlock.checkedCars.length == 0) {
-          // self.dialogVisible = true;
-          self.openAlert()
-          cBlock.yearMonth = new Date().format('yyyymm')
-          cBlock.yearMonthForShow = new Date()
-          if (cBlock.bmwFlg) {
-            promise = self.searchBmwProductRowDetail(
-              cBlock.brandNameEn,
-              cBlock.seriesNameEn,
-              cBlock.eseriesNameEn,
-              cBlock.yearMonth)
-          } else {
-            promise = self.searchCmpProductRowDetail(
-              cBlock.brandNameEn,
-              cBlock.model,
-              cBlock.engine,
-              cBlock.yearMonth)
-          }
-          promise.then(function (val) {
-            cBlock.cars = val || []
-            cBlock.checkedCars = val
-            self.menuhub.blockList[i] = cBlock
-            self.date[i] = new Date()
-          })
-
-        }
-
-      })
-
-    },
+    
     closeDialog () {
       this.addNewVehicleMaskVisible = false
       this.$emit('closeDialog', this.addNewVehicleMaskVisible)
@@ -624,8 +563,9 @@ export default {
     }
   },
   components: {
-    addNewVehicleAssem
+    addNewVehicleAssem,
   }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

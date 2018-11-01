@@ -1,6 +1,6 @@
 <template>
   <div class="priceBox" :class="{'font_small': fontStyle === 'small'}">
-    <ul v-if="carScreen.curCarLanes.length > 0" v-bind:class="carScreen.getCurrentGridClass(tpShowFlg)">
+    <!-- <ul v-if="carScreen.curCarLanes.length > 0" v-bind:class="carScreen.getCurrentGridClass(tpShowFlg)"> -->
       <!-- <li class="box center" v-for="(carLane, i) in carScreen.curCarLanes">
         <div class="carType">
           <div :class="carScreen.getCarRRPriceClass(carLane.ins.brandNameEn)" class="top-bar"></div>
@@ -68,7 +68,7 @@
         </div>
         <div class="line"></div>
       </li> -->
-    </ul>
+    <!-- </ul> -->
     <div class="clearfloat"></div>
   </div>
 </template>
