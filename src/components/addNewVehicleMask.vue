@@ -621,6 +621,7 @@ export default {
         this.carScreen.addCarLane(block)
       }
       this.$store.store.commit('UPDATE_CARSCREEN', this.carScreen)
+      console.log(this.$store.store.carScreen)
     }
   },
   components: {

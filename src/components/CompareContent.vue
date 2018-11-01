@@ -1,13 +1,13 @@
 <template>
-  <div class="compareContent.vue">
-
+  <div class="compareContent">
+    compareContent 比较内容
   </div>
 </template>
 
 <script>
 
 export default {
-  name: 'CompareContent.vue',
+  name: 'CompareContent',
   data () {
     return {
     }
