@@ -60,10 +60,10 @@ export default {
     return {
       addNewVehicleMaskVisible: false,
       value4: new Date(),
-      version: "",
+      version: '',
       versionList: [],
       nowDate: (new Date()).format('mm/dd/yyyy hh:MM:ss'),
-      tpShowFlg:false,
+      tpShowFlg: false
     }
   },
   filters: {
