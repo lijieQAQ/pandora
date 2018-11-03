@@ -208,7 +208,7 @@ export default {
     Bus.$on('width', priceWidth => {
         this.priceBoxWidth = priceWidth;
       })
-    
+
   },
   updated () {
 
@@ -262,7 +262,7 @@ export default {
 
       setFlg = true
     },
-    
+
     closeDialog () {
       this.addNewVehicleMaskVisible = false
       this.$emit('closeDialog', this.addNewVehicleMaskVisible)
@@ -563,21 +563,21 @@ export default {
       }
       this.addNewVehicleMaskVisible = false
       Bus.$emit('operating', 'compare')
-      this.createArrow();
-      console.log(11111111);
-      console.log(this.d3List);
-      Bus.$emit('implement', this.d3List);
+      this.createArrow()
+      setTimeout(() => {
+        Bus.$emit('implement', this.d3List)
+      }, 100)
     },
-    createArrow : function(){
+    createArrow : function () {
         // 确定箭头坐标
       console.log("hahahahah")
       var priceBoxWidth = null;
       if(window.screen.width>1000){
         priceBoxWidth = 1850;
       }else{
-        
+
       }
-      
+
       var grid = this.carScreen.curCarLanes.length;
       var column = grid <=3 ? 3 : this.carScreen.curCarLanes.length;
       var priceWidth = null;
@@ -602,10 +602,10 @@ export default {
 
       var x1 = 0, x2 = priceWidth;
       var y1 = -15, y2 = 0;
-        
+
       this.d3List = [];
         for(var j in this.carScreen.curCarLanes){
-          var mergeFlag = []; 
+          var mergeFlag = [];
           var mergeFlagTwo  = [];
           var Lanes = this.carScreen.curCarLanes[j];
           var leftCars = Lanes.ins.cars;
@@ -615,7 +615,7 @@ export default {
             var car = leftCars[m];
             var carpre = null;
             if(m > 0){
-              carpre = leftCars[m - 1]; 
+              carpre = leftCars[m - 1];
             }
             car.rightBottomPer = null;
             car.leftBottomPer = null;
@@ -638,7 +638,7 @@ export default {
             }
               mergeFlag.push(car.numberFlag);
             }
-              
+
             if(carpre != null && carpre.rrPrice == car.rrPrice && carpre.top != car.top && carpre.mergename == " "){
               //第二种合并情况左列车有topReduce标识的时候，top值减少20
               //第二种合并情况左列车有topKwShow标识的时候，上方kw值显示
@@ -656,7 +656,7 @@ export default {
             "y1":y1
             });
           }
-          
+
           var preRightCar = null;
           for(var n in rightCars){
             //第一种合并情况右列车有mergeFirstFlag标识的时候，右下角percent显示
@@ -665,7 +665,7 @@ export default {
             if(rightCars[n].rrPrice < rightCars[n].tsPrice){
             	y2 = rightCars[n].top + 36;
             }else if(rightCars[n].rrPrice == rightCars[n].tsPrice || (Math.round(rightCars[n].rrPrice / Math.pow(10,4)) - Math.round(rightCars[n].tsPrice / Math.pow(10,4)) < 1)){
-              y2 = rightCars[n].top + 16;  	
+              y2 = rightCars[n].top + 16;
             }else{
             	y2 = rightCars[n].top;
             }
@@ -693,7 +693,7 @@ export default {
                 }else{
                   y2 = rightCars[n].top-20;
                 }
-               
+
                 preRightCar = null;
               }
             }
