@@ -206,9 +206,8 @@ export default {
   mounted () {
     this.incomponent()
     Bus.$on('width', priceWidth => {
-        this.priceBoxWidth = priceWidth;
+        this.priceBoxWidth = priceWidth
       })
-
   },
   updated () {
 
@@ -217,7 +216,7 @@ export default {
     openAlert: function () {
       this.$message({
         message: 'there is no data in this month. Please click on other months.',
-        type: 'warning',
+        type: 'warning'
       })
     },
     showSideList () {
@@ -264,8 +263,7 @@ export default {
     },
 
     closeDialog () {
-      this.addNewVehicleMaskVisible = false
-      this.$emit('closeDialog', this.addNewVehicleMaskVisible)
+      this.$emit('closeDialog', false)
     },
     getMenuhubBgColorClass: function (brand) {
       if (brand === 'BMW') {
@@ -312,7 +310,7 @@ export default {
         cars: prdList,
         checkAll: true,
         isIndeterminate: true,
-        checkedCars: prdList,
+        checkedCars: prdList
       }
       this.menuhub.blockList.push(block)
     },
@@ -371,7 +369,6 @@ export default {
         self.$http.get('repo/bmwProducts/list', {params: dataArray}).then(res => {
           if (res.status == 200) {
             resolve(res.data.bmwProducts)
-
           }
         })
       })
@@ -400,7 +397,6 @@ export default {
         self.$http.get('repo/cmpProducts/list', {params: dataArray}).then(res => {
           if (res.status == 200) {
             resolve(res.data.cmpProducts)
-
           }
         })
       })
@@ -486,7 +482,7 @@ export default {
         yearMonth: block.yearMonth,
         yearMonthForShow: block.yearMonthForShow.format('mmm yyyy'),
         laneIndex: idx,
-        carIndex: 0,
+        carIndex: 0
       }
       this.clearValidator()
       // $('#menuhubEditCar').modal('show');
@@ -561,7 +557,7 @@ export default {
         block.checkedCars = []
         store.commit('ADD_CARSCREEN', block)
       }
-      this.addNewVehicleMaskVisible = false
+      this.$emit('closeDialog', false)
       Bus.$emit('operating', 'compare')
       this.createArrow()
       setTimeout(() => {
