@@ -41,8 +41,8 @@
 
 export default {
   name: 'login',
-  created(){
-    this.changeBgimg();
+  created () {
+    this.changeBgimg()
   },
   mounted () {
     this.$http.post('priceladder_webservice/login', {
@@ -53,44 +53,43 @@ export default {
       if (res.status == 200) {
         localStorage.token = res.data.accessKey
         // this.$router.push({path: `/priceLadder`})
-        this.$router.push({path: `/login`})
+        this.$router.push({path: `/priceLadder`})
       }
     })
   },
-  methods:{
-    changeBgimg:function () {
+  methods: {
+    changeBgimg: function () {
       const bgImgs = [
-          'url(../../assets/images/login-bg0.png)',
-          'url(../../assets/images/login-bg1.png)',
-          'url(../../assets/images/login-bg2.png)',
-          'url(../../assets/images/login-bg3.png)'
+        'url(../../assets/images/login-bg0.png)',
+        'url(../../assets/images/login-bg1.png)',
+        'url(../../assets/images/login-bg2.png)',
+        'url(../../assets/images/login-bg3.png)'
       ];
-      var Index = Math.round(Math.random()*(bgImgs.length-1));
+      var Index = Math.round(Math.random() * (bgImgs.length - 1));
       console.log()
       console.log("body")
       $('body').css(
-          {
-              'background':bgImgs[Index],
-              // 'background-size': 'cover'
-          }
+        {
+          'background': bgImgs[Index],
+          // 'background-size': 'cover'
+        }
       );
     },
     login: function () {
-      var self = this;
+      var self = this
       this.serverError = ''
       $("#normalBtn").css("display", "none");
       $("#clickBtn").css("display", "block");
-      var wsUrl = '/priceladder_webservice/login'
-
+      const wsUrl = 'priceladder_webservice/login'
       self.$http.get(wsUrl, {
         params: JSON.stringify({
           'username': self.username,
           'password': self.password,
           'rememberMe': function () {
             if ($("input[name='rememberMe']").is(':checked')) {
-              return 'yes';
+              return 'yes'
             } else {
-              return 'no';
+              return 'no'
             }
           }()
         })
@@ -99,35 +98,8 @@ export default {
           self.afterLogin(res.data)
         }
       })
-
-      // $.ajax({
-      //   url: wsUrl,
-      //   contentType: "application/json;charset=utf-8",
-      //   type: "POST",
-      //   data: JSON.stringify({
-      //     'username': self.username,
-      //     'password': self.password,
-      //     'rememberMe': function () {
-      //       if ($("input[name='rememberMe']").is(':checked')) {
-      //         return 'yes';
-      //       } else {
-      //         return 'no';
-      //       }
-      //     }()
-      //   }),
-      //   dataType: "json",
-      //   cache: false,
-      //   success: function (data) {
-      //     self.afterLogin(data)
-      //   },
-      //   error: function (result, status) {
-      //     self.serverError = commonJs.handleAjaxError(result);
-      //     $("#normalBtn").css("display", "block");
-      //     $("#clickBtn").css("display", "none");
-      //   }
-      // });
-    },
-  },
+    }
+  }
 }
 </script>
 
