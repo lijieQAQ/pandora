@@ -129,14 +129,12 @@
           this.carScreen = this.$store.state.carScreen
         }
       })
-      setTimeout(function(){
-        Bus.$on('implement', d3List => {
+      Bus.$on('implement', d3List => {
           alert("收到")
           this.d3List = d3List;
           console.log(2222222);
           console.log(this.d3List)
-        })
-      },10000)
+      })
     },
     methods:{
       getLeftStyle: function(c){
