@@ -59,7 +59,11 @@ export default {
   data () {
     return {
       addNewVehicleMaskVisible: false,
-      value4: new Date()
+      value4: new Date(),
+      version: "",
+      versionList: [],
+      nowDate: (new Date()).format('mm/dd/yyyy hh:MM:ss'),
+      tpShowFlg:false,
     }
   },
   filters: {
@@ -94,13 +98,11 @@ export default {
 </script>
 
 <style scoped lang="less">
-  main {
+ .main {
     width: 100%;
     height: 100%;
     background-color: #FFFFFF;
-    overflow-x: hidden;
   }
-
   .el-main {
     padding: 0px;
   }

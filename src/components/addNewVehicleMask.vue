@@ -6,19 +6,20 @@
       class="sixColumnMain"
       width='100%'
       top='0vh'
-      show-close=false
+      :show-close = false
     >
-
       <div class="sixColumnTop">
         <h3 class="leftTit">Select Vehicles</h3>
         <button type="submit" class="sixNext" style="display: block;"
-                @click="handleSubmit(),addNewVehicleAssemVisible = false">Compare
+          @click="handleSubmit(),addNewVehicleAssemVisible = false">Compare
         </button>
         <a href="javascript:void(0)" class="addNewVehicleBtn" @click="addNewVehicleAssemVisible = true">Add New
           Vehicle</a>
-        <span class="titDesc">Number of E-series Selected:<span
-          class="titDescNum">{{menuhub.blockList.length}}</span><img
-          src="../assets/images/car.png"/></span>
+        <span class="titDesc">
+          Number of E-series Selected:
+          <span class="titDescNum">{{menuhub.blockList.length}}</span>
+          <img src="../assets/images/car.png"/>
+        </span>
         <!-- 点击关闭模态框 -->
         <span id="closeModel" @click="handleRemoveAllColumn(menuhub.blockList.length)">Clear all</span>
         <!-- 新加的clearAll功能 -->
@@ -29,7 +30,7 @@
           <div id="sidebar">
             <ul>
               <!-- <li v-for="(menu, i) in this.menuhub.menuList"></li> -->
-              <li v-for="(menu, i) in this.menuhub.menuList">
+              <li v-for="(menu, n) in this.menuhub.menuList" :key="n">
                 <div class="iconLogo">
                   <img v-bind:src="'../assets/images/' + menu.brandNameEn + '.png'"/>
                 </div>
@@ -38,12 +39,12 @@
                   <span class="icoArrowTop"></span>
                 </a>
                 <ul>
-                  <li v-for="(subMenu, j) in menu.subMenuList"><a href="javascript:void(0)">{{ subMenu.seriesOrModel
-                    }}</a>
+                  <li v-for="(subMenu, j) in menu.subMenuList" :key="j">
+                    <a href="javascript:void(0)">{{ subMenu.seriesOrModel}}</a>
                     <ul>
-                      <li v-for="(detail, k) in subMenu.eseriesOrEngineList">
-                        <el-tooltip open-delay="1000" class="item" effect="dark" v-bind:content="detail" placement="top"
-                                    offsetY="10">
+                      <li v-for="(detail, k) in subMenu.eseriesOrEngineList" :key="k">
+                        <el-tooltip :open-delay=1000 class="item" effect="dark" v-bind:content="detail" placement="top"
+                          offsetY="10">
                           <el-button
                             v-on:click="handleDblClick(menu.brandNameEn, subMenu.seriesOrModel, detail, menu.bmwFlg)"
                             class="eseriesOrModerRangeName">{{detail}}
@@ -62,7 +63,7 @@
             <ul ref='parant'>
               <draggable v-model="menuhub.blockList">
                 <li v-for="(carLane, i) in menuhub.blockList"
-                    v-bind:class="getMenuhubBgColorClass(carLane.brandNameEn)">
+                    v-bind:class="getMenuhubBgColorClass(carLane.brandNameEn)" :key="i">
                   <div class="vehicleBoxTit">
                     <div class="left">
                       <img v-bind:src="'../assets/images/' + carLane.brandNameEn + '.png'"/>
@@ -105,15 +106,15 @@
                     </div>
                     <template>
                       <el-checkbox :indeterminate="carLane.isIndeterminate" v-model="carLane.checkAll"
-                                   @change="handleCheckAllChange($event, carLane)">{{carLane.bmwFlg ?
+                          @change="handleCheckAllChange($event, carLane)">{{carLane.bmwFlg ?
                         carLane.eseriesNameEn : carLane.engine}}
                       </el-checkbox>
                       <el-checkbox-group v-model="carLane.checkedCars"
-                                         @change="handleCheckedCarsChange($event, carLane)">
-                        <el-checkbox v-for="car in carLane.cars" :label="car" :key="car" :value="car">
+                          @change="handleCheckedCarsChange($event, carLane)">
+                        <el-checkbox v-for="(car,m) in carLane.cars" :label="car" :key="m" :value="car">
                           <p class="text">
-                            <el-tooltip open-delay="1000" class="item" effect="dark" v-bind:content="car.carNameEn"
-                                        placement="top-start">
+                            <el-tooltip :open-delay=1000 class="item" effect="dark" v-bind:content="car.carNameEn"
+                                  placement="top-start">
                               <el-button class="name">{{car.carNameEn}}</el-button>
                             </el-tooltip>
                             <span class="price">{{accounting.formatMoney(car.rrPrice, '¥', 0)}}</span>
@@ -139,11 +140,12 @@
   </div>
 </template>
 <script>
-import format from '../common/js/dateFormat'
-import addNewVehicleAssem from './addNewVehicleAssem'
-import accounting from 'accounting'
-import store from '../store'
-import Bus from '../common/js/Bus'
+  import format from '../common/js/dateFormat'
+  import addNewVehicleAssem from './addNewVehicleAssem'
+  import accounting from 'accounting'
+  import store from '../store'
+  import Bus from '../common/js/Bus'
+  import draggable from 'vuedraggable'
 export default {
   name: 'addNewVehicleMask',
   data () {
@@ -184,6 +186,8 @@ export default {
       cmpModelList: [],
       cmpModelRangeList: [],
       brandList: [],
+      d3List:[],
+      priceBoxWidth:0,
       accounting: accounting
     }
   },
@@ -198,10 +202,13 @@ export default {
     this.getCmpBrandList()
     this.getCmpModelList()
     this.getCmpModelRangeList()
-
   },
   mounted () {
     this.incomponent()
+    Bus.$on('width', priceWidth => {
+        this.priceBoxWidth = priceWidth;
+      })
+    
   },
   updated () {
 
@@ -215,7 +222,6 @@ export default {
     },
     showSideList () {
       var setFlg = false
-
       if (setFlg) {
         return
       }
@@ -260,7 +266,6 @@ export default {
     closeDialog () {
       this.addNewVehicleMaskVisible = false
       this.$emit('closeDialog', this.addNewVehicleMaskVisible)
-
     },
     getMenuhubBgColorClass: function (brand) {
       if (brand === 'BMW') {
@@ -275,7 +280,6 @@ export default {
     handleDblClick: function (brand, seriesOrModel, eseriesOrEngine, bmwFlg) {
       var self = this
       var nowdate = (new Date()).format('yyyymm')
-
       var promise = this.searchRowDetailCommon(
         brand,
         seriesOrModel,
@@ -283,7 +287,6 @@ export default {
         nowdate,
         bmwFlg)
       var prdList = []
-
       promise.then(function (val) {
         prdList = val
         self.pushMenuhubBlockList(val, brand, bmwFlg, nowdate, seriesOrModel, eseriesOrEngine)
@@ -311,7 +314,6 @@ export default {
         isIndeterminate: true,
         checkedCars: prdList,
       }
-
       this.menuhub.blockList.push(block)
     },
     searchRowDetailCommon: function (brand, seriesOrModel, eseriesOrEngine, yearMonth, bwmFlg) {
@@ -561,11 +563,157 @@ export default {
       }
       this.addNewVehicleMaskVisible = false
       Bus.$emit('operating', 'compare')
-      console.log(this.$store.state.carScreen)
-    }
+      this.createArrow();
+      console.log(11111111);
+      console.log(this.d3List);
+      Bus.$emit('implement', this.d3List);
+    },
+    createArrow : function(){
+        // 确定箭头坐标
+      console.log("hahahahah")
+      var priceBoxWidth = null;
+      if(window.screen.width>1000){
+        priceBoxWidth = 1850;
+      }else{
+        
+      }
+      
+      var grid = this.carScreen.curCarLanes.length;
+      var column = grid <=3 ? 3 : this.carScreen.curCarLanes.length;
+      var priceWidth = null;
+
+      if(window.screen.width>1500){
+        if(column == 3){
+          priceWidth = ((priceBoxWidth * 0.92) / column )* 0.69 * 0.17;
+        }else if(column == 4){
+          priceWidth = ((priceBoxWidth * 0.92) / column )* 0.64 * 0.16;
+        }else{
+          priceWidth = ((priceBoxWidth * 0.92) / column )* 0.63 * 0.15;
+        }
+      }else{
+        if(column == 3){
+          priceWidth = ((priceBoxWidth * 0.92) / column )* 0.65 * 0.16;
+        }else if(column == 4){
+          priceWidth = ((priceBoxWidth * 0.92) / column )* 0.61 * 0.15;
+        }else{
+          priceWidth = ((priceBoxWidth * 0.92) / column )* 0.59 * 0.14;
+        }
+      }
+
+      var x1 = 0, x2 = priceWidth;
+      var y1 = -15, y2 = 0;
+        
+      this.d3List = [];
+        for(var j in this.carScreen.curCarLanes){
+          var mergeFlag = []; 
+          var mergeFlagTwo  = [];
+          var Lanes = this.carScreen.curCarLanes[j];
+          var leftCars = Lanes.ins.cars;
+          var rightCars = Lanes.column.cars;
+          var d3Lanes = [];
+          for(var m in leftCars){
+            var car = leftCars[m];
+            var carpre = null;
+            if(m > 0){
+              carpre = leftCars[m - 1]; 
+            }
+            car.rightBottomPer = null;
+            car.leftBottomPer = null;
+            car.topReduce = null;
+            car.topKwShow = null;
+              // 计算箭头坐标
+            //   if(car.rrPrice < car.tsPrice){
+            //   y1 = car.top;
+            // }else{
+            //   y1 = car.top + 30;
+            // }
+            y1 = car.top + 30;
+            if(car.mergename != " "){
+            if(carpre != null && carpre.top == car.top){
+              mergeFlag.push(carpre.numberFlag);
+                 //第一种合并情况左列车有rightBottomPer标识的时候，右下角percent显示
+                 //第一种合并情况左列车有leftBottomPer标识的时候，左下角percent显示
+                 car.rightBottomPer = "true";
+                 carpre.leftBottomPer = "true";
+            }
+              mergeFlag.push(car.numberFlag);
+            }
+              
+            if(carpre != null && carpre.rrPrice == car.rrPrice && carpre.top != car.top && carpre.mergename == " "){
+              //第二种合并情况左列车有topReduce标识的时候，top值减少20
+              //第二种合并情况左列车有topKwShow标识的时候，上方kw值显示
+              car.topReduce = "true";
+              carpre.topKwShow = "true";
+              mergeFlagTwo.push(carpre.numberFlag);
+              mergeFlagTwo.push(car.numberFlag);
+              y1 = car.top + 10;
+            }
+
+            d3Lanes.push({
+            "numberFlag":car.numberFlag,
+            "x1":x1,
+            "x2":x2,
+            "y1":y1
+            });
+          }
+          
+          var preRightCar = null;
+          for(var n in rightCars){
+            //第一种合并情况右列车有mergeFirstFlag标识的时候，右下角percent显示
+            rightCars[n].mergeFirstFlag = null;
+            rightCars[n].mergeSecondFlag = null;
+            if(rightCars[n].rrPrice < rightCars[n].tsPrice){
+            	y2 = rightCars[n].top + 36;
+            }else if(rightCars[n].rrPrice == rightCars[n].tsPrice || (Math.round(rightCars[n].rrPrice / Math.pow(10,4)) - Math.round(rightCars[n].tsPrice / Math.pow(10,4)) < 1)){
+              y2 = rightCars[n].top + 16;  	
+            }else{
+            	y2 = rightCars[n].top;
+            }
+            for(var m in mergeFlag){
+              //第一种合并情况(有合并名称)，左侧对应的右侧车加rightCars[n].mergeFirstFlag = "true";标识
+              if(rightCars[n].numberFlag == mergeFlag[m]){
+                rightCars[n].mergeFirstFlag = "true";
+              }
+            }
+            for(var i in mergeFlagTwo){
+              //第二种合并情况（无合并名称），左侧对应的右侧车加rightCars[n].mergeFirstFlag = "true";标识
+              if(rightCars[n].numberFlag == mergeFlagTwo[i]){
+                rightCars[n].mergeFirstFlag = "true";
+              }
+            }
+            if(preRightCar){
+              //两种合并情况，左侧对应的右侧车下面那台加rightCars[n].mergeSecondFlag = "true"标识，
+              //右侧车有mergeSecondFlag标识时，top值减20
+              //c.mergeFirstFlag == "true" && c.mergeSecondFlag == null时，右上角nickname显示
+              //c.mergeFirstFlag == "true" && c.mergeSecondFlag == "true"时，左下角nickname显示
+              if(preRightCar.tsPrice == rightCars[n].tsPrice){
+                rightCars[n].mergeSecondFlag = "true";
+                if(preRightCar.rrPrice != rightCars[n].rrPrice){
+                  y2 = rightCars[n].top+10;
+                }else{
+                  y2 = rightCars[n].top-20;
+                }
+               
+                preRightCar = null;
+              }
+            }
+            preRightCar = rightCars[n];
+            for(var z in d3Lanes){
+              if(d3Lanes[z].numberFlag == rightCars[n].numberFlag){
+                d3Lanes[z].y2 = y2;
+              }
+            }
+
+          }
+          this.d3List.push(d3Lanes);
+          // TODO
+        }
+      // console.log(this.carScreen.curCarLanes)
+     },
   },
   components: {
     addNewVehicleAssem,
+    draggable,
   }
 }
 </script>

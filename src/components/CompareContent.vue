@@ -1,6 +1,6 @@
 <template>
   <div class="compareContent">
-    compareContent 比较内容
+    
   </div>
 </template>
 

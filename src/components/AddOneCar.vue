@@ -16,7 +16,6 @@
           <div class="sixErrorTip">{{ errors.first('menuhub.addRow.addCar.nickname') }}</div>
         </div>
       </div>
-
       <div class="control-group">
         <div class="controls input-append widthHalf">
           <label for="name"><b class="text-danger">*</b>Model Code</label>
@@ -55,7 +54,6 @@
           <span class="discount">{{ accounting.toFixed(((addRow.addCar.rrPrice - addRow.addCar.tsPrice) / addRow.addCar.rrPrice * 100), 2) }}%</span>
         </div>
       </div>
-
       <div class="control-group">
         <div class="controls input-append widthHalf changeDefaultVal">
           <label for="name">HP(KW) </label>

@@ -27,7 +27,7 @@ var CarScreen = function (options) {
   }
   this.currentPageIndex = 0
   this.curCarLanes = []
-  this.tpShowFlg = false
+  this.tpShowFlg = true
 }
 
 CarScreen.prototype = {
@@ -37,7 +37,7 @@ CarScreen.prototype = {
       return false
     }
     this.carLanes.push(carLane)
-    // this.rescale()
+    this.rescale()
     return true
   },
 
@@ -255,7 +255,7 @@ CarScreen.prototype = {
       var y = d3.max(tailPosAry)
       // 偏移量
       var offset = 0
-      if (preSortPrice != 0) {
+      if (preSortPrice !== 0) {
         offset = (preSortPrice - carGroup.simPrice) / 10000 * this.unit
       }
       // 确定每组的top坐标
@@ -272,8 +272,12 @@ CarScreen.prototype = {
       // 上一辆车的packageCode
       var perPackageCode = null
       // 上一辆车的short
-      var perShort = null
+      var preShort = null
+      // 上一辆车prePercent
+      var prePercent = null
       // 根据每列排序
+      //
+      var preTop = null
       carGroup.cars.sort(this.sortByCarVIdx)
       var ln = 0
       var rn = 0
@@ -294,14 +298,14 @@ CarScreen.prototype = {
             rn++
           }
         } else {
-          if (preVIdx == car.vIdx) {
-            if (car.column == 'left') {
+          if (preVIdx === car.vIdx) {
+            if (car.column === 'left') {
               car.ins.top = top + (this.height * ln)
               realCarLanes[car.vIdx].tailPos = top + (this.height * (ln + 1))
-              if (car.ins.model == preModel && car.ins.rrPrice == preRrPrice && car.ins.packageCode != 'ZMC') {
+              if (car.ins.model === preModel && car.ins.rrPrice === preRrPrice && car.ins.packageCode != 'ZMC') {
                 // 需要合并车辆
                 if (mergeFlag) {
-                  if (car.column == 'left') {
+                  if (car.column === 'left') {
                     car.ins.top = preTop
                     realCarLanes[car.vIdx].tailPos = preTop + this.height
                     car.ins.mergename = this.mergeName(preShort, car.ins.nickname)
@@ -326,7 +330,7 @@ CarScreen.prototype = {
             }
           } else {
             car.ins.top = top
-            if (car.column == 'left') {
+            if (car.column === 'left') {
               realCarLanes[car.vIdx].tailPos = top + this.height
               realCarLanes[car.vIdx].ins.cars.push(car.ins)
               ln = 1
@@ -451,17 +455,18 @@ CarScreen.prototype = {
 
   getCurrentGridClass: function (tpShowFlg) {
     var gridCnt = 0
+    var gridCnt2 = 0
     if (tpShowFlg) {
       gridCnt = this.curCarLanes.length < 3 ? 3 : this.curCarLanes.length
       return 'grid' + gridCnt
     } else {
       if (this.curCarLanes.length <= 4) {
         gridCnt2 = 44
-      } else if (this.curCarLanes.length == 5) {
+      } else if (this.curCarLanes.length === 5) {
         gridCnt2 = 55
-      } else if (this.curCarLanes.length == 6) {
+      } else if (this.curCarLanes.length === 6) {
         gridCnt2 = 66
-      } else if (this.curCarLanes.length == 7) {
+      } else if (this.curCarLanes.length === 7) {
         gridCnt2 = 77
       } else {
         gridCnt2 = 88

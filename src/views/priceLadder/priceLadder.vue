@@ -26,5 +26,11 @@ export default {
 </script>
 
 <style scoped lang="less">
-
+  #priceLadder {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    zoom: 1;
+    background-color: #f2f3f9;
+  }
 </style>

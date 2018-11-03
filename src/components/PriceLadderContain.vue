@@ -5,12 +5,12 @@
            style="width:123px;height:123px">
       <span class="addNewVeh">Add New Vehicle</span>
     </div>
-    <compare-content v-if="carScreen.curCarLanes.length > 0 && carScreen.currentPageIndex > 0"></compare-content>
+    <price-box v-if="carScreen.curCarLanes.length > 0"></price-box>
   </div>
 </template>
 
 <script>
-import CompareContent from './CompareContent'
+import PriceBox from './PriceBox'
 import Bus from '../common/js/Bus'
 
 export default {
@@ -29,7 +29,7 @@ export default {
     })
   },
   components: {
-    CompareContent
+    PriceBox
   }
 }
 </script>

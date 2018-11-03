@@ -1,11 +1,10 @@
 <template>
-
   <el-dialog
     :visible.sync="addNewVehicleAssemVisible"
     center
     width='48%'
     top='20vh'
-    show-close=false
+    :show-close = false
     id="menuAddNewColumnMask"
   >
   	<div class="modal-dialog editModal addModal">
@@ -16,7 +15,6 @@
           <div class="underline"></div>
         </h4>
       </div>
-
       <div class="modal-content">
         <div class="modal-body">
           <fieldset class="select-box">
@@ -100,11 +98,8 @@
             </div>
           </div>
           <AddOneCar :addRow="addRow" :menuhub="menuhub" @showAddNewCar="showAddNewCar"></AddOneCar>
-          </div>
-
-          
+				</div>
       </div>
-
       <div class="modal-footer">
         <div class="btnBox">
           <button type="submit" class="btn btn-default btnCancel" data-dismiss="modal" @click="closeAddNewCarModal()">Cancel</button>
@@ -127,8 +122,8 @@
 					regDateBeg: new Date(),//这个日期参数
 				},
 		  	// initDate:(new Date()).format("myyyy"),
-		  	brandList:[],
 				titleList:[],
+				subTitleList: [],
 				accounting: accounting,
 				addRow: {
 					brand: "",
@@ -169,13 +164,13 @@
 		},
 		props: {
 			addNewVehicleAssemVisible: Boolean,
-			bmwBrandList:Object,
-			brandList:Object,
-			bmwSeriesList:Object,
-			cmpBrandList:Object,
-			cmpModelList:Object,
-			cmpModelRangeList:Object,
-			bmwESeriesList:Object,
+			bmwBrandList:Array,
+			brandList:Array,
+			bmwSeriesList:Array,
+			cmpBrandList:Array,
+			cmpModelList:Array,
+			cmpModelRangeList:Array,
+			bmwESeriesList:Array,
 			menuhub:Object,
 		},
 		components:{
@@ -447,6 +442,11 @@
 			selectContainHide: function(){
 				$(".selectContainShow").attr('class','selectContain');
 			},
+			handleSelectedProductChange: function (value) {
+        let checkedCount = value.length;
+        this.addRow.selectAll = checkedCount === this.addRow.productList.length;
+        this.addRow.isIndeterminate = checkedCount > 0 && checkedCount < this.addRow.productList.length;
+      },
 		  // 下面这个括号是methods的
 
 		},
