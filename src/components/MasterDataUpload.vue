@@ -38,7 +38,7 @@
               <!--drag 支持拖拽--><!--------action处是接口哟～～～-------->
               <el-upload
                 class="upload-demo"
-                action="/bmw/product/upload"
+                action="http://localhost:8080/bmw/product/upload"
                 ref="upload"
                 :on-remove="handleRemove"
                 :multiple="false"
