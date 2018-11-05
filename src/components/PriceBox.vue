@@ -8,8 +8,8 @@
           <div class="carLogo" @dblclick="openModifyModal(carLane.ins, false, carLane.idx, 'rowDate' + carLane.idx)">
             <img v-bind:src="'../assets/images/' + carLane.ins.brandNameEn + '.png'"/>
             <el-tooltip :open-delay=1000 class="item" effect="dark"
-              v-bind:content="carLane.ins.bmwFlg ? carLane.ins.seriesNameEn : carLane.ins.model - carLane.ins.bmwFlg ? carLane.ins.eseriesNameEn : carLane.ins.engine"
-              placement="top">
+                        v-bind:content="carLane.ins.bmwFlg ? carLane.ins.seriesNameEn : carLane.ins.model - carLane.ins.bmwFlg ? carLane.ins.eseriesNameEn : carLane.ins.engine"
+                        placement="top">
               <el-button class="carLogoName">{{ carLane.ins.bmwFlg ? carLane.ins.seriesNameEn : carLane.ins.model }}-{{
                 carLane.ins.bmwFlg ? carLane.ins.eseriesNameEn : carLane.ins.engine }}
               </el-button>
@@ -17,7 +17,8 @@
           </div>
           <div class="attrSlect">
             <div class="dateTimeCover"></div>
-            <div class="cover" @dblclick="openModifyModal(carLane.ins, false, carLane.idx, 'rowDate' + carLane.idx)"></div>
+            <div class="cover"
+                 @dblclick="openModifyModal(carLane.ins, false, carLane.idx, 'rowDate' + carLane.idx)"></div>
             <div class="icon">
               <div class="dropdown">
                 <div class=" arr-more dropdown-toggle" id="more5"><span class="caret"></span></div>
@@ -77,10 +78,10 @@
           <div class="priceListBox height30" v-for="(c, j) in carLane.ins.cars" v-bind:style="getLeftStyle(c)" :key="j">
             <span class="long-box" v-bind:class="carScreen.getCarRRPriceClass(carLane.ins.brandNameEn)">
               <span v-on:mouseover="carChooseNameShow(i,j)" v-on:mouseout="carChooseNameHide(i,j)"
-                    @click="openModifyCar(c, carLane.ins, i , j)" class="carName">{{c.mergename == " " ? c.nickname : c.mergename }}</span>
+                    @click="openModifyCar(c, carLane.ins, i , j)" class="carName">{{c.mergename == ' ' ? c.nickname : c.mergename }}</span>
               <span class="price priceBefore"><vue-numeric v-model="c.rrPrice" currency="" :min=0
-                @blur="modifyUnitCarMetrics(c, carLane.ins, carLane.idx , j)"
-                onKeyPress="if(window.event.keyCode==13) this.blur()"></vue-numeric></span>
+                                                           @blur="modifyUnitCarMetrics(c, carLane.ins, carLane.idx , j)"
+                                                           onKeyPress="if(window.event.keyCode==13) this.blur()"></vue-numeric></span>
             </span>
             <span class="percent" v-bind:style="showPercentRight(c)">
               <vue-numeric class="mixShowWay" v-model="c.showMixPercentage" :precision=2 :max=100 :min=-100 currency="%"
@@ -106,6 +107,10 @@
                            currency="kw" currency-symbol-position="suffix"
                            @blur="modifyUnitCarMetrics(c, carLane.ins, carLane.idx , j),modifyPreUnitCarMetrics(c, carLane.ins, carLane.idx , j)"
                            onKeyPress="if(window.event.keyCode==13) this.blur()"></vue-numeric>
+              <vue-numeric style="background-color: #f2f3f9" v-model="c.powerHP" :precision=0 :max=1000 :min=-100
+                           currency="kw" currency-symbol-position="suffix"
+                           @blur="modifyUnitCarMetrics(c, carLane.ins, carLane.idx , j),modifyPreUnitCarMetrics(c, carLane.ins, carLane.idx , j)"
+                           onKeyPress="if(window.event.keyCode==13) this.blur()"></vue-numeric>
             </span>
             <span class="kwTop" v-bind:style="showKwTop(c)">
               <vue-numeric v-model="c.powerHP" :precision=0 :max=1000 :min=0 currency="kw"
@@ -114,7 +119,7 @@
                            onKeyPress="if(window.event.keyCode==13) this.blur()"></vue-numeric>
             </span>
             <span class="hoverLeft"
-                  v-bind:class="'nameLeft'+ i + j">{{c.mergename == " " ? c.nickname : c.mergename}}</span>
+                  v-bind:class="'nameLeft'+ i + j">{{c.mergename == ' ' ? c.nickname : c.mergename}}</span>
             <span v-on:mouseover="carChooseNameShow(i,j)" v-on:mouseout="carChooseNameHide(i,j)" class="changeModel"
                   data-toggle="modal" @click="openChangeCar(c, carLane.ins, i , j)"
                   v-bind:style="showPercentBottomRight(c)"></span>
@@ -124,13 +129,14 @@
           <div class="priceListBox height30" v-for="(c, j) in carLane.column.cars" v-bind:style="getStyle(c)" :key="j">
             <div class="shor-box" v-if="tpShowFlg" v-bind:class="carScreen.getCarTPPriceClass(carLane.ins.brandNameEn)"
                  v-on:mouseover="carChooseshorNameShow(i,j)" v-on:mouseout="carChooseshorNameHide(i,j)">
-              <span class="price rrprice"><vue-numeric v-model="c.tsPrice" currency="" :min=0 @blur="modifyRightUnitCarMetrics(c, carLane.ins.cars, carLane.idx , j),createArrow()"
-                onKeyPress="if(window.event.keyCode==13) this.blur()"></vue-numeric></span>
+              <span class="price rrprice"><vue-numeric v-model="c.tsPrice" currency="" :min=0
+                                                       @blur="modifyRightUnitCarMetrics(c, carLane.ins.cars, carLane.idx , j),createArrow()"
+                                                       onKeyPress="if(window.event.keyCode==13) this.blur()"></vue-numeric></span>
               <span class="floatRight">
                 <vue-numeric v-model="c.showDiscountPercentage" :precision=2 :max=100 :min=-100 currency="%"
-                  currency-symbol-position="suffix"
-                  @blur="modifyRightUnitCarTsprice(c, carLane.ins.cars, carLane.idx , j),createArrow()"
-                  onKeyPress="if(window.event.keyCode==13) this.blur()">
+                             currency-symbol-position="suffix"
+                             @blur="modifyRightUnitCarTsprice(c, carLane.ins.cars, carLane.idx , j),createArrow()"
+                             onKeyPress="if(window.event.keyCode==13) this.blur()">
                 </vue-numeric>
               </span>
               <span class="positionTopRight" v-bind:style="showNicknameTop(c)">{{c.nickname}}</span>
@@ -181,158 +187,158 @@ export default {
   },
   methods: {
     getLeftStyle: function (c) {
-      let p = c.topReduce == "true" ? c.top - 20 : c.top;
-      return {'top': p + 'px'};
+      let p = c.topReduce == 'true' ? c.top - 20 : c.top
+      return {'top': p + 'px'}
     },
     showPercentRight: function (c) {
-      if (c.rightBottomPer == "true" || c.leftBottomPer == "true") {
-        return {'display': "none"};
+      if (c.rightBottomPer == 'true' || c.leftBottomPer == 'true') {
+        return {'display': 'none'}
       } else {
-        return {'display': "block"};
+        return {'display': 'block'}
       }
     },
     showPercentBottomRight: function (c) {
-      if (c.rightBottomPer == "true") {
-        return {'display': "block"};
+      if (c.rightBottomPer == 'true') {
+        return {'display': 'block'}
       } else {
-        return {'display': "none"};
+        return {'display': 'none'}
       }
 
     },
     showPercentBottomLeft: function (c) {
-      if (c.leftBottomPer == "true") {
-        return {'display': "block"};
+      if (c.leftBottomPer == 'true') {
+        return {'display': 'block'}
       } else {
-        return {'display': "none"};
+        return {'display': 'none'}
       }
     },
     showKwTop: function (c) {
-      if (c.topKwShow == "true") {
-        return {'display': "block"};
+      if (c.topKwShow == 'true') {
+        return {'display': 'block'}
       } else {
-        return {'display': "none"};
+        return {'display': 'none'}
       }
     },
     carChooseNameShow: function (i, j) {
-      $(".nameLeft" + i + j).addClass("carChooseNameShow").removeClass("carChooseName hoverLeft");
+      $('.nameLeft' + i + j).addClass('carChooseNameShow').removeClass('carChooseName hoverLeft')
     },
     carChooseNameHide: function (i, j) {
-      $(".nameLeft" + i + j).addClass("carChooseName").removeClass("carChooseNameShow hoverLeft");
+      $('.nameLeft' + i + j).addClass('carChooseName').removeClass('carChooseNameShow hoverLeft')
     },
     carChooseshorNameShow: function (i, j) {
-      $(".name" + i + j).addClass("carChooseshorNameShow").removeClass("carChooseshorName hoverName");
+      $('.name' + i + j).addClass('carChooseshorNameShow').removeClass('carChooseshorName hoverName')
     },
     carChooseshorNameHide: function (i, j) {
-      $(".name" + i + j).addClass("carChooseshorName").removeClass("carChooseshorNameShow hoverName");
+      $('.name' + i + j).addClass('carChooseshorName').removeClass('carChooseshorNameShow hoverName')
     },
     getStyle: function (c) {
-      let b = c.mergeSecondFlag == "true" ? c.top - 20 : c.top;
-      return {'top': b + 'px'};
+      let b = c.mergeSecondFlag == 'true' ? c.top - 20 : c.top
+      return {'top': b + 'px'}
     },
     createArrow: function () {
       // 确定箭头坐标
-      var priceBoxWidth = $(".priceBox").width();
-      var grid = this.carScreen.curCarLanes.length;
-      var column = grid <= 3 ? 3 : this.carScreen.curCarLanes.length;
-      var priceWidth = null;
+      var priceBoxWidth = $('.priceBox').width()
+      var grid = this.carScreen.curCarLanes.length
+      var column = grid <= 3 ? 3 : this.carScreen.curCarLanes.length
+      var priceWidth = null
 
       if (window.screen.width > 1500) {
         if (column == 3) {
-          priceWidth = ((priceBoxWidth * 0.92) / column) * 0.69 * 0.17;
+          priceWidth = ((priceBoxWidth * 0.92) / column) * 0.69 * 0.17
         } else if (column == 4) {
-          priceWidth = ((priceBoxWidth * 0.92) / column) * 0.64 * 0.16;
+          priceWidth = ((priceBoxWidth * 0.92) / column) * 0.64 * 0.16
         } else {
-          priceWidth = ((priceBoxWidth * 0.92) / column) * 0.63 * 0.15;
+          priceWidth = ((priceBoxWidth * 0.92) / column) * 0.63 * 0.15
         }
       } else {
         if (column == 3) {
-          priceWidth = ((priceBoxWidth * 0.92) / column) * 0.65 * 0.16;
+          priceWidth = ((priceBoxWidth * 0.92) / column) * 0.65 * 0.16
         } else if (column == 4) {
-          priceWidth = ((priceBoxWidth * 0.92) / column) * 0.61 * 0.15;
+          priceWidth = ((priceBoxWidth * 0.92) / column) * 0.61 * 0.15
         } else {
-          priceWidth = ((priceBoxWidth * 0.92) / column) * 0.59 * 0.14;
+          priceWidth = ((priceBoxWidth * 0.92) / column) * 0.59 * 0.14
         }
       }
 
-      var x1 = 0, x2 = priceWidth;
-      var y1 = -15, y2 = 0;
+      var x1 = 0, x2 = priceWidth
+      var y1 = -15, y2 = 0
 
-      this.d3List = [];
+      this.d3List = []
       for (var j in this.carScreen.curCarLanes) {
-        var mergeFlag = [];
-        var mergeFlagTwo = [];
-        var Lanes = this.carScreen.curCarLanes[j];
-        var leftCars = Lanes.ins.cars;
-        var rightCars = Lanes.column.cars;
-        var d3Lanes = [];
+        var mergeFlag = []
+        var mergeFlagTwo = []
+        var Lanes = this.carScreen.curCarLanes[j]
+        var leftCars = Lanes.ins.cars
+        var rightCars = Lanes.column.cars
+        var d3Lanes = []
         for (var m in leftCars) {
-          var car = leftCars[m];
-          var carpre = null;
+          var car = leftCars[m]
+          var carpre = null
           if (m > 0) {
-            carpre = leftCars[m - 1];
+            carpre = leftCars[m - 1]
           }
-          car.rightBottomPer = null;
-          car.leftBottomPer = null;
-          car.topReduce = null;
-          car.topKwShow = null;
+          car.rightBottomPer = null
+          car.leftBottomPer = null
+          car.topReduce = null
+          car.topKwShow = null
           // 计算箭头坐标
           //   if(car.rrPrice < car.tsPrice){
           //   y1 = car.top;
           // }else{
           //   y1 = car.top + 30;
           // }
-          y1 = car.top + 30;
-          if (car.mergename != " ") {
+          y1 = car.top + 30
+          if (car.mergename != ' ') {
             if (carpre != null && carpre.top == car.top) {
-              mergeFlag.push(carpre.numberFlag);
+              mergeFlag.push(carpre.numberFlag)
               //第一种合并情况左列车有rightBottomPer标识的时候，右下角percent显示
               //第一种合并情况左列车有leftBottomPer标识的时候，左下角percent显示
-              car.rightBottomPer = "true";
-              carpre.leftBottomPer = "true";
+              car.rightBottomPer = 'true'
+              carpre.leftBottomPer = 'true'
             }
-            mergeFlag.push(car.numberFlag);
+            mergeFlag.push(car.numberFlag)
           }
 
-          if (carpre != null && carpre.rrPrice == car.rrPrice && carpre.top != car.top && carpre.mergename == " ") {
+          if (carpre != null && carpre.rrPrice == car.rrPrice && carpre.top != car.top && carpre.mergename == ' ') {
             //第二种合并情况左列车有topReduce标识的时候，top值减少20
             //第二种合并情况左列车有topKwShow标识的时候，上方kw值显示
-            car.topReduce = "true";
-            carpre.topKwShow = "true";
-            mergeFlagTwo.push(carpre.numberFlag);
-            mergeFlagTwo.push(car.numberFlag);
-            y1 = car.top + 10;
+            car.topReduce = 'true'
+            carpre.topKwShow = 'true'
+            mergeFlagTwo.push(carpre.numberFlag)
+            mergeFlagTwo.push(car.numberFlag)
+            y1 = car.top + 10
           }
 
           d3Lanes.push({
-            "numberFlag": car.numberFlag,
-            "x1": x1,
-            "x2": x2,
-            "y1": y1
-          });
+            'numberFlag': car.numberFlag,
+            'x1': x1,
+            'x2': x2,
+            'y1': y1
+          })
         }
 
-        var preRightCar = null;
+        var preRightCar = null
         for (var n in rightCars) {
           //第一种合并情况右列车有mergeFirstFlag标识的时候，右下角percent显示
-          rightCars[n].mergeFirstFlag = null;
-          rightCars[n].mergeSecondFlag = null;
+          rightCars[n].mergeFirstFlag = null
+          rightCars[n].mergeSecondFlag = null
           if (rightCars[n].rrPrice < rightCars[n].tsPrice) {
-            y2 = rightCars[n].top + 36;
+            y2 = rightCars[n].top + 36
           } else if (rightCars[n].rrPrice == rightCars[n].tsPrice || (Math.round(rightCars[n].rrPrice / Math.pow(10, 4)) - Math.round(rightCars[n].tsPrice / Math.pow(10, 4)) < 1)) {
-            y2 = rightCars[n].top + 16;
+            y2 = rightCars[n].top + 16
           } else {
-            y2 = rightCars[n].top;
+            y2 = rightCars[n].top
           }
           for (var m in mergeFlag) {
             //第一种合并情况(有合并名称)，左侧对应的右侧车加rightCars[n].mergeFirstFlag = "true";标识
             if (rightCars[n].numberFlag == mergeFlag[m]) {
-              rightCars[n].mergeFirstFlag = "true";
+              rightCars[n].mergeFirstFlag = 'true'
             }
           }
           for (var i in mergeFlagTwo) {
             //第二种合并情况（无合并名称），左侧对应的右侧车加rightCars[n].mergeFirstFlag = "true";标识
             if (rightCars[n].numberFlag == mergeFlagTwo[i]) {
-              rightCars[n].mergeFirstFlag = "true";
+              rightCars[n].mergeFirstFlag = 'true'
             }
           }
           if (preRightCar) {
@@ -341,136 +347,133 @@ export default {
             //c.mergeFirstFlag == "true" && c.mergeSecondFlag == null时，右上角nickname显示
             //c.mergeFirstFlag == "true" && c.mergeSecondFlag == "true"时，左下角nickname显示
             if (preRightCar.tsPrice == rightCars[n].tsPrice) {
-              rightCars[n].mergeSecondFlag = "true";
+              rightCars[n].mergeSecondFlag = 'true'
               if (preRightCar.rrPrice != rightCars[n].rrPrice) {
-                y2 = rightCars[n].top + 10;
+                y2 = rightCars[n].top + 10
               } else {
-                y2 = rightCars[n].top - 20;
+                y2 = rightCars[n].top - 20
               }
 
-              preRightCar = null;
+              preRightCar = null
             }
           }
-          preRightCar = rightCars[n];
+          preRightCar = rightCars[n]
           for (var z in d3Lanes) {
             if (d3Lanes[z].numberFlag == rightCars[n].numberFlag) {
-              d3Lanes[z].y2 = y2;
+              d3Lanes[z].y2 = y2
             }
           }
 
         }
-        this.d3List.push(d3Lanes);
+        this.d3List.push(d3Lanes)
         console.log(111111111)
         console.log(111111111)
         console.log(111111111)
         console.log(111111111)
         console.log(111111111)
         console.log(111111111)
-
 
         // TODO
       }
       // console.log(this.carScreen.curCarLanes)
     },
     showNickname: function (c) {
-      if (c.mergeFirstFlag == "true" && c.mergeSecondFlag == "true") {
-        return {'display': "block"};
-      } else if (c.mergeFirstFlag == "true" && c.mergeSecondFlag == "true" && c.k == "true") {
-        return {'display': "none"};
+      if (c.mergeFirstFlag == 'true' && c.mergeSecondFlag == 'true') {
+        return {'display': 'block'}
+      } else if (c.mergeFirstFlag == 'true' && c.mergeSecondFlag == 'true' && c.k == 'true') {
+        return {'display': 'none'}
       } else {
-        return {'display': "none"};
+        return {'display': 'none'}
       }
     },
     showNicknameTop: function (c) {
-      if (c.mergeFirstFlag == "true" && c.mergeSecondFlag == null) {
-        return {'display': "block"};
+      if (c.mergeFirstFlag == 'true' && c.mergeSecondFlag == null) {
+        return {'display': 'block'}
       } else {
-        return {'display': "none"};
+        return {'display': 'none'}
       }
     },
     fadeCor: function () {
-      $('.versionArrow').css('background-color', 'transparent');
+      $('.versionArrow').css('background-color', 'transparent')
     },
-    getArrowCor: function(brandNameEn){
+    getArrowCor: function (brandNameEn) {
       if (brandNameEn === 'BMW') {
-        return {'fill':'#97b3ed'};
+        return {'fill': '#97b3ed'}
       } else if (brandNameEn === 'Audi') {
-        return {'fill':'#98e498'};
+        return {'fill': '#98e498'}
       } else if (brandNameEn === 'MB') {
-        return {'fill':'#fba19d'};
+        return {'fill': '#fba19d'}
       }
     },
-    getColorLine: function(brandNameEn){
-         if (brandNameEn === 'BMW') {
-         return '#97b3ed'
-       } else if (brandNameEn === 'Audi') {
-         return '#98e498'
-       } else if (brandNameEn === 'MB') {
-         return '#fba19d'
-       }
+    getColorLine: function (brandNameEn) {
+      if (brandNameEn === 'BMW') {
+        return '#97b3ed'
+      } else if (brandNameEn === 'Audi') {
+        return '#98e498'
+      } else if (brandNameEn === 'MB') {
+        return '#fba19d'
+      }
     },
-    getArrowCorBind: function(brandNameEn){
-      return 'url(#arrow' + brandNameEn + ')';
+    getArrowCorBind: function (brandNameEn) {
+      return 'url(#arrow' + brandNameEn + ')'
     },
-    modifyUnitCarMetrics : function(c, carLane, i, j) {
-      c.showDiscountPercentage = this.computeDiscountPercentage(c.rrPrice, c.tsPrice);
-      c.discountPercentage = c.showDiscountPercentage / 100;
-      c.mixPercentage = c.showMixPercentage / 100;
+    modifyUnitCarMetrics: function (c, carLane, i, j) {
+      c.showDiscountPercentage = this.computeDiscountPercentage(c.rrPrice, c.tsPrice)
+      c.discountPercentage = c.showDiscountPercentage / 100
+      c.mixPercentage = c.showMixPercentage / 100
       // this.carScreen.setCar(c, i, j);
       let params = {
         c: c,
         i: i,
         j: j
       }
-      store.commit('SETCAR_CARSCREEN', params)
+      //store.commit('SETCAR_CARSCREEN', params)
       this.createArrow()
     },
-    computeDiscountPercentage : function(rrPrice, tsPrice) {
-      return accounting.toFixed(((rrPrice - tsPrice) / rrPrice * 100 ), 4);
+    computeDiscountPercentage: function (rrPrice, tsPrice) {
+      return accounting.toFixed(((rrPrice - tsPrice) / rrPrice * 100), 4)
     },
-    modifyRightUnitCarMetrics : function(c, carLane, i, j){
-      var self = this;
-        c.showDiscountPercentage = this.computeDiscountPercentage(c.rrPrice, c.tsPrice);
-        c.discountPercentage = c.showDiscountPercentage / 100;
-        var rightNumberFlag = c.numberFlag;
-        for(var b in carLane){
-          var leftNumberFlag = carLane[b].numberFlag;
-          if(rightNumberFlag == leftNumberFlag){
+    modifyRightUnitCarMetrics: function (c, carLane, i, j) {
+      var self = this
+      c.showDiscountPercentage = this.computeDiscountPercentage(c.rrPrice, c.tsPrice)
+      c.discountPercentage = c.showDiscountPercentage / 100
+      var rightNumberFlag = c.numberFlag
+      for (var b in carLane) {
+        var leftNumberFlag = carLane[b].numberFlag
+        if (rightNumberFlag == leftNumberFlag) {
           // self.carScreen.setCar(c, i, b);
-            let params = {
-              c: c,
-              i: i,
-              j: b
-            }
-            store.commit('SETCAR_CARSCREEN', params)
-            break;
+          let params = {
+            c: c,
+            i: i,
+            j: b
           }
+          //store.commit('SETCAR_CARSCREEN', params)
+          break
         }
+      }
     },
-    modifyRightUnitCarTsprice : function(c, carLane, i, j){
-      var self = this;
-        c.tsPrice = this.computeTsPrice(c.rrPrice, c.showDiscountPercentage);
-        c.discountPercentage = c.showDiscountPercentage / 100;
-        var rightNumberFlag = c.numberFlag;
-        for(var b in carLane){
-          var leftNumberFlag = carLane[b].numberFlag;
-          if(rightNumberFlag == leftNumberFlag){
-            let params = {
-              c: c,
-              i: i,
-              j: b
-            }
-            store.commit('SETCAR_CARSCREEN', params)
-            break;
+    modifyRightUnitCarTsprice: function (c, carLane, i, j) {
+      var self = this
+      c.tsPrice = this.computeTsPrice(c.rrPrice, c.showDiscountPercentage)
+      c.discountPercentage = c.showDiscountPercentage / 100
+      var rightNumberFlag = c.numberFlag
+      for (var b in carLane) {
+        var leftNumberFlag = carLane[b].numberFlag
+        if (rightNumberFlag == leftNumberFlag) {
+          let params = {
+            c: c,
+            i: i,
+            j: b
           }
+          store.commit('SETCAR_CARSCREEN', params)
+          break
         }
+      }
     },
-    computeTsPrice:function(rrPrice,discountPercentage){
-      return (1- discountPercentage / 100 ) * rrPrice;
+    computeTsPrice: function (rrPrice, discountPercentage) {
+      return (1 - discountPercentage / 100) * rrPrice
     },
-
   },
-
 }
 </script>
 
@@ -496,7 +499,7 @@ export default {
     height: 35px;
     width: 30%;
     margin-left: 1%;
-    top:145px;
+    top: 145px;
     float: left;
     background: #FFFFFF;
     box-shadow: 0 2px 4px 0 #BFBFC3;
