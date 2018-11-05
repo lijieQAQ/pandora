@@ -103,7 +103,7 @@
       <div class="modal-footer">
         <div class="btnBox">
           <button type="submit" class="btn btn-default btnCancel" data-dismiss="modal" @click="closeAddNewCarModal()">Cancel</button>
-          <button type="button" class="btn btn-primary btnConfirm" v-bind:class="{ noUseBtn : (addRow.selectedProduct.length == 0) }" v-bind:disabled="addRow.selectedProduct.length == 0" @click="confirmMenuhubAddRow(),closeAddNewCarModal()">Submit</button>
+          <button type="button" class="btn btn-primary btnConfirm" v-bind:class="{ noUseBtn : (addRow.selectedProduct.length == 0) }" v-bind:disabled="addRow.selectedProduct.length == 0" @click="confirmMenuhubAddRow()">Submit</button>
         </div>
       </div>
     </div>
@@ -178,8 +178,7 @@
   	},
 		methods:{
 		  closeAddNewCarModal:function(){
-				this.addNewVehicleAssemVisible = false
-				this.$emit('closeAddNewCarModal', this.addNewVehicleAssemVisible)
+				this.$emit('closeAddNewCarModal', false)
 		  },
 		  initAddCar : function() {
 	      this.addRow = {
@@ -360,7 +359,8 @@
 						checkedCars: this.addRow.selectedProduct,
 				  }
 					this.menuhub.blockList.push(block);
-			  }
+				}
+				this.$emit('closeAddNewCarModal', false)
 				
 			},
       showAddNewCar : function(showFlg, menuhubFlg) {
@@ -446,6 +446,10 @@
         let checkedCount = value.length;
         this.addRow.selectAll = checkedCount === this.addRow.productList.length;
         this.addRow.isIndeterminate = checkedCount > 0 && checkedCount < this.addRow.productList.length;
+			},
+			handleSelectAllChange: function (val) {
+        this.addRow.selectedProduct = val ? this.addRow.productList : [];
+        this.addRow.isIndeterminate = false;
       },
 		  // 下面这个括号是methods的
 

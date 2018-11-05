@@ -11,7 +11,7 @@
       <div class="sixColumnTop">
         <h3 class="leftTit">Select Vehicles</h3>
         <button type="submit" class="sixNext" style="display: block;"
-          @click="handleSubmit(),addNewVehicleAssemVisible = false">Compare
+          @click="handleSubmit()">Compare
         </button>
         <a href="javascript:void(0)" class="addNewVehicleBtn" @click="addNewVehicleAssemVisible = true">Add New
           Vehicle</a>
@@ -131,12 +131,14 @@
       </div>
 
       <span slot="footer" class="dialog-footer"></span>
-      <!-- <add-New-Vehicle-Assem :addNewVehicleAssemVisible="addNewVehicleAssemVisible"></add-New-Vehicle-Assem> -->
     </el-dialog>
-    <add-new-vehicle-assem :addNewVehicleAssemVisible="addNewVehicleAssemVisible" :brandList="brandList"
-                           :bmwBrandList="bmwBrandList" :bmwSeriesList="bmwSeriesList" :cmpBrandList="cmpBrandList"
-                           :cmpModelList="cmpModelList" :cmpModelRangeList="cmpModelRangeList"
-                           :bmwESeriesList="bmwESeriesList" :menuhub="menuhub"></add-new-vehicle-assem>
+    <add-new-vehicle-assem 
+      :addNewVehicleAssemVisible="addNewVehicleAssemVisible" :brandList="brandList"
+      :bmwBrandList="bmwBrandList" :bmwSeriesList="bmwSeriesList" :cmpBrandList="cmpBrandList"
+      :cmpModelList="cmpModelList" :cmpModelRangeList="cmpModelRangeList"
+      :bmwESeriesList="bmwESeriesList" :menuhub="menuhub"
+      @closeAddNewCarModal="closeAddNewCarModal">
+    </add-new-vehicle-assem>
   </div>
 </template>
 <script>
@@ -205,14 +207,14 @@ export default {
   },
   mounted () {
     this.incomponent()
-    Bus.$on('width', priceWidth => {
-        this.priceBoxWidth = priceWidth
-      })
   },
   updated () {
 
   },
   methods: {
+    closeAddNewCarModal: function () {
+      this.addNewVehicleAssemVisible = false
+    },
     openAlert: function () {
       this.$message({
         message: 'there is no data in this month. Please click on other months.',
@@ -374,7 +376,6 @@ export default {
       })
     },
     searchCmpProductRowDetail: function (brand, model, engine, addRowDate) {
-      alert('zhixing')
       var self = this
       var dataArray = {}
       dataArray['enabled'] = 'true'
@@ -549,7 +550,7 @@ export default {
       })
     },
     handleSubmit: function () {
-      this.tpShowFlg = false
+      // this.tpShowFlg = false
       store.commit('CLEAR_CARSCREEN')
       for (var i in this.menuhub.blockList) {
         var block = this.menuhub.blockList[i]
@@ -557,6 +558,9 @@ export default {
         block.checkedCars = []
         store.commit('ADD_CARSCREEN', block)
       }
+
+      store.commit('UPDATE_CARSCREEN',this.carScreen);
+
       this.$emit('closeDialog', false)
       Bus.$emit('operating', 'compare')
       this.createArrow()
@@ -566,7 +570,6 @@ export default {
     },
     createArrow : function () {
         // 确定箭头坐标
-      console.log("hahahahah")
       var priceBoxWidth = null;
       if(window.screen.width>1000){
         priceBoxWidth = 1850;

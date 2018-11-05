@@ -79,8 +79,8 @@
               <span v-on:mouseover="carChooseNameShow(i,j)" v-on:mouseout="carChooseNameHide(i,j)"
                     @click="openModifyCar(c, carLane.ins, i , j)" class="carName">{{c.mergename == " " ? c.nickname : c.mergename }}</span>
               <span class="price priceBefore"><vue-numeric v-model="c.rrPrice" currency="" :min=0
-                                                           @blur="modifyUnitCarMetrics(c, carLane.ins, carLane.idx , j)"
-                                                           onKeyPress="if(window.event.keyCode==13) this.blur()"></vue-numeric></span>
+                @blur="modifyUnitCarMetrics(c, carLane.ins, carLane.idx , j)"
+                onKeyPress="if(window.event.keyCode==13) this.blur()"></vue-numeric></span>
             </span>
             <span class="percent" v-bind:style="showPercentRight(c)">
               <vue-numeric class="mixShowWay" v-model="c.showMixPercentage" :precision=2 :max=100 :min=-100 currency="%"
@@ -124,13 +124,14 @@
           <div class="priceListBox height30" v-for="(c, j) in carLane.column.cars" v-bind:style="getStyle(c)" :key="j">
             <div class="shor-box" v-if="tpShowFlg" v-bind:class="carScreen.getCarTPPriceClass(carLane.ins.brandNameEn)"
                  v-on:mouseover="carChooseshorNameShow(i,j)" v-on:mouseout="carChooseshorNameHide(i,j)">
-              <span class="price rrprice"><vue-numeric v-model="c.tsPrice" currency="" :min=0 @blur="createArrow()"
-                                                       onKeyPress="if(window.event.keyCode==13) this.blur()"></vue-numeric></span>
+              <span class="price rrprice"><vue-numeric v-model="c.tsPrice" currency="" :min=0 @blur="modifyRightUnitCarMetrics(c, carLane.ins.cars, carLane.idx , j),createArrow()"
+                onKeyPress="if(window.event.keyCode==13) this.blur()"></vue-numeric></span>
               <span class="floatRight">
                 <vue-numeric v-model="c.showDiscountPercentage" :precision=2 :max=100 :min=-100 currency="%"
-                             currency-symbol-position="suffix"
-                             @blur="modifyRightUnitCarTsprice(c, carLane.ins.cars, carLane.idx , j),createArrow()"
-                             onKeyPress="if(window.event.keyCode==13) this.blur()"></vue-numeric>
+                  currency-symbol-position="suffix"
+                  @blur="modifyRightUnitCarTsprice(c, carLane.ins.cars, carLane.idx , j),createArrow()"
+                  onKeyPress="if(window.event.keyCode==13) this.blur()">
+                </vue-numeric>
               </span>
               <span class="positionTopRight" v-bind:style="showNicknameTop(c)">{{c.nickname}}</span>
               <span class="positionBotomnLeft" v-bind:style="showNickname(c)">{{c.nickname}}</span>
@@ -149,6 +150,8 @@
 import d3 from 'd3'
 import CarScreen from '../common/js/carscreen.js'
 import Bus from '../common/js/Bus'
+import accounting from 'accounting'
+import store from '../store'
 
 export default {
   name: 'PriceBox',
@@ -156,6 +159,7 @@ export default {
     return {
       d3List: [],
       d3: d3,
+      accounting: accounting,
       rowDate: [new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(),
         new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date()],
       tpShowFlg: true,
@@ -255,8 +259,8 @@ export default {
 
       this.d3List = [];
       for (var j in this.carScreen.curCarLanes) {
-        mergeFlag = [];
-        mergeFlagTwo = [];
+        var mergeFlag = [];
+        var mergeFlagTwo = [];
         var Lanes = this.carScreen.curCarLanes[j];
         var leftCars = Lanes.ins.cars;
         var rightCars = Lanes.column.cars;
@@ -363,7 +367,7 @@ export default {
         console.log(111111111)
         console.log(111111111)
 
-        console.log(d3List);
+ 
         // TODO
       }
       // console.log(this.carScreen.curCarLanes)
@@ -407,6 +411,48 @@ export default {
     },
     getArrowCorBind: function(brandNameEn){
       return 'url(#arrow' + brandNameEn + ')';
+    },
+    modifyUnitCarMetrics : function(c, carLane, i, j) {
+      c.showDiscountPercentage = this.computeDiscountPercentage(c.rrPrice, c.tsPrice); 
+      c.discountPercentage = c.showDiscountPercentage / 100;
+      c.mixPercentage = c.showMixPercentage / 100;
+      // this.carScreen.setCar(c, i, j);
+      store.commit('SETCAR_CARSCREEN', c, i, j)
+      this.createArrow();
+    },
+    computeDiscountPercentage : function(rrPrice, tsPrice) {
+      return accounting.toFixed(((rrPrice - tsPrice) / rrPrice * 100 ), 4);
+    },
+    modifyRightUnitCarMetrics : function(c, carLane, i, j){
+      var self = this;
+        c.showDiscountPercentage = this.computeDiscountPercentage(c.rrPrice, c.tsPrice);
+        c.discountPercentage = c.showDiscountPercentage / 100;
+        var rightNumberFlag = c.numberFlag;
+        for(var b in carLane){
+          var leftNumberFlag = carLane[b].numberFlag;
+          if(rightNumberFlag == leftNumberFlag){
+          // self.carScreen.setCar(c, i, b);
+          store.commit('SETCAR_CARSCREEN', c, i, b)
+            break;
+          }
+        }
+    },
+    modifyRightUnitCarTsprice : function(c, carLane, i, j){
+      var self = this;
+        c.tsPrice = this.computeTsPrice(c.rrPrice, c.showDiscountPercentage);
+        c.discountPercentage = c.showDiscountPercentage / 100;
+        var rightNumberFlag = c.numberFlag;
+        for(var b in carLane){
+          var leftNumberFlag = carLane[b].numberFlag;
+          if(rightNumberFlag == leftNumberFlag){
+            alert("huhihuhuhu")
+            store.commit('SETCAR_CARSCREEN', c, i, b)
+            break;
+          }
+        }
+    },
+    computeTsPrice:function(rrPrice,discountPercentage){
+      return (1- discountPercentage / 100 ) * rrPrice;
     },
 
   },

@@ -11,7 +11,11 @@ const mutations = {
   },
   [types.CLEAR_CARSCREEN] (state, status) {
     state.carScreen.clear()
+  },
+  [types.SETCAR_CARSCREEN] (state, canshu1, canshu2, canshu3) {
+    state.carScreen.setCar(canshu1, canshu2, canshu3)
   }
+
 }
 
 export default mutations
