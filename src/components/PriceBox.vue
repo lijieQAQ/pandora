@@ -72,7 +72,7 @@
                   v-bind:marker-end="getArrowCorBind(carLane.ins.brandNameEn)"/>
           </svg>
         </div>
-        
+
         <div class="leftColumn">
           <div class="priceListBox height30" v-for="(c, j) in carLane.ins.cars" v-bind:style="getLeftStyle(c)" :key="j">
             <span class="long-box" v-bind:class="carScreen.getCarRRPriceClass(carLane.ins.brandNameEn)">
@@ -139,7 +139,7 @@
             </div>
           </div>
         </div>
-        
+
       </li>
     </ul>
     <div class="clearfloat"></div>
@@ -367,7 +367,7 @@ export default {
         console.log(111111111)
         console.log(111111111)
 
- 
+
         // TODO
       }
       // console.log(this.carScreen.curCarLanes)
@@ -413,12 +413,17 @@ export default {
       return 'url(#arrow' + brandNameEn + ')';
     },
     modifyUnitCarMetrics : function(c, carLane, i, j) {
-      c.showDiscountPercentage = this.computeDiscountPercentage(c.rrPrice, c.tsPrice); 
+      c.showDiscountPercentage = this.computeDiscountPercentage(c.rrPrice, c.tsPrice);
       c.discountPercentage = c.showDiscountPercentage / 100;
       c.mixPercentage = c.showMixPercentage / 100;
       // this.carScreen.setCar(c, i, j);
-      store.commit('SETCAR_CARSCREEN', c, i, j)
-      this.createArrow();
+      let params = {
+        c: c,
+        i: i,
+        j: j
+      }
+      store.commit('SETCAR_CARSCREEN', params)
+      this.createArrow()
     },
     computeDiscountPercentage : function(rrPrice, tsPrice) {
       return accounting.toFixed(((rrPrice - tsPrice) / rrPrice * 100 ), 4);
@@ -432,7 +437,12 @@ export default {
           var leftNumberFlag = carLane[b].numberFlag;
           if(rightNumberFlag == leftNumberFlag){
           // self.carScreen.setCar(c, i, b);
-          store.commit('SETCAR_CARSCREEN', c, i, b)
+            let params = {
+              c: c,
+              i: i,
+              j: b
+            }
+            store.commit('SETCAR_CARSCREEN', params)
             break;
           }
         }
@@ -445,8 +455,12 @@ export default {
         for(var b in carLane){
           var leftNumberFlag = carLane[b].numberFlag;
           if(rightNumberFlag == leftNumberFlag){
-            alert("huhihuhuhu")
-            store.commit('SETCAR_CARSCREEN', c, i, b)
+            let params = {
+              c: c,
+              i: i,
+              j: b
+            }
+            store.commit('SETCAR_CARSCREEN', params)
             break;
           }
         }
@@ -478,10 +492,11 @@ export default {
   }
 
   .priceBox ul li .carType {
-    position: relative;
+    position: absolute;
     height: 35px;
-    width: 97%;
+    width: 30%;
     margin-left: 1%;
+    top:145px;
     float: left;
     background: #FFFFFF;
     box-shadow: 0 2px 4px 0 #BFBFC3;
