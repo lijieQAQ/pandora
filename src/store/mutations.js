@@ -12,8 +12,8 @@ const mutations = {
   [types.CLEAR_CARSCREEN] (state, status) {
     state.carScreen.clear()
   },
-  [types.SETCAR_CARSCREEN] (state, canshu1, canshu2, canshu3) {
-    state.carScreen.setCar(canshu1, canshu2, canshu3)
+  [types.SETCAR_CARSCREEN] (state, params) {
+    state.carScreen.setCar(params.c, params.i, params.j)
   }
 
 }

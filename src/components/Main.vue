@@ -102,6 +102,7 @@ export default {
     width: 100%;
     height: 100%;
     background-color: #FFFFFF;
+    position: absolute;
   }
   .el-main {
     padding: 0px;
