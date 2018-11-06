@@ -5,7 +5,7 @@
       <li class="box center" v-for="(carLane, i) in carScreen.curCarLanes" :key="i">
         <div class="carType">
           <div :class="carScreen.getCarRRPriceClass(carLane.ins.brandNameEn)" class="top-bar"></div>
-          <div class="carLogo" @dblclick="openModifyModal(carLane.ins, false, carLane.idx, 'rowDate' + carLane.idx)">
+          <div class="carLogo" @dblclick="openModifyModal(carLane.ins, false, carLane.idx)">
             <img v-bind:src="'../assets/images/' + carLane.ins.brandNameEn + '.png'"/>
             <el-tooltip :open-delay=1000 class="item" effect="dark"
               v-bind:content="carLane.ins.bmwFlg ? carLane.ins.seriesNameEn : carLane.ins.model - carLane.ins.bmwFlg ? carLane.ins.eseriesNameEn : carLane.ins.engine"
@@ -17,7 +17,7 @@
           </div>
           <div class="attrSlect">
             <div class="dateTimeCover"></div>
-            <div class="cover" @dblclick="openModifyModal(carLane.ins, false, carLane.idx, 'rowDate' + carLane.idx)"></div>
+            <div class="cover" @dblclick="openModifyModal(carLane.ins, false, carLane.idx)"></div>
             <div class="icon">
               <div class="dropdown">
                 <div class=" arr-more dropdown-toggle" id="more5"><span class="caret"></span></div>
@@ -143,6 +143,7 @@
       </li>
     </ul>
     <div class="clearfloat"></div>
+    <modify-new-column-dialog :modifyNewColumnDialogVisible="modifyNewColumnDialogVisible" @closeModifyColumnDialog="closeModifyColumnDialog"></modify-new-column-dialog>
   </div>
 </template>
 
@@ -152,13 +153,53 @@ import CarScreen from '../common/js/carscreen.js'
 import Bus from '../common/js/Bus'
 import accounting from 'accounting'
 import store from '../store'
-
+import modifyNewColumnDialog from './ModifyNewColumnDialog'
 export default {
   name: 'PriceBox',
   data () {
     return {
       d3List: [],
+      modifyCarLane : {
+        isAddCarLane: true,
+        modifyIdx : -1,
+      },
+      addRow: {
+        brand: "",
+        seriesOrModel: "",
+        eseriesOrEngine: "",
+        yearMonth: (new Date()).format('yyyymm'),
+        isBmwProduct: true,
+        productList: [],
+        selectedESeriesOrEngine: "",
+        selectedProduct: [],
+        selectAll: false,
+        isIndeterminate: true,
+        addCarShowFlg : false,
+
+        addCar: {
+          bmwFlg: true,
+          brandNameEn: "",
+          seriesNameEn: "",
+          eseriesNameEn: "",
+          packageCode: "",
+          model: "",
+          engine: "",
+          rrPrice: 0,
+          tsPrice: 0,
+          carNameEn: "",
+          nickname: "",
+          mixPercentage: 0,
+          discountPercentage: 0,
+          powerHP: 0,
+          showMixPercentage: 0,
+          showDiscountPercentage: 0,
+          yearMonth: (new Date()).format('yyyymm'),
+          laneIndex : 0,
+          carIndex : 0,
+        },
+      },
       d3: d3,
+      modifyNewColumnDialogVisible:false,
       accounting: accounting,
       rowDate: [new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(),
         new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date()],
@@ -180,6 +221,9 @@ export default {
     })
   },
   methods: {
+    closeModifyColumnDialog:function () {
+      this.modifyNewColumnDialogVisible = false
+    },
     getLeftStyle: function (c) {
       let p = c.topReduce == "true" ? c.top - 20 : c.top;
       return {'top': p + 'px'};
@@ -360,12 +404,6 @@ export default {
 
         }
         this.d3List.push(d3Lanes);
-        console.log(111111111)
-        console.log(111111111)
-        console.log(111111111)
-        console.log(111111111)
-        console.log(111111111)
-        console.log(111111111)
 
  
         // TODO
@@ -454,8 +492,186 @@ export default {
     computeTsPrice:function(rrPrice,discountPercentage){
       return (1- discountPercentage / 100 ) * rrPrice;
     },
+    openModifyModal : function(carLane, isAddFlg, idx) {
+      this.addRow = {
+        brand: carLane.brandNameEn,
+        seriesOrModel: carLane.bmwFlg ? carLane.seriesNameEn : carLane.model,
+        eseriesOrEngine: carLane.bmwFlg ? carLane.eseriesNameEn : carLane.engine,
+        yearMonth: carLane.yearMonth,
+        isBmwProduct: carLane.bmwFlg,
+        productList: [],
+        selectedESeriesOrEngine: "",
+        selectedProduct: [],
+        selectAll: false,
+        isIndeterminate: true,
+        addCarShowFlg : false,
+
+        addCar : {
+          bmwFlg: true,
+          brandNameEn: "",
+          seriesNameEn: "",
+          eseriesNameEn: "",
+          packageCode: "",
+          model: "",
+          engine: "",
+          rrPrice: 0,
+          tsPrice: 0,
+          carNameEn: "",
+          nickname: "",
+          mixPercentage: 0,
+          discountPercentage: 0,
+          powerHP: 0,
+          showMixPercentage: 0,
+          showDiscountPercentage: 0,
+          yearMonth: carLane.yearMonth,
+          laneIndex : 0,
+          carIndex : 0,
+        },
+      };
+      this.modifyCarLane.isAddCarLane = isAddFlg;
+      this.modifyCarLane.modifyIdx = idx;
+      this.searchRowDetail(idx);
+
+      for (var i in carLane.cars) {
+        var findFlg = false;
+        var car = carLane.cars[i];
+        for (var j in this.addRow.productList) {
+          var dbCar = this.addRow.productList[j];
+          if (this.addRow.isBmwProduct) {
+            if (car.model === dbCar.model && car.packageCode === dbCar.packageCode) {
+              this.addRow.productList[j] = car;
+              findFlg = true;
+              break;
+            }
+          } else {
+            if (car.carNameEn === dbCar.carNameEn) {
+              this.addRow.productList[j] = car;
+              findFlg = true;
+              break;
+            }
+          }
+        }
+
+        if (!findFlg) {
+          this.addRow.productList.push(car);
+        }
+      }
+
+      this.addRow.selectedProduct = carLane.cars;
+      this.modifyNewColumnDialogVisible = true;
+
+    },
+    searchRowDetail : function(dateId) {
+      var self = this;
+      //更改
+      this.addRow.selectedESeriesOrEngine = "";
+      this.addRow.isIndeterminate = true;
+      this.addRow.selectAll = false;
+      var addRowDateValue = this.rowDate[dateId]
+
+      if (!this.addRow.eseriesOrEngine) {
+        return;
+      }else{
+        $('#addMenuRowEseriesOrEngine').removeClass('inputErrorTwo');
+        $('#addRowEseriesOrEngine').removeClass('inputErrorTwo');
+      }
+      var productListPromise = this.searchRowDetailCommon(
+        this.addRow.brand,
+        this.addRow.seriesOrModel,
+        this.addRow.eseriesOrEngine,
+        addRowDateValue.format('yyyymm'),
+        this.addRow.isBmwProduct);
+      var productList = [];
+      productListPromise.then(function(val){
+      productList = val;
+      if(productList.length == 0){
+        self.openAlert();
+        self.initDate = new Date();
+        return;
+        }
+      self.addRow.selectedProduct = [];
+      self.addRow.productList = [];
+      if (self.addRow.isBmwProduct) {
+        self.addRow.selectedESeriesOrEngine = self.addRow.eseriesOrEngine;
+        self.addRow.productList = productList;
+        console.log(self.addRow.productList.length);
+      } else {
+        self.addRow.selectedESeriesOrEngine = self.addRow.eseriesOrEngine;
+        self.addRow.productList = productList;
+      }
+      self.addRow.selectedProduct = self.addRow.productList;
+      })
+
+          
+    },
+    searchRowDetailCommon: function (brand, seriesOrModel, eseriesOrEngine, yearMonth, bwmFlg) {
+      if (!brand) {
+        return
+      }
+      if (!seriesOrModel) {
+        return
+      }
+      if (!eseriesOrEngine) {
+        return
+      }
+      if (!yearMonth) {
+        return
+      }
+
+      var myProductList = []
+      if (bwmFlg) {
+        myProductList = this.searchBmwProductRowDetail(brand, seriesOrModel, eseriesOrEngine, yearMonth)
+      } else {
+        myProductList = this.searchCmpProductRowDetail(brand, seriesOrModel, eseriesOrEngine, yearMonth)
+      }
+      return myProductList
+    },
+    searchBmwProductRowDetail: function (brand, series, eSeries, addRowDate) {
+      var self = this
+      var dataArray = {}
+      dataArray['enabled'] = 'true'
+      var seriesId = -1
+      for (var i in self.bmwSeriesList) {
+        if (series === self.bmwSeriesList[i].nameEn) {
+          seriesId = self.bmwSeriesList[i].id
+          break
+        }
+      }
+
+      dataArray['bmwESeries.bmwSeries.id'] = '= ' + seriesId
+      var eSeriesId = -1
+      for (var i in self.bmwESeriesList) {
+        var curESeries = self.bmwESeriesList[i]
+        if (curESeries.bmwSeries.id == seriesId && eSeries === curESeries.nameEn) {
+          eSeriesId = curESeries.id
+          break
+        }
+      }
+
+      dataArray['bmwESeries.id'] = '= ' + eSeriesId
+      dataArray['yearMonth'] = '= ' + addRowDate
+      dataArray['sort'] = 'rrPrice,desc'
+      dataArray['size'] = 9999
+      var returnList = []
+      return new Promise(function (resolve, reject) {
+        self.$http.get('repo/bmwProducts/list', {params: dataArray}).then(res => {
+          if (res.status == 200) {
+            resolve(res.data.bmwProducts)
+          }
+        })
+      })
+    },
+    openAlert:function() {
+      this.$message({
+        message: 'there is no data in this month. Please click on other months.',
+        type: 'warning',
+      });
+    },
 
   },
+  components:{
+    modifyNewColumnDialog
+  }
 
 }
 </script>

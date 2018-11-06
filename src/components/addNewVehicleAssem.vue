@@ -65,13 +65,13 @@
               <div class="controls input-append date form_datetime" data-link-field="dtp_input1" id="menuhubAddRowDate">
                 <label for="name"><b class="text-danger">*</b>Date </label>
                 <el-date-picker
-		          v-model="form.regDateBeg"
-		          format="M/yyyy"
-		          type="month"
-		          :editable="false"
-		          :disabled="addRow.addCarShowFlg"
-		          >
-		        </el-date-picker>
+									v-model="form.regDateBeg"
+									format="M/yyyy"
+									type="month"
+									:editable="false"
+									:disabled="addRow.addCarShowFlg"
+								>
+		        		</el-date-picker>
                 <!-- <input id="dateBorderColor" size="16" type="text" v-bind:value="initDate.format('mmm yyyy')" readonly> -->
                 <span class="add-on"><i class="icon-th"></i></span>
               </div>
