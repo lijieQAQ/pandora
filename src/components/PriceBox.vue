@@ -149,7 +149,10 @@
     :modifyNewColumnDialogVisible="modifyNewColumnDialogVisible" :bmwSeriesList="bmwSeriesList"
     @closeModifyColumnDialog="closeModifyColumnDialog" :addRow = "addRow"></modify-new-column-dialog> -->
 
-    <delete-column v-on:confirmDleate="confirmDleate" :windowScreenWidth='windowScreenWidth' :priceBoxWidth='priceBoxWidth' :deleteColumnMark='deleteColumnMark' :deleteColumnVisible='deleteColumnVisible' @closeDeleteColumnDialog='closeDeleteColumnDialog'></delete-column>
+    <delete-column v-on:confirmDleate="confirmDleate" :windowScreenWidth='windowScreenWidth'
+                   :priceBoxWidth='priceBoxWidth' :deleteColumnMark='deleteColumnMark'
+                   :deleteColumnVisible='deleteColumnVisible'
+                   @closeDeleteColumnDialog='closeDeleteColumnDialog'></delete-column>
 
   </div>
 </template>
@@ -162,6 +165,7 @@ import accounting from 'accounting'
 import store from '../store'
 // import modifyNewColumnDialog from './ModifyNewColumnDialog'
 import deleteColumn from './DeleteColumn'
+
 export default {
   name: 'PriceBox',
   data () {
@@ -170,51 +174,51 @@ export default {
       priceBoxWidth: null,
       windowScreenWidth: null,
       d3List: [],
-      brandList:[],
-      bmwBrandList:[],
+      brandList: [],
+      bmwBrandList: [],
       cmpBrandList: [],
       bmwSeriesList: [],
-      modifyCarLane : {
+      modifyCarLane: {
         isAddCarLane: true,
-        modifyIdx : -1,
+        modifyIdx: -1,
       },
       addRow: {
-        brand: "",
-        seriesOrModel: "",
-        eseriesOrEngine: "",
+        brand: '',
+        seriesOrModel: '',
+        eseriesOrEngine: '',
         yearMonth: (new Date()).format('yyyymm'),
         isBmwProduct: true,
         productList: [],
-        selectedESeriesOrEngine: "",
+        selectedESeriesOrEngine: '',
         selectedProduct: [],
         selectAll: false,
         isIndeterminate: true,
-        addCarShowFlg : false,
+        addCarShowFlg: false,
 
         addCar: {
           bmwFlg: true,
-          brandNameEn: "",
-          seriesNameEn: "",
-          eseriesNameEn: "",
-          packageCode: "",
-          model: "",
-          engine: "",
+          brandNameEn: '',
+          seriesNameEn: '',
+          eseriesNameEn: '',
+          packageCode: '',
+          model: '',
+          engine: '',
           rrPrice: 0,
           tsPrice: 0,
-          carNameEn: "",
-          nickname: "",
+          carNameEn: '',
+          nickname: '',
           mixPercentage: 0,
           discountPercentage: 0,
           powerHP: 0,
           showMixPercentage: 0,
           showDiscountPercentage: 0,
           yearMonth: (new Date()).format('yyyymm'),
-          laneIndex : 0,
-          carIndex : 0,
+          laneIndex: 0,
+          carIndex: 0,
         },
       },
       d3: d3,
-      modifyNewColumnDialogVisible:false,
+      modifyNewColumnDialogVisible: false,
       deleteColumnVisible: false,
       accounting: accounting,
       rowDate: [new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(),
@@ -224,15 +228,13 @@ export default {
     }
   },
   created () {
-    this.getBmwBrandList();
-    this.getCmpBrandList();
-    this.getBmwSeriesList();
-    
+    this.getBmwBrandList()
+    this.getCmpBrandList()
+    this.getBmwSeriesList()
   },
   mounted () {
-    this.priceBoxWidth = $('.priceBox').width();
-    this.windowScreenWidth = window.screen.width;
-    
+    this.priceBoxWidth = $('.priceBox').width()
+    this.windowScreenWidth = window.screen.width
     Bus.$on('operating', status => {
       if (status === 'compare') {
         this.carScreen = this.$store.state.carScreen
@@ -240,19 +242,21 @@ export default {
     })
     Bus.$on('implement', d3List => {
       this.d3List = d3List
-      console.log(this.d3List)
+    })
+    Bus.$on('createArrow', data => {
+      this.createArrow()
     })
   },
   methods: {
-    confirmDleate: function (param) { 
-      if(param === 'createArrow'){
-        this.createArrow();
+    confirmDleate: function (param) {
+      if (param === 'createArrow') {
+        this.createArrow()
       }
     },
-    closeModifyColumnDialog:function () {
+    closeModifyColumnDialog: function () {
       this.modifyNewColumnDialogVisible = false
     },
-    closeDeleteColumnDialog: function(){
+    closeDeleteColumnDialog: function () {
       this.deleteColumnVisible = false
     },
     getLeftStyle: function (c) {
@@ -306,8 +310,8 @@ export default {
     },
     createArrow: function () {
       // 确定箭头坐标
-      var priceBoxWidth = $('.priceBox').width();
-      this.priceBoxWidth = priceBoxWidth;
+      var priceBoxWidth = $('.priceBox').width()
+      this.priceBoxWidth = priceBoxWidth
       var grid = this.carScreen.curCarLanes.length
       var column = grid <= 3 ? 3 : this.carScreen.curCarLanes.length
       var priceWidth = null
@@ -435,7 +439,7 @@ export default {
           }
 
         }
-        this.d3List.push(d3Lanes);
+        this.d3List.push(d3Lanes)
 
         // TODO
       }
@@ -537,7 +541,7 @@ export default {
     computeTsPrice: function (rrPrice, discountPercentage) {
       return (1 - discountPercentage / 100) * rrPrice
     },
-    openModifyModal : function(carLane, isAddFlg, idx) {
+    openModifyModal: function (carLane, isAddFlg, idx) {
       this.addRow = {
         brand: carLane.brandNameEn,
         seriesOrModel: carLane.bmwFlg ? carLane.seriesNameEn : carLane.model,
@@ -545,112 +549,110 @@ export default {
         yearMonth: carLane.yearMonth,
         isBmwProduct: carLane.bmwFlg,
         productList: [],
-        selectedESeriesOrEngine: "",
+        selectedESeriesOrEngine: '',
         selectedProduct: [],
         selectAll: false,
         isIndeterminate: true,
-        addCarShowFlg : false,
+        addCarShowFlg: false,
 
-        addCar : {
+        addCar: {
           bmwFlg: true,
-          brandNameEn: "",
-          seriesNameEn: "",
-          eseriesNameEn: "",
-          packageCode: "",
-          model: "",
-          engine: "",
+          brandNameEn: '',
+          seriesNameEn: '',
+          eseriesNameEn: '',
+          packageCode: '',
+          model: '',
+          engine: '',
           rrPrice: 0,
           tsPrice: 0,
-          carNameEn: "",
-          nickname: "",
+          carNameEn: '',
+          nickname: '',
           mixPercentage: 0,
           discountPercentage: 0,
           powerHP: 0,
           showMixPercentage: 0,
           showDiscountPercentage: 0,
           yearMonth: carLane.yearMonth,
-          laneIndex : 0,
-          carIndex : 0,
+          laneIndex: 0,
+          carIndex: 0,
         },
-      };
-      this.modifyCarLane.isAddCarLane = isAddFlg;
-      this.modifyCarLane.modifyIdx = idx;
-      this.searchRowDetail(idx);
+      }
+      this.modifyCarLane.isAddCarLane = isAddFlg
+      this.modifyCarLane.modifyIdx = idx
+      this.searchRowDetail(idx)
 
       for (var i in carLane.cars) {
-        var findFlg = false;
-        var car = carLane.cars[i];
+        var findFlg = false
+        var car = carLane.cars[i]
         for (var j in this.addRow.productList) {
-          var dbCar = this.addRow.productList[j];
+          var dbCar = this.addRow.productList[j]
           if (this.addRow.isBmwProduct) {
             if (car.model === dbCar.model && car.packageCode === dbCar.packageCode) {
-              this.addRow.productList[j] = car;
-              findFlg = true;
-              break;
+              this.addRow.productList[j] = car
+              findFlg = true
+              break
             }
           } else {
             if (car.carNameEn === dbCar.carNameEn) {
-              this.addRow.productList[j] = car;
-              findFlg = true;
-              break;
+              this.addRow.productList[j] = car
+              findFlg = true
+              break
             }
           }
         }
 
         if (!findFlg) {
-          this.addRow.productList.push(car);
+          this.addRow.productList.push(car)
         }
       }
 
-      this.addRow.selectedProduct = carLane.cars;
-      this.modifyNewColumnDialogVisible = true;
-      var carColumnDate = this.rowDate[idx];
-      this.$emit('carColumnDate',carColumnDate)
-
+      this.addRow.selectedProduct = carLane.cars
+      this.modifyNewColumnDialogVisible = true
+      var carColumnDate = this.rowDate[idx]
+      this.$emit('carColumnDate', carColumnDate)
 
     },
-    searchRowDetail : function(dateId) {
-      var self = this;
+    searchRowDetail: function (dateId) {
+      var self = this
       //更改
-      this.addRow.selectedESeriesOrEngine = "";
-      this.addRow.isIndeterminate = true;
-      this.addRow.selectAll = false;
+      this.addRow.selectedESeriesOrEngine = ''
+      this.addRow.isIndeterminate = true
+      this.addRow.selectAll = false
       var addRowDateValue = this.rowDate[dateId]
 
       if (!this.addRow.eseriesOrEngine) {
-        return;
-      }else{
-        $('#addMenuRowEseriesOrEngine').removeClass('inputErrorTwo');
-        $('#addRowEseriesOrEngine').removeClass('inputErrorTwo');
+        return
+      } else {
+        $('#addMenuRowEseriesOrEngine').removeClass('inputErrorTwo')
+        $('#addRowEseriesOrEngine').removeClass('inputErrorTwo')
       }
       var productListPromise = this.searchRowDetailCommon(
         this.addRow.brand,
         this.addRow.seriesOrModel,
         this.addRow.eseriesOrEngine,
         addRowDateValue.format('yyyymm'),
-        this.addRow.isBmwProduct);
-      var productList = [];
-      productListPromise.then(function(val){
-      productList = val;
-      if(productList.length == 0){
-        self.openAlert();
-        self.initDate = new Date();
-        return;
+        this.addRow.isBmwProduct)
+      var productList = []
+      productListPromise.then(function (val) {
+        productList = val
+        if (productList.length == 0) {
+          self.openAlert()
+          self.initDate = new Date()
+          return
         }
-      self.addRow.selectedProduct = [];
-      self.addRow.productList = [];
-      if (self.addRow.isBmwProduct) {
-        self.addRow.selectedESeriesOrEngine = self.addRow.eseriesOrEngine;
-        self.addRow.productList = productList;
-        console.log(self.addRow.productList.length);
-      } else {
-        self.addRow.selectedESeriesOrEngine = self.addRow.eseriesOrEngine;
-        self.addRow.productList = productList;
-      }
-      self.addRow.selectedProduct = self.addRow.productList;
+        self.addRow.selectedProduct = []
+        self.addRow.productList = []
+        if (self.addRow.isBmwProduct) {
+          self.addRow.selectedESeriesOrEngine = self.addRow.eseriesOrEngine
+          self.addRow.productList = productList
+          console.log(self.addRow.productList.length)
+        } else {
+          self.addRow.selectedESeriesOrEngine = self.addRow.eseriesOrEngine
+          self.addRow.productList = productList
+        }
+        self.addRow.selectedProduct = self.addRow.productList
       })
 
-          
     },
     searchRowDetailCommon: function (brand, seriesOrModel, eseriesOrEngine, yearMonth, bwmFlg) {
       if (!brand) {
@@ -709,11 +711,11 @@ export default {
         })
       })
     },
-    openAlert:function() {
+    openAlert: function () {
       this.$message({
         message: 'there is no data in this month. Please click on other months.',
         type: 'warning',
-      });
+      })
     },
     getBmwBrandList: function () {
       var self = this
@@ -763,18 +765,16 @@ export default {
       })
       //
     },
-    showDeleteColumn: function(i){
-      this.deleteColumnVisible = true;
+    showDeleteColumn: function (i) {
+      this.deleteColumnVisible = true
       this.deleteColumnMark = i
     },
-    
 
   },
-  components:{
+  components: {
     // modifyNewColumnDialog,
     deleteColumn
   }
-
 }
 </script>
 
@@ -793,15 +793,17 @@ export default {
   .priceBox ul li {
     height: 76px;
     float: left;
-    margin-top:30px;
+    margin-top: 30px;
   }
-  .priceBox ul li.backg{
+
+  .priceBox ul li.backg {
     position: absolute;
     width: 100% !important;
     height: 85px;
     background: #f2f3f9;
     z-index: 222;
   }
+
   .priceBox ul li .carType {
     position: absolute;
     height: 35px;
@@ -825,19 +827,23 @@ export default {
   .priceBox ul.grid5 li {
     width: 20%;
   }
-  .priceBox ul.grid5 li .carType{
-    width:18%;
+
+  .priceBox ul.grid5 li .carType {
+    width: 18%;
   }
+
   .priceBox ul.grid4 li {
     width: 25%;
   }
-  .priceBox ul.grid4 li .carType{
-    width:23%;
+
+  .priceBox ul.grid4 li .carType {
+    width: 23%;
   }
 
   .priceBox ul.grid3 li {
     width: 33.33%;
   }
+
   .priceBox ul.grid3 li .carType {
     width: 31%;
   }
@@ -845,8 +851,9 @@ export default {
   .priceBox ul.grid44 li {
     width: 25%;
   }
-  .priceBox ul.grid44 li .carType{
-    width:23%;
+
+  .priceBox ul.grid44 li .carType {
+    width: 23%;
   }
 
   .priceBox ul.grid55 li, .priceBox ul.grid55 li .carType {
@@ -856,21 +863,24 @@ export default {
   .priceBox ul.grid66 li {
     width: 16.6%;
   }
-  .priceBox ul.grid66 li .carType{
+
+  .priceBox ul.grid66 li .carType {
     width: 15%;
   }
 
   .priceBox ul.grid77 li {
     width: 14.2%;
   }
-  .priceBox ul.grid77 li .carType{
+
+  .priceBox ul.grid77 li .carType {
     width: 13%;
   }
 
   .priceBox ul.grid88 li {
     width: 12.5%;
   }
-  .priceBox ul.grid88 li .carType{
+
+  .priceBox ul.grid88 li .carType {
     width: 11%;
   }
 

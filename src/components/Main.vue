@@ -10,7 +10,7 @@
         <div class="versionCloseIcon" @click="clearVersion()"></div>
         <label></label>
         <el-select class="select" v-model="version" allow-create="" default-first-option placeholder="Select version"
-          @change="loadVersion(),createArrow()" @clear="clearAll()">
+                   @change="loadVersion(),createArrow()" @clear="clearAll()">
           <el-option
             v-for="item in versionList"
             :key="item.id"
@@ -39,17 +39,26 @@
       </div>
       <!-- 以下为checkbox,需要留着 -->
       <div class="buttonBox">
-        <a href="javascript:void(0)" v-bind:class="{gray : carScreen.carLanes.length == 0, blue: carScreen.carLanes.length > 0}" class="btn" @click='carScreen.carLanes.length > 0 ? saveVersionVisible = true : "",fadeCor()'>Save</a>
-        <a href="javascript:void(0)" v-bind:class="{gray : carScreen.carLanes.length == 0, blue: carScreen.carLanes.length > 0}" class="btn" @click='carScreen.carLanes.length > 0 ? clearAllVisible = true : ""'>Clear all</a>
-        <a href="javascript:void(0)" v-bind:class="{gray : carScreen.carLanes.length == 0, blue: carScreen.carLanes.length > 0}" class="btn gray download">Export</a>
+        <a href="javascript:void(0)"
+           v-bind:class="{gray : carScreen.carLanes.length == 0, blue: carScreen.carLanes.length > 0}" class="btn"
+           @click='carScreen.carLanes.length > 0 ? saveVersionVisible = true : "",fadeCor()'>Save</a>
+        <a href="javascript:void(0)"
+           v-bind:class="{gray : carScreen.carLanes.length == 0, blue: carScreen.carLanes.length > 0}" class="btn"
+           @click='carScreen.carLanes.length > 0 ? clearAllVisible = true : ""'>Clear all</a>
+        <a href="javascript:void(0)"
+           v-bind:class="{gray : carScreen.carLanes.length == 0, blue: carScreen.carLanes.length > 0}"
+           class="btn gray download">Export</a>
       </div>
       <!-- 以上为checkbox结束,需要留着 -->
 
     </div>
     <!-- priceInfoTitle 结束 -->
-    <add-new-vehicle-mask :addNewVehicleMaskVisible="addNewVehicleMaskVisible" @closeDialog="closeDialog"></add-new-vehicle-mask>
-    <clear-all v-on:confirmClearAll="confirmClearAll" :clearAllVisible = 'clearAllVisible' @closeClearAll='closeClearAll'></clear-all>
-    <save-version :tpShowFlg='tpShowFlg' v-on:changeSaveVersion='changeSaveVersion' :saveVersion='saveVersion' :saveVersionVisible='saveVersionVisible' @closeSaveVersion = 'closeSaveVersion'></save-version>
+    <add-new-vehicle-mask :addNewVehicleMaskVisible="addNewVehicleMaskVisible"
+                          @closeDialog="closeDialog"></add-new-vehicle-mask>
+    <clear-all v-on:confirmClearAll="confirmClearAll" :clearAllVisible='clearAllVisible'
+               @closeClearAll='closeClearAll'></clear-all>
+    <save-version :tpShowFlg='tpShowFlg' v-on:changeSaveVersion='changeSaveVersion' :saveVersion='saveVersion'
+                  :saveVersionVisible='saveVersionVisible' @closeSaveVersion='closeSaveVersion'></save-version>
   </div>
 </template>
 
@@ -57,36 +66,45 @@
 import addNewVehicleMask from './addNewVehicleMask'
 import clearAll from './ClearAll'
 import saveVersion from './SaveVersion'
-import CarScreen from '../common/js/carscreen.js'
 import store from '../store'
+import Bus from '../common/js/Bus'
+
 export default {
   name: 'main',
   data () {
     return {
       addNewVehicleMaskVisible: false,
       value4: new Date(),
-      username: "",
+      username: '',
       version: '',
       versionList: [],
       saveVersion: {
         versionList: [],
-        version: "",
-        versionDescription: "",
+        version: '',
+        versionDescription: ''
       },
       nowDate: (new Date()).format('mm/dd/yyyy hh:MM:ss'),
       tpShowFlg: true,
       carScreen: this.$store.state.carScreen,
       clearAllVisible: false,
-      saveVersionVisible: false,
+      saveVersionVisible: false
     }
   },
-  created(){
-    this.initSaveVersionList();
-    this.username = localStorage.username;
+  created () {
+    this.initSaveVersionList()
+    this.username = localStorage.username
+    this.getVersionList(new Date())
   },
   filters: {
     dateFilter: function (value) {
       return value.split('/')[1]
+    },
+    versionNameFilter: function (value) {
+      if (value.length > 9) {
+        return value.substring(0, 9) + '...'
+      } else {
+        return value
+      }
     }
   },
   methods: {
@@ -112,44 +130,108 @@ export default {
       }, 10)
     },
     confirmClearAll: function (param) {
-      if(param === 'clearAll'){
+      if (param === 'clearAll') {
         this.clearAll()
       }
-      
     },
-    clearAll : function() {
+    clearAll: function () {
       store.commit('CLEAR_CARSCREEN')
       store.commit('RESCALE_CARSCREEN')
-      $('#showSavedTime').css('display','none')
-      $('.priceInfoTitle .saveTime .saveTimeBorderB').css('border-bottom','1px solid gray')
+      $('#showSavedTime').css('display', 'none')
+      $('.priceInfoTitle .saveTime .saveTimeBorderB').css('border-bottom', '1px solid gray')
     },
-    fadeCor: function(){
-      $('.versionArrow').css('background-color','transparent');
+    fadeCor: function () {
+      $('.versionArrow').css('background-color', 'transparent')
     },
-    initSaveVersionList: function() {
-      this.saveVersion.versionList = [];
+    initSaveVersionList: function () {
+      this.saveVersion.versionList = []
 
       for (var i = 0; i < 10; i++) {
         this.saveVersion.versionList.push({
-          userName : localStorage.username,
-          yearMonth : (new Date()).format('yyyymm'),
-          versionName : "version" + (i + 1),
+          userName: localStorage.username,
+          yearMonth: (new Date()).format('yyyymm'),
+          versionName: 'version' + (i + 1),
           versionNumber: (i + 1)
-        });
+        })
       }
 
       for (var k in this.versionList) {
-        var existVersion = this.versionList[k];
+        var existVersion = this.versionList[k]
         if (!existVersion.versionName) {
-          existVersion.versionName = "version" + existVersion.versionNumber;
+          existVersion.versionName = 'version' + existVersion.versionNumber
         }
-        this.saveVersion.versionList[existVersion.versionNumber - 1] = existVersion;
+        this.saveVersion.versionList[existVersion.versionNumber - 1] = existVersion
       }
     },
-    changeSaveVersion: function(param){
+    changeSaveVersion: function (param) {
       this.saveVersion = param
+    },
+    getVersionList: function (myDate) {
+      var self = this
+      self.versionList = []
+      self.version = ''
+      var dataArray = {}
+      dataArray['yearMonth'] = '= ' + myDate.format('yyyymm', null)
+      dataArray['comUser.userName'] = '= ' + localStorage.username
+      dataArray['sort'] = 'versionNumber'
+      dataArray['size'] = 9999
+      this.$http.get('repo/rptVersions/list', {
+        params: dataArray
+      }).then(res => {
+        if (res.status == 200) {
+          this.versionList = res.data.rptVersions
+        }
+      })
+    },
+    loadVersion: function () {
+      $('.loadingDiv').show()
+      var self = this
+      var wsUrl = 'priceladder/loadVersionById'
+      var route = {
+        versionId: this.version
+      }
+      if (route.versionId == '') {
+        $('.loadingDiv').hide()
+        return
+      }
+      this.$http.get(wsUrl, {
+        params: route
+      }).then(res => {
+        if (res.status == 200) {
+          $('.priceLadder').click()
+          $('#showSavedTime').css('display', 'block')
+          $('.versionCloseIcon').css('display', 'block')
+          let createAt = res.data.datas[0].createAt
+          self.nowDate = createAt.split('T')[0] + ' ' + createAt.split('T')[1].split('.')[0]
+          $('.priceInfoTitle .saveTime .saveTimeBorderB').css('border-bottom', 'none')
+          $('.loadingDiv').hide()
+          // window.forwarePage(self.tpShowFlg)
+          if (res.data.msg != null && res.data.msg != '') {
+            alert(res.msg)
+          }
+          if (res.data.code != '0') {
+            return
+          }
+          store.commit('CLEAR_CARSCREEN')
+          if (res.data.datas.length > 0) {
+            self.tpShowFlg = eval(res.data.datas[0].tpShowFlg)
+          }
+          for (var i in res.data.datas) {
+            var cars = res.data.datas[i].cars
+            for (var j in cars) {
+              cars[j].showMixPercentage = cars[j].mixPercentage * 100
+              cars[j].showDiscountPercentage = cars[j].discountPercentage * 100
+            }
+            self.carScreen.addCarLane(res.data.datas[i])
+            $('.versionNumber').val(res.data.datas[i].rptVersion.versionName)
+          }
+          self.carScreen.rescale()
+        }
+      })
+    },
+    createArrow () {
+      Bus.$emit('createArrow')
     }
-    
   },
   mounted () {
     this.changeDate()
@@ -157,17 +239,18 @@ export default {
   components: {
     addNewVehicleMask,
     clearAll,
-    saveVersion,
+    saveVersion
   }
 }
 </script>
 
 <style scoped lang="less">
- .main {
+  .main {
     width: 100%;
     height: 100%;
     position: absolute;
   }
+
   .el-main {
     padding: 0px;
   }
@@ -313,6 +396,7 @@ export default {
     background-color: #FFF;
     border: 1px solid #3577B1;
   }
+
   .priceInfoTitle .buttonBox .blue {
     background: linear-gradient(90deg, #2D9DEA 0%, #1464D0 98%);
     color: #fff;

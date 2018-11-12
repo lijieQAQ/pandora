@@ -27,8 +27,8 @@
 </template>
 <script>
 export default {
-  name:'ClearAll',
-  data(){
+  name: 'ClearAll',
+  data () {
 
   },
   props:{
@@ -41,7 +41,7 @@ export default {
     confirmClearAll: function () {
       this.$emit('confirmClearAll','clearAll')
     }
-    
+
   }
 }
 </script>

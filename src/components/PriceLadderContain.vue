@@ -24,7 +24,6 @@ export default {
     Bus.$on('operating', status => {
       if (status === 'compare') {
         this.carScreen = this.$store.state.carScreen
-        console.log(this.carScreen)
       }
     })
   },
