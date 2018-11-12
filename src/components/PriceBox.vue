@@ -2,6 +2,7 @@
   <!--待改，下面一行删除了:class="{'font_small': fontStyle === 'small'}"-->
   <div class="priceBox">
     <ul v-bind:class="carScreen.getCurrentGridClass(tpShowFlg)">
+      <li class='backg'></li>
       <li class="box center" v-for="(carLane, i) in carScreen.curCarLanes" :key="i">
         <div class="carType">
           <div :class="carScreen.getCarRRPriceClass(carLane.ins.brandNameEn)" class="top-bar"></div>
@@ -17,18 +18,13 @@
           </div>
           <div class="attrSlect">
             <div class="dateTimeCover"></div>
-<<<<<<< HEAD
             <div class="cover" @dblclick="openModifyModal(carLane.ins, false, carLane.idx)"></div>
-=======
-            <div class="cover"
-                 @dblclick="openModifyModal(carLane.ins, false, carLane.idx, 'rowDate' + carLane.idx)"></div>
->>>>>>> fc82e14a8642d1855ddb1a8cc9250cd1db4b2032
             <div class="icon">
               <div class="dropdown">
                 <div class=" arr-more dropdown-toggle" id="more5"><span class="caret"></span></div>
               </div>
               <a role="menuitem" tabindex="-1" href="javascript:void(0)" :data-target="'#modalRmRow' + i"><i
-                v-if="tpShowFlg" class="delete-icon" @click="fadeCor()"></i></a>
+                v-if="tpShowFlg" class="delete-icon" @click="fadeCor(),showDeleteColumn(i)"></i></a>
             </div>
             <div class="date-box">
               <div class="datepicker" v-bind:id="'rowDate' + carLane.idx">
@@ -111,10 +107,6 @@
                            currency="kw" currency-symbol-position="suffix"
                            @blur="modifyUnitCarMetrics(c, carLane.ins, carLane.idx , j),modifyPreUnitCarMetrics(c, carLane.ins, carLane.idx , j)"
                            onKeyPress="if(window.event.keyCode==13) this.blur()"></vue-numeric>
-              <vue-numeric style="background-color: #f2f3f9" v-model="c.powerHP" :precision=0 :max=1000 :min=-100
-                           currency="kw" currency-symbol-position="suffix"
-                           @blur="modifyUnitCarMetrics(c, carLane.ins, carLane.idx , j),modifyPreUnitCarMetrics(c, carLane.ins, carLane.idx , j)"
-                           onKeyPress="if(window.event.keyCode==13) this.blur()"></vue-numeric>
             </span>
             <span class="kwTop" v-bind:style="showKwTop(c)">
               <vue-numeric v-model="c.powerHP" :precision=0 :max=1000 :min=0 currency="kw"
@@ -153,7 +145,12 @@
       </li>
     </ul>
     <div class="clearfloat"></div>
-    <modify-new-column-dialog :modifyNewColumnDialogVisible="modifyNewColumnDialogVisible" @closeModifyColumnDialog="closeModifyColumnDialog"></modify-new-column-dialog>
+    <!-- <modify-new-column-dialog :brandList = "brandList" :cmpBrandList="cmpBrandList" :bmwBrandList="bmwBrandList"
+    :modifyNewColumnDialogVisible="modifyNewColumnDialogVisible" :bmwSeriesList="bmwSeriesList"
+    @closeModifyColumnDialog="closeModifyColumnDialog" :addRow = "addRow"></modify-new-column-dialog> -->
+
+    <delete-column v-on:confirmDleate="confirmDleate" :windowScreenWidth='windowScreenWidth' :priceBoxWidth='priceBoxWidth' :deleteColumnMark='deleteColumnMark' :deleteColumnVisible='deleteColumnVisible' @closeDeleteColumnDialog='closeDeleteColumnDialog'></delete-column>
+
   </div>
 </template>
 
@@ -163,12 +160,20 @@ import CarScreen from '../common/js/carscreen.js'
 import Bus from '../common/js/Bus'
 import accounting from 'accounting'
 import store from '../store'
-import modifyNewColumnDialog from './ModifyNewColumnDialog'
+// import modifyNewColumnDialog from './ModifyNewColumnDialog'
+import deleteColumn from './DeleteColumn'
 export default {
   name: 'PriceBox',
   data () {
     return {
+      deleteColumnMark: null,
+      priceBoxWidth: null,
+      windowScreenWidth: null,
       d3List: [],
+      brandList:[],
+      bmwBrandList:[],
+      cmpBrandList: [],
+      bmwSeriesList: [],
       modifyCarLane : {
         isAddCarLane: true,
         modifyIdx : -1,
@@ -210,6 +215,7 @@ export default {
       },
       d3: d3,
       modifyNewColumnDialogVisible:false,
+      deleteColumnVisible: false,
       accounting: accounting,
       rowDate: [new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(),
         new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date()],
@@ -218,8 +224,15 @@ export default {
     }
   },
   created () {
+    this.getBmwBrandList();
+    this.getCmpBrandList();
+    this.getBmwSeriesList();
+    
   },
   mounted () {
+    this.priceBoxWidth = $('.priceBox').width();
+    this.windowScreenWidth = window.screen.width;
+    
     Bus.$on('operating', status => {
       if (status === 'compare') {
         this.carScreen = this.$store.state.carScreen
@@ -231,8 +244,16 @@ export default {
     })
   },
   methods: {
+    confirmDleate: function (param) { 
+      if(param === 'createArrow'){
+        this.createArrow();
+      }
+    },
     closeModifyColumnDialog:function () {
       this.modifyNewColumnDialogVisible = false
+    },
+    closeDeleteColumnDialog: function(){
+      this.deleteColumnVisible = false
     },
     getLeftStyle: function (c) {
       let p = c.topReduce == 'true' ? c.top - 20 : c.top
@@ -285,7 +306,8 @@ export default {
     },
     createArrow: function () {
       // 确定箭头坐标
-      var priceBoxWidth = $('.priceBox').width()
+      var priceBoxWidth = $('.priceBox').width();
+      this.priceBoxWidth = priceBoxWidth;
       var grid = this.carScreen.curCarLanes.length
       var column = grid <= 3 ? 3 : this.carScreen.curCarLanes.length
       var priceWidth = null
@@ -413,17 +435,7 @@ export default {
           }
 
         }
-<<<<<<< HEAD
         this.d3List.push(d3Lanes);
-=======
-        this.d3List.push(d3Lanes)
-        console.log(111111111)
-        console.log(111111111)
-        console.log(111111111)
-        console.log(111111111)
-        console.log(111111111)
-        console.log(111111111)
->>>>>>> fc82e14a8642d1855ddb1a8cc9250cd1db4b2032
 
         // TODO
       }
@@ -479,7 +491,7 @@ export default {
         i: i,
         j: j
       }
-      //store.commit('SETCAR_CARSCREEN', params)
+      store.commit('SETCAR_CARSCREEN', params)
       this.createArrow()
     },
     computeDiscountPercentage: function (rrPrice, tsPrice) {
@@ -499,7 +511,7 @@ export default {
             i: i,
             j: b
           }
-          //store.commit('SETCAR_CARSCREEN', params)
+          store.commit('SETCAR_CARSCREEN', params)
           break
         }
       }
@@ -525,7 +537,6 @@ export default {
     computeTsPrice: function (rrPrice, discountPercentage) {
       return (1 - discountPercentage / 100) * rrPrice
     },
-<<<<<<< HEAD
     openModifyModal : function(carLane, isAddFlg, idx) {
       this.addRow = {
         brand: carLane.brandNameEn,
@@ -593,6 +604,9 @@ export default {
 
       this.addRow.selectedProduct = carLane.cars;
       this.modifyNewColumnDialogVisible = true;
+      var carColumnDate = this.rowDate[idx];
+      this.$emit('carColumnDate',carColumnDate)
+
 
     },
     searchRowDetail : function(dateId) {
@@ -701,15 +715,66 @@ export default {
         type: 'warning',
       });
     },
+    getBmwBrandList: function () {
+      var self = this
+      var dataArray = {}
+      dataArray['enabled'] = 'true'
+      dataArray['size'] = 9999
+      dataArray['sort'] = 'id'
+
+      self.$http.get('repo/bmwBrands/list', {
+        params: dataArray
+      }).then(res => {
+        if (res.status == 200) {
+          self.bmwBrandList = res.data.bmwBrands
+          self.brandList = self.brandList.concat(self.bmwBrandList)
+        }
+      })
+    },
+    getCmpBrandList: function () {
+      var self = this
+      var dataArray = {}
+      dataArray['enabled'] = 'true'
+      dataArray['size'] = 9999
+      dataArray['sort'] = 'id'
+
+      self.$http.get('repo/cmpBrands/list', {
+        params: dataArray
+      }).then(res => {
+        if (res.status == 200) {
+          self.cmpBrandList = res.data.cmpBrands
+          self.brandList = self.brandList.concat(self.cmpBrandList)
+        }
+      })
+    },
+    getBmwSeriesList: function () {
+      var self = this
+      var dataArray = {}
+      dataArray['enabled'] = 'true'
+      dataArray['size'] = 9999
+      dataArray['sort'] = 'nameEn'
+      //
+      self.$http.get('repo/bmwSeries/list', {
+        params: dataArray
+      }).then(res => {
+        if (res.status == 200) {
+          self.bmwSeriesList = res.data.bmwSeries
+        }
+      })
+      //
+    },
+    showDeleteColumn: function(i){
+      this.deleteColumnVisible = true;
+      this.deleteColumnMark = i
+    },
+    
 
   },
   components:{
-    modifyNewColumnDialog
+    // modifyNewColumnDialog,
+    deleteColumn
   }
 
-=======
-  },
->>>>>>> fc82e14a8642d1855ddb1a8cc9250cd1db4b2032
 }
 </script>
 
@@ -728,18 +793,26 @@ export default {
   .priceBox ul li {
     height: 76px;
     float: left;
+    margin-top:30px;
   }
-
+  .priceBox ul li.backg{
+    position: absolute;
+    width: 100% !important;
+    height: 85px;
+    background: #f2f3f9;
+    z-index: 222;
+  }
   .priceBox ul li .carType {
     position: absolute;
     height: 35px;
     width: 30%;
     margin-left: 1%;
-    top: 145px;
+    top: 190px;
     float: left;
     background: #FFFFFF;
     box-shadow: 0 2px 4px 0 #BFBFC3;
     font-size: 0.85em;
+    z-index: 333;
   }
 
   .clearfloat {
@@ -752,33 +825,53 @@ export default {
   .priceBox ul.grid5 li {
     width: 20%;
   }
-
+  .priceBox ul.grid5 li .carType{
+    width:18%;
+  }
   .priceBox ul.grid4 li {
     width: 25%;
+  }
+  .priceBox ul.grid4 li .carType{
+    width:23%;
   }
 
   .priceBox ul.grid3 li {
     width: 33.33%;
   }
+  .priceBox ul.grid3 li .carType {
+    width: 31%;
+  }
 
   .priceBox ul.grid44 li {
     width: 25%;
   }
+  .priceBox ul.grid44 li .carType{
+    width:23%;
+  }
 
-  .priceBox ul.grid55 li {
+  .priceBox ul.grid55 li, .priceBox ul.grid55 li .carType {
     width: 20%;
   }
 
   .priceBox ul.grid66 li {
     width: 16.6%;
   }
+  .priceBox ul.grid66 li .carType{
+    width: 15%;
+  }
 
   .priceBox ul.grid77 li {
     width: 14.2%;
   }
+  .priceBox ul.grid77 li .carType{
+    width: 13%;
+  }
 
   .priceBox ul.grid88 li {
     width: 12.5%;
+  }
+  .priceBox ul.grid88 li .carType{
+    width: 11%;
   }
 
   .bg1c69d4 {

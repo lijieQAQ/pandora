@@ -14,7 +14,15 @@ const mutations = {
   },
   [types.SETCAR_CARSCREEN] (state, params) {
     state.carScreen.setCar(params.c, params.i, params.j)
+  },
+  [types.DELETEROW_CARSCREEN] (state, status) {
+    state.carScreen.deleteRow(status)
+  },
+  [types.RESCALE_CARSCREEN] (state, status) {
+    state.carScreen.rescale()
   }
+
+
 
 }
 

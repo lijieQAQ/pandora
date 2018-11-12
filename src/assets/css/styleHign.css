@@ -248,3 +248,13 @@ body {
   .priceBox ul li .carType .attrSlect .date-box .datepicker .el-date-editor .el-input__prefix .el-input__icon:before{
     content:"";
   }
+  #ModifyNewColumn .modal-content #ModifyRowDate .el-icon-date:before{
+    content:'';
+  }
+  #ModifyNewColumn .modal-content #ModifyRowDate .el-date-editor input{
+    float:left;
+  }
+  .editModal .input-append #saveInput .el-select .el-input input{
+    width: 337px;
+    height: 23px !important;
+  }

@@ -137,7 +137,8 @@
       :bmwBrandList="bmwBrandList" :bmwSeriesList="bmwSeriesList" :cmpBrandList="cmpBrandList"
       :cmpModelList="cmpModelList" :cmpModelRangeList="cmpModelRangeList"
       :bmwESeriesList="bmwESeriesList" :menuhub="menuhub"
-      @closeAddNewCarModal="closeAddNewCarModal">
+      @closeAddNewCarModal="closeAddNewCarModal"
+      v-on:getTitleList = "titleList">
     </add-new-vehicle-assem>
   </div>
 </template>
@@ -148,6 +149,7 @@
   import store from '../store'
   import Bus from '../common/js/Bus'
   import draggable from 'vuedraggable'
+  import CarScreen from '../common/js/carscreen.js'
 export default {
   name: 'addNewVehicleMask',
   data () {
@@ -188,9 +190,12 @@ export default {
       cmpModelList: [],
       cmpModelRangeList: [],
       brandList: [],
+      titleList:[],
+      subTitleList:[],
       d3List:[],
       priceBoxWidth:0,
-      accounting: accounting
+      accounting: accounting,
+      carScreen: this.$store.state.carScreen
     }
   },
   props: {
@@ -214,6 +219,11 @@ export default {
   methods: {
     closeAddNewCarModal: function () {
       this.addNewVehicleAssemVisible = false
+    },
+    getTitleList: function (titleList) { 
+      this.titleList = titleList;
+      console.log(123123123123)
+      console.log(this.titleList)
     },
     openAlert: function () {
       this.$message({
@@ -566,7 +576,9 @@ export default {
       this.createArrow()
       setTimeout(() => {
         Bus.$emit('implement', this.d3List)
+
       }, 100)
+
     },
     createArrow : function () {
         // 确定箭头坐标

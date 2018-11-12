@@ -438,7 +438,8 @@ CarScreen.prototype = {
     this.carLanes.splice(index, 1)
     if (this.carLanes.length % 5 == 0) {
       this.forwardPreviousPage()
-      window.forwarePage(this.tpShowFlg)
+      //待改，暂时注释掉这个方法，不好写
+      // window.forwarePage(this.tpShowFlg)
     }
     this.rescale()
   },
