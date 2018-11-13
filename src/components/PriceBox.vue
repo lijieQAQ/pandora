@@ -145,9 +145,9 @@
       </li>
     </ul>
     <div class="clearfloat"></div>
-    <!-- <modify-new-column-dialog :brandList = "brandList" :cmpBrandList="cmpBrandList" :bmwBrandList="bmwBrandList"
+    <modify-new-column-dialog :brandList = "brandList" :cmpBrandList="cmpBrandList" :bmwBrandList="bmwBrandList"
     :modifyNewColumnDialogVisible="modifyNewColumnDialogVisible" :bmwSeriesList="bmwSeriesList"
-    @closeModifyColumnDialog="closeModifyColumnDialog" :addRow = "addRow"></modify-new-column-dialog> -->
+    @closeModifyColumnDialog="closeModifyColumnDialog" :addRow = "addRow"></modify-new-column-dialog>
 
     <delete-column v-on:confirmDleate="confirmDleate" :windowScreenWidth='windowScreenWidth'
                    :priceBoxWidth='priceBoxWidth' :deleteColumnMark='deleteColumnMark'
@@ -163,7 +163,7 @@ import CarScreen from '../common/js/carscreen.js'
 import Bus from '../common/js/Bus'
 import accounting from 'accounting'
 import store from '../store'
-// import modifyNewColumnDialog from './ModifyNewColumnDialog'
+import modifyNewColumnDialog from './ModifyNewColumnDialog'
 import deleteColumn from './DeleteColumn'
 
 export default {
@@ -772,7 +772,7 @@ export default {
 
   },
   components: {
-    // modifyNewColumnDialog,
+    modifyNewColumnDialog,
     deleteColumn
   }
 }

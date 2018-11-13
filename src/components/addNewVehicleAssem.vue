@@ -565,6 +565,10 @@
 		border-radius: 4px;
 		background: #FFF;
 	}
+	#checkBoxTwo, #checkBoxThree {
+    padding: 20px 10px 0 10px;
+  }
+
 	.selectedTip {
 		display: inline-block;
 		position: absolute;

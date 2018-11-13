@@ -105,7 +105,6 @@
             this.$validator.validate("menuhub.addRow.addCar.tsPrice")
           ]);
         } else {
-          console.log(2222)
           validation = Promise.all([
             this.$validator.validate("menuhub.addRow.addCar.carNameEn"),
             this.$validator.validate("menuhub.addRow.addCar.nickname"),
@@ -116,11 +115,8 @@
           ]);
         }
         validation.then(function(result) {
-          console.log(result)
-          console.log(3333)
           var validFlg = true;
           for (var i in result) {
-            console.log(4444)
             validFlg = validFlg && result[i];
           }
           var validation = true;

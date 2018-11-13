@@ -20,7 +20,11 @@ const mutations = {
   },
   [types.RESCALE_CARSCREEN] (state, status) {
     state.carScreen.rescale()
-  }
+  },
+  [types.SETROW_CARSCREEN] (state, params) {
+    state.carScreen.setRow(params.a,params.b)
+  },
+
 
 
 

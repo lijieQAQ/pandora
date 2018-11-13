@@ -71,6 +71,7 @@
                     format="M/yyyy"
                     type="month"
                     :editable="false"
+                    :disabled="addRow.addCarShowFlg"
                   >
                   </el-date-picker>
                   
@@ -78,7 +79,7 @@
               </div>
             </fieldset>
             <div class="checkBox" v-if="!addRow.addCarShowFlg">
-              <a href="javascript:void(0)" class="addMaskTitle" @click="showAddNewCar(true),commonJs.saveDataChecking('PriceLadder_ModifyNewColumn_AddNewVehicle')">Add New Vehicle<img src="../assets/images/addNewOne.png"></a>
+              <a href="javascript:void(0)" class="addMaskTitle" @click="showAddNewCar(true)">Add New Vehicle<img src="../assets/images/addNewOne.png"></a>
               <div id="checkBox">
                 <div class="selectedTip" v-if="addRow.productList.length > 0">
                   <span class="selectContain">Number of E-series Selected:</span>
@@ -93,94 +94,24 @@
                 </template>
               </div>
             </div>
-            <!-- <div class="checkBox" v-if="addRow.addCarShowFlg">
-              <div id="checkBoxTwo">
-                <div class="control-group">
-                  <div class="controls input-append variant">
-                    <label for="name"><b class="text-danger">*</b>Variant</label>
-                    <input type="text" value="F20" placeholder="" v-model="addRow.addCar.carNameEn" maxlength="50" name="addRow.addCar.carNameEn" v-validate="'required'">
-                    <div class="sixErrorTip">{{ errors.first('addRow.addCar.carNameEn') }}</div>
-                  </div>
-                </div>
-                <div class="control-group">
-                  <div class="controls input-append variantShort">
-                    <label for="name"><b class="text-danger">*</b>Variant(Short)</label>
-                    <input type="text" placeholder="" v-model="addRow.addCar.nickname" maxlength="19" name="addRow.addCar.nickname" v-validate="'required'">
-                    <div class="sixErrorTip">{{ errors.first('addRow.addCar.nickname') }}</div>
-                  </div>
-                </div>
-
-                <div class="control-group">
-                  <div class="controls input-append widthHalf changeDefaultVal">
-                    <label for="name"><b class="text-danger">*</b>MSRP(¥)</label>
-                    <vue-numeric v-model="addRow.addCar.rrPrice" placeholder=" " currency="" min="0" maxlength="7" placeholder="" name="addRow.addCar.rrPrice" v-validate="'isnumber'"></vue-numeric>
-                    <div class="sixErrorTip">{{ errors.first('addRow.addCar.rrPrice') }}</div>
-                  </div>
-                  <div class="controls input-append widthHalf">
-                    <label for="name">Model Code</label>
-                    <input type="text" placeholder="" v-model="addRow.addCar.model" v-bind:disabled="!addRow.isBmwProduct" maxlength="20" name="addRow.addCar.model" v-validate="">
-                  </div>
-                </div>
-                <div class="control-group">
-                  <div class="controls input-append widthHalf changeDefaultVal">
-                    <label for="name">
-                      T/P(¥)
-                    </label>
-                    <vue-numeric  v-model="addRow.addCar.tsPrice" placeholder=" " currency="" min="0" maxlength="7" name="addRow.addCar.tsPrice" v-validate=""></vue-numeric>
-                  </div>
-                  <div class="controls input-append widthHalf" v-if="addRow.isBmwProduct">
-                    <label for="name">Package Code</label>
-                    <input type="text" placeholder="" v-model="addRow.addCar.packageCode" maxlength="20" name="addRow.addCar.packageCode" v-validate="">
-                  </div>
-                  <div class="controls input-append widthHalf" v-if="!addRow.isBmwProduct">
-                    <label for="name">ModelRange</label>
-                    <input type="text" placeholder="" v-model="addRow.addCar.engine" disabled="true" maxlength="20" name="addRow.addCar.engine" v-validate="">
-                  </div>
-                </div>
-
-                <div class="control-group">
-                  <div class="controls input-append widthHalf">
-                    <label for="name">Discount(%) </label>
-                    <vue-numeric class="discount" precision="2" max="100" min="0" currency="%" currency-symbol-position="suffix" maxlength="5" disabled="true">{{ accounting.toFixed(((addRow.addCar.rrPrice - addRow.addCar.tsPrice) / addRow.addCar.rrPrice * 100), 2) }}%</vue-numeric>
-                  </div>
-                  <div class="controls input-append widthHalf">
-                    <label for="name">Line Code</label>
-                    <input type="text" placeholder="" value="" maxlength="20">
-                  </div>
-                </div>
-
-                <div class="control-group">
-                  <div class="controls input-append widthHalf">
-                    <label for="name">MIX(%)</label>
-                    <vue-numeric v-model="addRow.addCar.showMixPercentage" precision="2" max="100" min="0" currency="%" currency-symbol-position="suffix" maxlength="5"></vue-numeric>
-                  </div>
-                  <div class="controls input-append widthHalf changeDefaultVal">
-                    <label for="name">HP(KW) </label>
-                    <vue-numeric placeholder=" " v-model="addRow.addCar.powerHP" precision="0" max="9999" min="0" maxlength="4"></vue-numeric>
-                  </div>
-                </div>
-
-              </div>
-
-              <div class="checkTwoBtnBox">
-                <button type="button" class="checkTwoBtn" @click="showAddNewCar(false)">Back</button>
-                <button type="button" class="checkTwoBtn ctWord" @click="saveAddNewCar(),commonJs.saveDataChecking('PriceLadder_ModifyNewColumn_AddNewVehicle_Save')">Save</button>
-              </div>
-            </div> -->
+            <modifyOneCar :addRow="addRow" :menuhub="menuhub" @showAddNewCar="showAddNewCar">></modifyOneCar>
           </div>
         </div>
-        <!-- <div class="modal-footer">
+        <div class="modal-footer">
           <div class="btnBox">
-            <button type="submit" class="btn btn-default btnCancel" data-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary btnConfirm" v-bind:class="{ noUseBtn : (addRow.selectedProduct.length == 0) }" v-bind:disabled="addRow.selectedProduct.length == 0" @click="confirmAddRow(),createArrow(),commonJs.saveDataChecking('PriceLadder_ModifyNewColumn_Submit')" >Submit</button>
+            <button type="submit" class="btn btn-default btnCancel" data-dismiss="modal" @click="closeModifyColumnDialog">Cancel</button>
+            <button type="button" class="btn btn-primary btnConfirm" v-bind:class="{ noUseBtn : (addRow.selectedProduct.length == 0) }" v-bind:disabled="addRow.selectedProduct.length == 0" @click="confirmAddRow()" >Submit</button>
           </div>
-        </div> -->
+        </div>
       </div>
     </div>
   </el-dialog>
 </template>
 <script>
 import accounting from 'accounting'
+import modifyOneCar from './modifyOneCar'
+import CarScreen from '../common/js/carscreen.js'
+import store from '../store'
   export default {
     name:'ModifyNewColumnDialog',
     data(){
@@ -188,15 +119,23 @@ import accounting from 'accounting'
         modifyColumnDate:new Date(),
         titleList: [],
         subTitleList: [],
-        accounting:accounting
+        accounting:accounting,
+        modifyCarLane : {
+          isAddCarLane: true,
+          modifyIdx : -1,
+        },
+        carScreen: this.$store.state.carScreen
       }
     },
     mounted(){
-      Bus.$on('carColumnDate', carColumnDate => {
-        this.modifyColumnDate = carColumnDate
-      })
+      // Bus.$on('carColumnDate', carColumnDate => {
+      //   this.modifyColumnDate = carColumnDate
+      // })
     },
     methods:{
+      closeModifyColumnDialog: function(){
+        this.$emit('closeModifyColumnDialog', false)
+      },
       changeBrand : function(dateId) {
 				this.titleList = [];
 				this.subTitleList = [];
@@ -345,6 +284,112 @@ import accounting from 'accounting'
           })
         })
       },
+      showAddNewCar : function(showFlg, menuhubFlg) {
+       
+        if (!showFlg) {
+          this.addRow.addCarShowFlg = showFlg;
+          this.addRow.addCar = {
+                    bmwFlg: true,
+                    brandNameEn: "",
+                    seriesNameEn: "",
+                    eseriesNameEn: "",
+                    packageCode: "",
+                    model: "",
+                    engine: "",
+                    rrPrice: 0,
+                    tsPrice: 0,
+                    carNameEn: "",
+                    nickname: "",
+                    mixPercentage: 0,
+                    discountPercentage: 0,
+                    powerHP: 0,
+                    showMixPercentage: 0,
+                    showDiscountPercentage: 0,
+                    yearMonth: (new Date()).format('yyyymm'),
+                    laneIndex : 0,
+                    carIndex : 0,
+          };
+        } else {
+          var errFlg = false;
+          if (!this.addRow.brand) {
+            menuhubFlg ? $('#addMenuRowBrand').addClass('inputErrorTwo') : $('#addRowBrand').addClass('inputErrorTwo');
+            errFlg = true;
+          } else {
+            menuhubFlg ? $('#addMenuRowBrand').removeClass('inputErrorTwo') : $('#addRowBrand').removeClass('inputErrorTwo');
+          }
+
+          if (!this.addRow.seriesOrModel) {
+            menuhubFlg ? $('#addMenuRowSeriesOrModel').addClass('inputErrorTwo') : $('#addRowSeriesOrModel').addClass('inputErrorTwo');
+            errFlg = true;
+          } else {
+            menuhubFlg ? $('#addMenuRowSeriesOrModel').removeClass('inputErrorTwo') : $('#addRowSeriesOrModel').removeClass('inputErrorTwo');
+          }
+
+          if (!this.addRow.eseriesOrEngine) {
+            menuhubFlg ? $('#addMenuRowEseriesOrEngine').addClass('inputErrorTwo') : $('#addRowEseriesOrEngine').addClass('inputErrorTwo');
+            errFlg = true;
+          } else {
+            menuhubFlg ? $('#addMenuRowEseriesOrEngine').removeClass('inputErrorTwo') : $('#addRowEseriesOrEngine').removeClass('inputErrorTwo');
+          }
+
+          if (errFlg) {
+            return;
+          }
+          var addRowDateValue = this.modifyColumnDate;
+
+          this.addRow.addCar.yearMonth = addRowDateValue.format('yyyymm');
+          if (!this.addRow.addCar.yearMonth) {
+            return;
+          }
+
+          this.addRow.addCar.bmwFlg = this.addRow.isBmwProduct;
+          this.addRow.addCar.brandNameEn = this.addRow.brand;
+          if (this.addRow.addCar.bmwFlg) {
+            this.addRow.addCar.seriesNameEn = this.addRow.seriesOrModel;
+            this.addRow.addCar.eseriesNameEn = this.addRow.eseriesOrEngine;
+          } else {
+            this.addRow.addCar.model = this.addRow.seriesOrModel;
+            this.addRow.addCar.engine = this.addRow.eseriesOrEngine;
+          }
+
+          this.addRow.addCarShowFlg = showFlg;
+        }
+      },
+      confirmAddRow : function() {
+        if (this.addRow.selectedProduct.length > 0) {
+          var addRowDateValue = this.modifyColumnDate;
+          var carLane = {
+            brandNameEn: this.addRow.brand,
+            seriesNameEn: this.addRow.isBmwProduct ? this.addRow.seriesOrModel : "",
+            eseriesNameEn: this.addRow.isBmwProduct ? this.addRow.eseriesOrEngine : "",
+            bmwFlg: this.addRow.isBmwProduct,
+            model: this.addRow.isBmwProduct ? "" : this.addRow.seriesOrModel,
+            engine: this.addRow.isBmwProduct ? "" : this.addRow.eseriesOrEngine,
+            cars:  this.addRow.selectedProduct,
+            yearMonth: addRowDateValue.format('yyyymm'),
+            yearMonthForShow : addRowDateValue,
+          }
+
+          if (this.modifyCarLane.isAddCarLane) {
+            store.commit('ADD_CARSCREEN', carLane)
+            // this.carScreen.addCarLane(carLane);
+          } else {
+            // this.carScreen.setRow(this.modifyCarLane.modifyIdx, carLane);
+            let params = {
+              a: this.modifyCarLane.modifyIdx,
+              b: carLane,
+            }
+            store.commit('SETROW_CARSCREEN', params)
+          }
+        }
+        this.closeModifyColumnDialog()
+      },
+      selectContainHide: function(){
+        $(".selectContainShow").attr('class','selectContain');
+      },
+      carChooseNameShow: function(i,j){
+        $(".nameLeft"+ i + j).addClass("carChooseNameShow").removeClass("carChooseName hoverLeft");
+      },
     },
     props:{
       modifyNewColumnDialogVisible:Boolean,
@@ -353,7 +398,11 @@ import accounting from 'accounting'
       cmpBrandList: Array,
       bmwBrandList: Array,
       bmwSeriesList: Array
+    },
+    components:{
+      modifyOneCar
     }
+
     
   }
 </script>
@@ -361,6 +410,14 @@ import accounting from 'accounting'
 <style scoped lang="less">
 .modal-header{
   padding:15px;
+}
+.addModal {
+    height: 529px;
+    margin-top: 7%;
+}
+.editModal {
+  width: 860px;
+  background: #fff;
 }
 .editModal .modal-title {
   margin: 0 30px;
@@ -412,7 +469,7 @@ import accounting from 'accounting'
 }
 .checkBox {
   width: 511px;
-  margin-right: 44px;
+  margin-right: 70px;
   float: right;
 }
 .addMaskTitle {
@@ -438,6 +495,9 @@ import accounting from 'accounting'
   position: relative;
   border-radius: 4px;
   background: #FFF;
+}
+#checkBoxTwo, #checkBoxThree {
+  padding: 20px 10px 0 10px;
 }
 .selectedTip {
   display: inline-block;
@@ -543,6 +603,51 @@ input {
 }
 .el-checkbox__input.is-checked + .el-checkbox__label {
   color: #666;
+}
+.editModal .modal-footer {
+  border-top: 0px;
+  background: #fff;
+  padding: 0;
+  text-align: center;
+}
+.editModal .modal-footer .btnBox {
+  width: 400px;
+  margin: 0 auto;
+}
+.editModal .modal-footer .btnCancel {
+  color: #A6A6A6;
+  margin-right: 60px;
+  background: #FFF;
+  border: 1px solid #A6A6A6;
+  border-radius: 3px;
+}
+
+.editModal .modal-footer .btn {
+  width: 120px;
+  height: 34px;
+  border-radius: 2px;
+  font-size: 18px;
+  border: 0px;
+  margin-left: 0;
+  line-height: 36px;
+  margin-top: 36px;
+}
+.btn {
+  padding: 0;
+}
+.editModal .modal-footer .btnCancel {
+  color: #A6A6A6;
+  margin-right: 60px;
+  background: #FFF;
+  border: 1px solid #A6A6A6;
+  border-radius: 3px;
+}
+.editModal .modal-footer .btnConfirm {
+  color: #FFF;
+  background: #FFF;
+  border: 1px solid #2D9DEA;
+  border-radius: 3px;
+  background-image: linear-gradient(-90deg, #2D9DEA 0%, #1464D0 100%);
 }
 </style>
 

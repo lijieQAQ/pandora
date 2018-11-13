@@ -73,6 +73,7 @@ export default {
       this.$emit('changeSaveVersion',this.saveVersion);
     },
     saveData: function () {
+      debugger
       var self = this;
 
       if (this.carScreen.carLanes.length == 0) {
