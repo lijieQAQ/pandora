@@ -159,7 +159,6 @@
 
 <script>
 import d3 from 'd3'
-import CarScreen from '../common/js/carscreen.js'
 import Bus from '../common/js/Bus'
 import accounting from 'accounting'
 import store from '../store'
@@ -180,7 +179,7 @@ export default {
       bmwSeriesList: [],
       modifyCarLane: {
         isAddCarLane: true,
-        modifyIdx: -1,
+        modifyIdx: -1
       },
       addRow: {
         brand: '',
@@ -214,8 +213,8 @@ export default {
           showDiscountPercentage: 0,
           yearMonth: (new Date()).format('yyyymm'),
           laneIndex: 0,
-          carIndex: 0,
-        },
+          carIndex: 0
+        }
       },
       d3: d3,
       modifyNewColumnDialogVisible: false,
@@ -769,7 +768,6 @@ export default {
       this.deleteColumnVisible = true
       this.deleteColumnMark = i
     },
-
   },
   components: {
     modifyNewColumnDialog,
