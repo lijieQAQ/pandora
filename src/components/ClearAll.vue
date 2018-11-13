@@ -29,7 +29,9 @@
 export default {
   name: 'ClearAll',
   data () {
-
+    return{
+      
+    }
   },
   props:{
     clearAllVisible: Boolean

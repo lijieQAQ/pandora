@@ -154,6 +154,9 @@
                    :deleteColumnVisible='deleteColumnVisible'
                    @closeDeleteColumnDialog='closeDeleteColumnDialog'></delete-column>
 
+    <modifyColumnContent :modifyColumnContentVisible='modifyColumnContentVisible'
+    @closeModifyColumnContent='closeModifyColumnContent'></modifyColumnContent>
+
   </div>
 </template>
 
@@ -165,6 +168,7 @@ import accounting from 'accounting'
 import store from '../store'
 import modifyNewColumnDialog from './ModifyNewColumnDialog'
 import deleteColumn from './DeleteColumn'
+import modifyColumnContent from './modifyColumnContent'
 
 export default {
   name: 'PriceBox',
@@ -178,6 +182,7 @@ export default {
       bmwBrandList: [],
       cmpBrandList: [],
       bmwSeriesList: [],
+      watchFlag: false,
       modifyCarLane: {
         isAddCarLane: true,
         modifyIdx: -1,
@@ -217,9 +222,31 @@ export default {
           carIndex: 0,
         },
       },
+      editCar: {
+        bmwFlg: true,
+        brandNameEn: "",
+        seriesNameEn: "",
+        eseriesNameEn: "",
+        packageCode: "",
+        model: "",
+        engine: "",
+        rrPrice: 0,
+        tsPrice: 0,
+        carNameEn: "",
+        nickname: "",
+        mixPercentage: 0,
+        discountPercentage: 0,
+        powerHP: 0,
+        showMixPercentage: 0,
+        showDiscountPercentage: 0,
+        yearMonth: (new Date()).format('yyyymm'),
+        laneIndex : 0,
+        carIndex : 0,
+      },
       d3: d3,
       modifyNewColumnDialogVisible: false,
       deleteColumnVisible: false,
+      modifyColumnContentVisible: false,
       accounting: accounting,
       rowDate: [new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(),
         new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date()],
@@ -258,6 +285,9 @@ export default {
     },
     closeDeleteColumnDialog: function () {
       this.deleteColumnVisible = false
+    },
+    closeModifyColumnContent: function(){
+      this.modifyColumnContentVisible = false
     },
     getLeftStyle: function (c) {
       let p = c.topReduce == 'true' ? c.top - 20 : c.top
@@ -769,11 +799,49 @@ export default {
       this.deleteColumnVisible = true
       this.deleteColumnMark = i
     },
+    openModifyCar : function(car, carLaneIns, laneIndex, carIndex) {
+      this.modifyColumnContentVisible = true;
+      this.editCar = {
+            bmwFlg: carLaneIns.bmwFlg,
+            brandNameEn: carLaneIns.brandNameEn,
+            seriesNameEn: carLaneIns.seriesNameEn,
+            eseriesNameEn: carLaneIns.eseriesNameEn,
+            packageCode: car.packageCode,
+            model: car.model,
+            engine: car.engine,
+            rrPrice: car.rrPrice,
+            tsPrice: car.tsPrice,
+            carNameEn: car.carNameEn,
+            nickname: car.nickname,
+            mixPercentage: car.mixPercentage,
+            discountPercentage: car.discountPercentage,
+            powerHP: car.powerHP,
+            showMixPercentage: car.mixPercentage * 100,
+            showDiscountPercentage: car.discountPercentage * 100,
+            yearMonth: car.yearMonth,
+            laneIndex : laneIndex,
+            carIndex : carIndex,
+      },
+      this.editCarPre = {
+            rrPrice: car.rrPrice,
+            tsPrice: car.tsPrice,
+            discountPercentage: car.discountPercentage,
+      }
+      this.clearValidator();
+      
+      this.watchFlag = false;
+    },
+    clearValidator : function() {
+      this.$validator.reset();
+      this.errors.clear();
+      
+    },
 
   },
   components: {
     modifyNewColumnDialog,
-    deleteColumn
+    deleteColumn,
+    modifyColumnContent
   }
 }
 </script>
