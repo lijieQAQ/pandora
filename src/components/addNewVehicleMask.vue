@@ -455,6 +455,7 @@ export default {
       }).then(res => {
         if (res.status == 200) {
           self.cmpModelList = res.data.cmpModelVs
+          store.commit('UPDATE_CMPMODELLIST', res.data.cmpModelVs)
         }
       })
     },
@@ -469,6 +470,7 @@ export default {
       }).then(res => {
         if (res.status == 200) {
           self.cmpModelRangeList = res.data.cmpModelRangeVs
+          store.commit('UPDATE_CMPMODELRANGELIST', res.data.cmpModelRangeVs)
         }
       })
     },

@@ -138,6 +138,8 @@ export default {
     return {
       modifyColumnDate: new Date(),
       titleList: [],
+      cmpModelList: store.state.cmpModelList,
+      cmpModelRangeList: store.state.cmpModelRangeList,
       subTitleList: [],
       accounting: accounting,
       modifyCarLane: {
@@ -157,7 +159,6 @@ export default {
       this.$emit('closeModifyColumnDialog', false)
     },
     changeBrand: function (dateId) {
-      debugger
       this.titleList = []
       this.subTitleList = []
       this.addRow.seriesOrModel = ''
@@ -242,6 +243,33 @@ export default {
         }
         self.addRow.selectedProduct = self.addRow.productList
       })
+    },
+    changeSeriesOrModel: function (dateId) {
+      this.addRow.productList = []
+      this.addRow.selectedProduct = []
+      this.subTitleList = []
+      this.addRow.eseriesOrEngine = ''
+      this.searchRowDetail(dateId)
+      if (!this.addRow.seriesOrModel) {
+        return
+      } else {
+        $('#addMenuRowSeriesOrModel').removeClass('inputErrorTwo')
+        $('#addRowSeriesOrModel').removeClass('inputErrorTwo')
+      }
+
+      if (this.addRow.isBmwProduct) {
+        for (var i in this.bmwESeriesList) {
+          if (this.bmwESeriesList[i].bmwSeries.nameEn === this.addRow.seriesOrModel) {
+            this.subTitleList.push(this.bmwESeriesList[i])
+          }
+        }
+      } else {
+        for (let i in this.cmpModelRangeList) {
+          if (this.cmpModelRangeList[i].model === this.addRow.seriesOrModel) {
+            this.subTitleList.push(this.cmpModelRangeList[i])
+          }
+        }
+      }
     },
     searchRowDetailCommon: function (brand, seriesOrModel, eseriesOrEngine, yearMonth, bwmFlg) {
       if (!brand) {

@@ -22,12 +22,14 @@ const mutations = {
     state.carScreen.rescale()
   },
   [types.SETROW_CARSCREEN] (state, params) {
-    state.carScreen.setRow(params.a,params.b)
+    state.carScreen.setRow(params.a, params.b)
   },
-
-
-
-
+  [types.UPDATE_CMPMODELLIST] (state, params) {
+    state.cmpModelList = params
+  },
+  [types.UPDATE_CMPMODELRANGELIST] (state, params) {
+    state.cmpModelRangeList = params
+  }
 }
 
 export default mutations
