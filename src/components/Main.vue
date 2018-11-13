@@ -231,7 +231,16 @@ export default {
     },
     createArrow () {
       Bus.$emit('createArrow')
-    }
+    },
+    clearVersion: function () {
+      this.version = ''
+      store.commit('CLEAR_CARSCREEN')
+      this.carScreen.rescale()
+      $('#showSavedTime').css('display', 'none')
+      $('.versionCloseIcon').css('display', 'none')
+      $('.priceInfoTitle .saveTime .saveTimeBorderB').css('border-bottom', '1px solid gray')
+      $('#saveVersionModal').modal('hide')
+    },
   },
   mounted () {
     this.changeDate()
@@ -314,13 +323,14 @@ export default {
   }
 
   .versionCloseIcon {
-    position: absolute;
-    top: 5px;
-    right: 18px;
+    position: fixed;
+    top: 100px;
+    right: 10px;
     width: 15px;
     height: 14px;
     background: url(../assets/images/sixDel.png) no-repeat 0px 0px;
     background-size: contain;
+    cursor: pointer;
     z-index: 999;
   }
 
