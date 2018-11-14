@@ -101,7 +101,7 @@ export default {
       // $('.loadingDiv').show();
       self.$http.post('priceladder/saveVersion', route).then(res => {
         if (res.status == 200) {
-          this.$emit('closeSaveVersionModifyNewColumn', route)
+          this.$emit('closeSaveVersion', route)
         }
       })
       // $.ajax({
