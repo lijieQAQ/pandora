@@ -132,7 +132,7 @@
 
       <span slot="footer" class="dialog-footer"></span>
     </el-dialog>
-    <add-new-vehicle-assem 
+    <add-new-vehicle-assem
       :addNewVehicleAssemVisible="addNewVehicleAssemVisible" :brandList="brandList"
       :bmwBrandList="bmwBrandList" :bmwSeriesList="bmwSeriesList" :cmpBrandList="cmpBrandList"
       :cmpModelList="cmpModelList" :cmpModelRangeList="cmpModelRangeList"
@@ -143,13 +143,12 @@
   </div>
 </template>
 <script>
-  import format from '../common/js/dateFormat'
-  import addNewVehicleAssem from './addNewVehicleAssem'
-  import accounting from 'accounting'
-  import store from '../store'
-  import Bus from '../common/js/Bus'
-  import draggable from 'vuedraggable'
-  import CarScreen from '../common/js/carscreen.js'
+import format from '../common/js/dateFormat'
+import addNewVehicleAssem from './addNewVehicleAssem'
+import accounting from 'accounting'
+import store from '../store'
+import Bus from '../common/js/Bus'
+import draggable from 'vuedraggable'
 export default {
   name: 'addNewVehicleMask',
   data () {
@@ -220,7 +219,7 @@ export default {
     closeAddNewCarModal: function () {
       this.addNewVehicleAssemVisible = false
     },
-    getTitleList: function (titleList) { 
+    getTitleList: function (titleList) {
       this.titleList = titleList;
       console.log(123123123123)
       console.log(this.titleList)
@@ -290,6 +289,7 @@ export default {
     handleDblClick: function (brand, seriesOrModel, eseriesOrEngine, bmwFlg) {
       var self = this
       var nowdate = (new Date()).format('yyyymm')
+      var nowdate = '201809'
       var promise = this.searchRowDetailCommon(
         brand,
         seriesOrModel,
@@ -455,6 +455,7 @@ export default {
       }).then(res => {
         if (res.status == 200) {
           self.cmpModelList = res.data.cmpModelVs
+          store.commit('UPDATE_CMPMODELLIST', res.data.cmpModelVs)
         }
       })
     },
@@ -469,6 +470,7 @@ export default {
       }).then(res => {
         if (res.status == 200) {
           self.cmpModelRangeList = res.data.cmpModelRangeVs
+          store.commit('UPDATE_CMPMODELRANGELIST', res.data.cmpModelRangeVs)
         }
       })
     },
@@ -724,7 +726,7 @@ export default {
   },
   components: {
     addNewVehicleAssem,
-    draggable,
+    draggable
   }
 }
 </script>

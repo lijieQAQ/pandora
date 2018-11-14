@@ -9,7 +9,7 @@
       <div class="select-box" style="position: relative;">
         <div class="versionCloseIcon" @click="clearVersion()"></div>
         <label></label>
-        <el-select class="select" v-model="version" allow-create="" default-first-option placeholder="Select version"
+        <el-select class="select" v-model="version" default-first-option placeholder="Select version"
                    @change="loadVersion(),createArrow()" @clear="clearAll()">
           <el-option
             v-for="item in versionList"
@@ -24,13 +24,6 @@
         <span class="savTimTex">Saved Time:</span>
         <span class="saveTimeBorderB"><b id="showSavedTime">{{nowDate}}</b></span>
       </span>
-      <el-date-picker
-        v-model="value4"
-        type="month"
-        format="MM/yyyy"
-        @change="changeDate"
-        placeholder="选择月">
-      </el-date-picker>
       <div class="checkbox">
         <!-- `checked` 为 true 或 false -->
         <label>
@@ -114,7 +107,18 @@ export default {
     closeClearAll: function () {
       this.clearAllVisible = false
     },
-    closeSaveVersion: function () {
+    closeSaveVersion (route) {
+      if (route != null) {
+        this.getVersionList(new Date())
+        this.initSaveVersionList()
+        for (var k in this.versionList) {
+          var sel = this.versionList[k]
+          if (sel.versionNumber == route.versionNumber) {
+            self.version = sel.id
+            break
+          }
+        }
+      }
       this.saveVersionVisible = false
     },
     changeDate () {
@@ -411,4 +415,5 @@ export default {
     background: linear-gradient(90deg, #2D9DEA 0%, #1464D0 98%);
     color: #fff;
   }
+
 </style>
