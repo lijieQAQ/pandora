@@ -7,6 +7,7 @@
       width='100%'
       top='0vh'
       :show-close = false
+      @open='openAddNewVehicleDialog()'
     >
       <div class="sixColumnTop">
         <h3 class="leftTit">Select Vehicles</h3>
@@ -216,6 +217,105 @@ export default {
 
   },
   methods: {
+    
+    openAddNewVehicleDialog: function () {
+      var self = this
+      setTimeout(function(){
+        // debugger
+        self.menuhub.blockList = [];
+        $('.priceInfoTitle .el-checkbox .el-checkbox__input .el-checkbox__inner').css('background','#f2f3f9');
+        $('.versionArrow').css('background-color','transparent');
+              // 将Main页面的值回传回来
+          for (var x in self.carScreen.carLanes) {
+            var carLane = self.carScreen.carLanes[x];
+            var seriesOrModel = carLane.bmwFlg ?  carLane.seriesNameEn : carLane.model;
+            var eseriesOrEngine = carLane.bmwFlg ?  carLane.eseriesNameEn : carLane.model;
+            var promise  = self.searchRowDetailCommon(
+              carLane.brandNameEn,
+              seriesOrModel,
+              eseriesOrEngine,
+              carLane.yearMonth,
+              carLane.bmwFlg);
+
+            for (var i in carLane.cars) {
+              var findFlg = false;
+              var car = carLane.cars[i];
+              for (var j in prdList) {
+                var dbCar = prdList[j];
+                if (carLane.bmwFlg) {
+                  if (car.model === dbCar.model && car.packageCode === dbCar.packageCode) {
+                    prdList[j] = car;
+                    findFlg = true;
+                    break;
+                  }
+                } else {
+                  if (car.carNameEn === dbCar.carNameEn) {
+                    prdList[j] = car;
+                    findFlg = true;
+                    break;
+                  }
+                }
+              }
+              if (!findFlg) {
+                prdList.push(car);
+              }
+            }
+            var block = {
+              brandNameEn: carLane.brandNameEn,
+              bmwFlg: carLane.bmwFlg,
+              seriesNameEn: carLane.seriesNameEn,
+              eseriesNameEn: carLane.eseriesNameEn,
+              model: carLane.model,
+              packageCode: carLane.packageCode,
+              engine: carLane.engine,
+              yearMonth: carLane.yearMonth,
+              yearMonthForShow: convertYearMonth2Date(carLane.yearMonth),
+              cars: prdList,
+              checkAll: false,
+              isIndeterminate: true,
+              checkedCars: carLane.cars,
+            };
+            self.menuhub.blockList.push(block);
+          }
+
+        $('#sidebar>ul>li>a').each(function() {
+          $(this).parent().find('ul:first').hide();           
+          var currentMenu = $(this);
+          $(this).click(function() {
+            if (currentMenu != null && currentMenu.text() != $(this).text()) {
+              currentMenu.parent().find('ul:first').slideUp();
+            }
+            if (currentMenu != null && currentMenu.text() == $(this).text()) {
+              currentMenu.parent().find('ul:first').slideUp();
+              currentMenu = null;
+            } else {
+              currentMenu = $(this);
+              currentMenu.parent().find('ul:first').slideDown();
+            }
+            return false;
+          });
+        });
+
+        $('#sidebar>ul>li>ul>li>a').each(function() {
+          $(this).parent().find('ul:first').hide();
+          var currentChildMenu = $(this);
+          $(this).click(function() {
+            if (currentChildMenu != null && currentChildMenu.text() != $(this).text()) {
+              currentChildMenu.parent().find('ul:first').slideUp();
+            }
+            if (currentChildMenu != null && currentChildMenu.text() == $(this).text()) {
+              currentChildMenu.parent().find('ul:first').slideUp();
+              currentChildMenu = null;
+            } else {
+              currentChildMenu = $(this);
+              currentChildMenu.parent().find('ul:first').slideDown();
+            }
+            return false;
+          });
+        });
+      },300)
+
+    },
     closeAddNewCarModal: function () {
       this.addNewVehicleAssemVisible = false
     },
@@ -229,48 +329,6 @@ export default {
         message: 'there is no data in this month. Please click on other months.',
         type: 'warning'
       })
-    },
-    showSideList () {
-      var setFlg = false
-      if (setFlg) {
-        return
-      }
-      $('#sidebar>ul>li>a').each(function () {
-        $(this).parent().find('ul:first').hide()
-        currentMenu = $(this)
-        $(this).click(function () {
-          if (currentMenu != null && currentMenu.text() != $(this).text()) {
-            currentMenu.parent().find('ul:first').slideUp()
-          }
-          if (currentMenu != null && currentMenu.text() == $(this).text()) {
-            currentMenu.parent().find('ul:first').slideUp()
-            currentMenu = null
-          } else {
-            currentMenu = $(this)
-            currentMenu.parent().find('ul:first').slideDown()
-          }
-          return false
-        })
-      })
-      $('#sidebar>ul>li>ul>li>a').each(function () {
-        $(this).parent().find('ul:first').hide()
-        currentChildMenu = $(this)
-        $(this).click(function () {
-          if (currentChildMenu != null && currentChildMenu.text() != $(this).text()) {
-            currentChildMenu.parent().find('ul:first').slideUp()
-          }
-          if (currentChildMenu != null && currentChildMenu.text() == $(this).text()) {
-            currentChildMenu.parent().find('ul:first').slideUp()
-            currentChildMenu = null
-          } else {
-            currentChildMenu = $(this)
-            currentChildMenu.parent().find('ul:first').slideDown()
-          }
-          return false
-        })
-      })
-
-      setFlg = true
     },
 
     closeDialog () {

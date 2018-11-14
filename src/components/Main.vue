@@ -122,16 +122,16 @@ export default {
       this.saveVersionVisible = false
     },
     changeDate () {
-      let monthsen = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-      let monthsnumber = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
-      setTimeout(() => {
-        let arr = $('.el-date-editor .el-input__inner')[0].value.split('/')
-        monthsnumber.forEach((item, i) => {
-          if (item === arr[0]) {
-            $('.el-date-editor .el-input__inner')[0].value = monthsen[i] + arr[1]
-          }
-        })
-      }, 10)
+      // let monthsen = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      // let monthsnumber = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+      // setTimeout(() => {
+      //   let arr = $('.el-date-editor .el-input__inner')[0].value.split('/')
+      //   monthsnumber.forEach((item, i) => {
+      //     if (item === arr[0]) {
+      //       $('.el-date-editor .el-input__inner')[0].value = monthsen[i] + arr[1]
+      //     }
+      //   })
+      // }, 10)
     },
     confirmClearAll: function (param) {
       if (param === 'clearAll') {
@@ -260,7 +260,7 @@ export default {
 <style scoped lang="less">
   .main {
     width: 100%;
-    height: 100%;
+    // height: 100%;
     position: absolute;
   }
 
@@ -392,7 +392,7 @@ export default {
 
   .priceInfoTitle .buttonBox {
     position: relative;
-    margin-left: 14%;
+    margin-left: 26%;
   }
 
   .priceInfoTitle .buttonBox .btn {

@@ -52,6 +52,7 @@ export default {
     }).then(res => {
       if (res.status == 200) {
         localStorage.token = res.data.accessKey
+        localStorage.username = res.data.username;
         // this.$router.push({path: `/priceLadder`})
         this.$router.push({path: `/priceLadder`})
       }

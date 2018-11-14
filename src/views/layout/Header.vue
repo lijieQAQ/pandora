@@ -20,10 +20,9 @@
 
           <li>
             <div class="dropdown">
-              <button type="button" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown"><span class="caret"></span> </button>
+              <button type="button" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">{{username}}<span class="caret"></span> </button>
               <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                <!-- <li role="presentation"> <a role="menuitem" tabindex="-1" href="#">Setting</a> </li> -->
-                <li role="presentation"> <a role="menuitem" tabindex="-1" href="javascript:void(0)" onClick="commonJs.logout();">Exit</a> </li>
+                <li role="presentation"> <a role="menuitem" tabindex="-1" href="javascript:void(0)">Exit</a> </li>
               </ul>
             </div>
           </li>
@@ -36,10 +35,14 @@
 <script>
 export default {
   name: 'Header',
+  username: '',
   data () {
     return {
       activeIndex: 'priceLadder'
     }
+  },
+  created(){
+    this.username = localStorage.username
   },
   methods: {
     handleSelect () {
@@ -95,6 +98,31 @@ export default {
     }
     .price-report ul {
       margin-left:10px;
+    }
+    .master-user .btn {
+      padding: 0;
+      font-size: 20px;
+      background: #fff;
+      margin-top: -4px;
+    }
+    .master-user .dropdown .caret {
+      background: url(../../assets/images/Dropdown.png) no-repeat;
+      width: 12px;
+      height: 7px;
+      border: none;
+      margin-left: 5px;
+    }
+    .caret::after {
+      content: "";
+      position: absolute;
+      top: -6px;
+      right: -4px;
+      border-top: 4px solid #fff;
+      border-right: 4px solid transparent;
+      border-left: 4px solid transparent;
+    }
+    .master-user ul li{
+      list-style: none;
     }
   }
 </style>

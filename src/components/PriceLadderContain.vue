@@ -2,21 +2,24 @@
   <div>
     <div class="priceLadderNoData" v-if="carScreen.curCarLanes.length == 0 && carScreen.currentPageIndex == 0">
       <img src="../assets/images/nodataNew.png" data-toggle="modal" data-target="#AddNewVehicle"
-           style="width:123px;height:123px">
+           style="width:123px;height:123px" @click="addNewVehicleMaskVisible=true" >
       <span class="addNewVeh">Add New Vehicle</span>
     </div>
     <price-box v-if="carScreen.curCarLanes.length > 0"></price-box>
+    <add-new-vehicle-mask :addNewVehicleMaskVisible="addNewVehicleMaskVisible" @closeDialog="closeDialog"></add-new-vehicle-mask>
   </div>
 </template>
 
 <script>
 import PriceBox from './PriceBox'
 import Bus from '../common/js/Bus'
+import addNewVehicleMask from './addNewVehicleMask'
 
 export default {
   name: 'PriceLadderContain',
   data () {
     return {
+      addNewVehicleMaskVisible: false,
       carScreen: this.$store.state.carScreen
     }
   },
@@ -28,7 +31,13 @@ export default {
     })
   },
   components: {
-    PriceBox
+    PriceBox,
+    addNewVehicleMask
+  },
+  methods:{
+    closeDialog:function () {
+      this.addNewVehicleMaskVisible = false
+    }
   }
 }
 </script>
