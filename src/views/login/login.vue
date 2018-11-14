@@ -1,110 +1,161 @@
 <template>
-  <div class="login-container">
-    <div class="logo">
-      <div class="version">V 1.0.1</div>
-      <img src="../../assets/images/panLogo1.png"></div>
-    <div class="login-main">
-      <p class="p2"> Welcome to Pandora </p>
-      <form id="app">
-        <div class="input-box user-box">
-          <div class="tip">
+  <div class='login-container'>
+    <div class='logo'>
+      <div class='version'>V 1.0.1</div>
+      <img src='../../assets/images/panLogo1.png'></div>
+    <div class='login-main'>
+      <p class='p2'> Welcome to Pandora </p>
+      <form id='app'>
+        <div class='input-box user-box'>
+          <div class='tip'>
             <p>Email</p>
           </div>
-          <div class="input_clear"><a href="#" class="close" data-dismiss="modal" aria-hidden="true"></a></div>
-          <img src="../../assets/images/email1.png">
-          <input type="text" class="form-control userName" v-model="username" name="Email">
-          <div class="border"></div>
+          <div class='input_clear'><a href='#' class='close' data-dismiss='modal' aria-hidden='true'></a></div>
+          <img src='../../assets/images/email1.png'>
+          <input type='text' class='form-control userName' v-model='username' name='Email'>
+          <div class='border'></div>
         </div>
-        <div class="input-box password-box">
-          <div class="tip">
+        <div class='input-box password-box'>
+          <div class='tip'>
             <p>Password</p>
           </div>
-          <div class="input_clear"><a href="#" class="close" data-dismiss="modal" aria-hidden="true"></a></div>
-          <img src="images/pwd1.png">
-          <input type="password" class="form-control password" maxlength="20" v-model="password" name="Password">
-          <div class="border"></div>
+          <div class='input_clear'><a href='#' class='close' data-dismiss='modal' aria-hidden='true'></a></div>
+          <img src='../../assets/images/pwd1.png'>
+          <input type='password' class='form-control password' maxlength='20' v-model='password' name='Password'>
+          <div class='border'></div>
         </div>
-        <div class="notice-error">
-          <span v-model="serverError" v-cloak>{{ serverError }}</span>
+        <div class='notice-error'>
+          <span v-model='serverError' v-cloak>{{ serverError }}</span>
         </div>
-        <button type="button" class="login-submit" v-on:click="login()"><span class="text" id="normalBtn">Login <img
-          src="../../assets/images/login-next.png"></span> <span class="text loading" id="clickBtn">Login...</span>
+        <button type='button' class='login-submit' v-on:click='login()'><span class='text' id='normalBtn'>Login <img
+          src='../../assets/images/login-next.png'></span> <span class='text loading' id='clickBtn'>Login...</span>
         </button>
-        <div class="borderBlue"></div>
-        <div class="contact">Have a problem? <a href="mailto:Ying.YZ.Zhang@bmw.com">Contact us.</a></div>
+        <div class='borderBlue'></div>
+        <div class='contact'>Have a problem? <a href='mailto:Ying.YZ.Zhang@bmw.com'>Contact us.</a></div>
       </form>
     </div>
   </div>
 </template>
 
 <script>
-
+import commonJs from '@/common/js/common'
 export default {
   name: 'login',
-  created () {
-    this.changeBgimg()
+  data () {
+    return {
+      serverError: '',
+      password: '',
+      username: ''
+    }
   },
-  mounted () {
-    this.$http.post('priceladder_webservice/login', {
-      username: 'admin@123.com',
-      password: '123456',
-      rememberMe: 'yes'
-    }).then(res => {
-      if (res.status == 200) {
-        localStorage.token = res.data.accessKey
-        localStorage.username = res.data.username
-        // this.$router.push({path: `/priceLadder`})
-        this.$router.push({path: `/priceLadder`})
+  created () {
+    console.log(commonJs)
+    this.changeBgimg()
+    var initUser = function () {
+      var esString = commonJs.getCookie('PANDORA.ai11231SDIU1998dNDWOMn1131nLP')
+      if (esString) {
+        this.$http.post('priceladder_webservice/init', {
+          'encryptString': esString
+        }).then(data => {
+          if (data) {
+            if (data['decryptName']) {
+              self.username = data['decryptName']
+            }
+            if (data['decryptPass']) {
+              self.password = data['decryptPass']
+            }
+          } else {
+            self.serverError = commonJs.handleAjaxError(data)
+          }
+        })
       }
-    })
+    }
+    initUser()
+  },
+  beforeDestroy () {
+    $('body').css(
+      {
+        'background': '#fff'
+      }
+    )
   },
   methods: {
     changeBgimg: function () {
       const bgImgs = [
-        'url(../../assets/images/login-bg0.png)',
-        'url(../../assets/images/login-bg1.png)',
-        'url(../../assets/images/login-bg2.png)',
-        'url(../../assets/images/login-bg3.png)'
-      ];
-      var Index = Math.round(Math.random() * (bgImgs.length - 1));
-      console.log()
-      console.log("body")
+        'url(' + require('../../assets/images/login-bg0.png') + ')',
+        'url(' + require('../../assets/images/login-bg1.png') + ')',
+        'url(' + require('../../assets/images/login-bg2.png') + ')',
+        'url(' + require('../../assets/images/login-bg3.png') + ')'
+      ]
+      var Index = Math.round(Math.random() * (bgImgs.length - 1))
       $('body').css(
         {
-          'background': bgImgs[Index],
+          'background': bgImgs[Index]
           // 'background-size': 'cover'
         }
-      );
+      )
     },
     login: function () {
       var self = this
       this.serverError = ''
-      $("#normalBtn").css("display", "none");
-      $("#clickBtn").css("display", "block");
-      const wsUrl = 'priceladder_webservice/login'
-      self.$http.get(wsUrl, {
-        params: JSON.stringify({
-          'username': self.username,
-          'password': self.password,
-          'rememberMe': function () {
-            if ($("input[name='rememberMe']").is(':checked')) {
-              return 'yes'
-            } else {
-              return 'no'
-            }
-          }()
-        })
+      $('#normalBtn').css('display', 'none')
+      $('#clickBtn').css('display', 'block')
+      this.$http.post('priceladder_webservice/login', {
+        'username': self.username,
+        'password': self.password,
+        'rememberMe': function () {
+          if ($('input[name="rememberMe"]').is(':checked')) {
+            return 'yes'
+          } else {
+            return 'no'
+          }
+        }()
       }).then(res => {
         if (res.status == 200) {
-          self.afterLogin(res.data)
+          this.afterLogin(res.data)
         }
       })
+    },
+    afterLogin (data) {
+      switch (data.resCode) {
+        case 0:
+          commonJs.setCookie('role', data.role, 90)
+          commonJs.setCookie('accessKey', data.accessKey, 90)
+          commonJs.setCookie('userId', data.userId, 90)
+          commonJs.setCookie('displayName', data.displayName, 90)
+          commonJs.setCookie('companyId', data.companyId, 90)
+          commonJs.setCookie('username', data.username, 90)
+          localStorage.token = data.accessKey
+          localStorage.username = data.username
+          if (data['rememberName']) {
+            commonJs.setCookie('PANDORA.ai11231SDIU1998dNDWOMn1131nLP', data['rememberValue'], 24 * 60)
+          } else {
+            commonJs.setCookie('PANDORA.ai11231SDIU1998dNDWOMn1131nLP', '', 0)
+          }
+          if (data.firstLogin) {
+            // window.location.href = 'changePassword.html'
+          } else {
+            this.$router.push({path: `/priceLadder`})
+          }
+          break
+        case -1:
+          this.serverError = data.errMsg
+          $('#normalBtn').css('display', 'block')
+          $('#clickBtn').css('display', 'none')
+          break
+        default:
+          $('#normalBtn').css('display', 'block')
+          $('#clickBtn').css('display', 'none')
+          // 认证失败，系统内部错误。
+          this.serverError = 'Authentication Failed, System Error.'
+          break
+      }
     }
   }
 }
 </script>
 
-<style scoped lang="less">
+<style scoped lang='less'>
   body {
     font-family: 'bmwRg';
     width: 100%;

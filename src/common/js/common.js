@@ -1,19 +1,9 @@
 // $(document).ready(function () {
 //   if (commonJs.getCookie('accessKey')) {
-//     // Logged in
-//     //        localStorage.token = getCookie('accessKey')
-//     //        localStorage.role = getCookie('role')
-//     //        localStorage.displayName = decodeURI(getCookie('displayName'))
-//     //        localStorage.companyId = getCookie('companyId')
-//     //        this.userName = localStorage.displayName
-//     //        this.menuList = this.generateMenuList(localStorage.role)
-//   } else if (window.location.pathname != '/front/login.html') {
-//     // Not logged in yet or JWT was expired.
-//     // Go to login page
-//     window.location.href = '/front/login.html'
+//   } else if (window.location.pathname != '/login') {
+//     window.location.href = '/login'
 //   }
-// });
-
+// })
 var commonJs = {
   listSize: 13,
   // masterServerIp: 'https://tms.56pip.com:50443/gnl/core',
@@ -162,13 +152,12 @@ var commonJs = {
       async: false,
       beforeSend: function (request) {
         request.setRequestHeader('Authorization', localStorage.token)
-      },
+      }
     }).success(function (res) {
 
     }).error(function (error) {
 
     })
   }
-
 }
-
+export default commonJs

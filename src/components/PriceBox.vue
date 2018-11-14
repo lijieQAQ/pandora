@@ -827,13 +827,13 @@ export default {
             discountPercentage: car.discountPercentage,
       }
       this.clearValidator();
-      
+
       this.watchFlag = false;
     },
     clearValidator : function() {
       this.$validator.reset();
       this.errors.clear();
-      
+
     },
 
   },

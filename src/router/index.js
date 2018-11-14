@@ -6,8 +6,6 @@ import priceLadder from '@/views/priceLadder/priceLadder'
 import bmwProduct from '@/views/bmwProduct/bmwProduct'
 import MasterDataBmw from '@/components/MasterDataBmw'
 import MasterDataCmp from '@/components/MasterDataCmp'
-
-
 Vue.use(Router)
 
 export default new Router({
