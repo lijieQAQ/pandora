@@ -142,14 +142,11 @@ export default {
       cmpModelRangeList: store.state.cmpModelRangeList,
       subTitleList: [],
       accounting: accounting,
-      modifyCarLane: {
-        isAddCarLane: false,
-        modifyIdx: 0
-      },
       carScreen: this.$store.state.carScreen
     }
   },
   mounted () {
+    console.log(this.modifyCarLane)
     // Bus.$on('carColumnDate', carColumnDate => {
     //   this.modifyColumnDate = carColumnDate
     // })
@@ -441,7 +438,11 @@ export default {
     brandList: Array,
     cmpBrandList: Array,
     bmwBrandList: Array,
-    bmwSeriesList: Array
+    bmwSeriesList: Array,
+    modifyCarLane: {
+      isAddCarLane: Boolean,
+      modifyIdx: Number
+    },
   },
   components: {
     modifyOneCar

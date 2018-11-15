@@ -217,11 +217,10 @@ export default {
 
   },
   methods: {
-    
+
     openAddNewVehicleDialog: function () {
       var self = this
       setTimeout(function(){
-        debugger
         self.menuhub.blockList = [];
         $('.priceInfoTitle .el-checkbox .el-checkbox__input .el-checkbox__inner').css('background','#f2f3f9');
         $('.versionArrow').css('background-color','transparent');
@@ -237,8 +236,8 @@ export default {
               carLane.yearMonth,
               carLane.bmwFlg);
             var prdList = []
-            
-            
+
+
             promise.then(function (val) {
               prdList = val
               for (var i in carLane.cars) {
@@ -280,12 +279,12 @@ export default {
                 checkedCars: carLane.cars,
               };
               self.menuhub.blockList.push(block);
-            })  
-            
+            })
+
           }
 
         $('#sidebar>ul>li>a').each(function() {
-          $(this).parent().find('ul:first').hide();           
+          $(this).parent().find('ul:first').hide();
           var currentMenu = $(this);
           $(this).click(function() {
             if (currentMenu != null && currentMenu.text() != $(this).text()) {
