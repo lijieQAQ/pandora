@@ -155,7 +155,7 @@
                    @closeDeleteColumnDialog='closeDeleteColumnDialog'></delete-column>
 
     <modifyColumnContent :modifyColumnContentVisible='modifyColumnContentVisible'
-    @closeModifyColumnContent='closeModifyColumnContent'></modifyColumnContent>
+    @closeModifyColumnContent='closeModifyColumnContent' :editCar='editCar'></modifyColumnContent>
 
   </div>
 </template>
@@ -827,7 +827,6 @@ export default {
             discountPercentage: car.discountPercentage,
       }
       this.clearValidator();
-
       this.watchFlag = false;
     },
     clearValidator : function() {

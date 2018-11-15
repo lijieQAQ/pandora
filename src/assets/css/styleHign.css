@@ -258,3 +258,12 @@ body {
     width: 337px;
     height: 23px !important;
   }
+  #editCar .editModal .modal-content .select-box .date .el-input__prefix i {
+    display: none;
+  }
+  #editCar .editModal .modal-content .select-box .date .el-input__prefix .el-icon-date:before {
+    content: "\E608";
+    }
+  #editCar .editModal .modal-content .select-box .date input{
+    float:left;
+  }

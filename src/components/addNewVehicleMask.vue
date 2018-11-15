@@ -1282,4 +1282,5 @@ export default {
   .AddNewVehicleBox .vehicleCheckBox .el-checkbox-group .price {
     float: right;
   }
+
 </style>
