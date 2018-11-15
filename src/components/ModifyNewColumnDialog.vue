@@ -143,8 +143,8 @@ export default {
       subTitleList: [],
       accounting: accounting,
       modifyCarLane: {
-        isAddCarLane: true,
-        modifyIdx: -1
+        isAddCarLane: false,
+        modifyIdx: 0
       },
       carScreen: this.$store.state.carScreen
     }
@@ -414,7 +414,6 @@ export default {
           yearMonth: addRowDateValue.format('yyyymm'),
           yearMonthForShow: addRowDateValue
         }
-
         if (this.modifyCarLane.isAddCarLane) {
           store.commit('ADD_CARSCREEN', carLane)
           // this.carScreen.addCarLane(carLane);

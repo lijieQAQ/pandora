@@ -244,7 +244,7 @@ export default {
       $('.versionCloseIcon').css('display', 'none')
       $('.priceInfoTitle .saveTime .saveTimeBorderB').css('border-bottom', '1px solid gray')
       $('#saveVersionModal').modal('hide')
-    },
+    }
   },
   mounted () {
     this.changeDate()
