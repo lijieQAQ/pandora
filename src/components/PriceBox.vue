@@ -145,7 +145,7 @@
       </li>
     </ul>
     <div class="clearfloat"></div>
-    <modify-new-column-dialog :brandList = "brandList" :cmpBrandList="cmpBrandList" :bmwBrandList="bmwBrandList"
+    <modify-new-column-dialog :modifyCarLane='modifyCarLane' :brandList = "brandList" :cmpBrandList="cmpBrandList" :bmwBrandList="bmwBrandList"
     :modifyNewColumnDialogVisible="modifyNewColumnDialogVisible" :bmwSeriesList="bmwSeriesList"
     @closeModifyColumnDialog="closeModifyColumnDialog" :addRow = "addRow"></modify-new-column-dialog>
 

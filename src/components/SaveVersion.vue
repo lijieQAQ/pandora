@@ -23,7 +23,7 @@
                   <div id="saveInput">
                     <el-select v-model="saveVersion.version" placeholder="Please Select Version"
                                @change="changeSaveVersion($event)">
-                      <el-option v-for="item in saveVersion.versionList" :label="item.versionName" :key="item"
+                      <el-option v-for="(item, m) in saveVersion.versionList" :label="item.versionName" :key="m"
                                  :value="item.versionNumber"><span style="float:right">{{ item.yearMonth }}</span>{{
                         item.versionName }}
                       </el-option>
