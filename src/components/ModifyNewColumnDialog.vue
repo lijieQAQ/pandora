@@ -398,6 +398,7 @@ export default {
       }
     },
     confirmAddRow: function () {
+      debugger
       if (this.addRow.selectedProduct.length > 0) {
         var addRowDateValue = this.modifyColumnDate
         var carLane = {
