@@ -6,13 +6,13 @@
       class="sixColumnMain"
       width='100%'
       top='0vh'
-      :show-close = false
+      :show-close=false
       @open='openAddNewVehicleDialog()'
     >
       <div class="sixColumnTop">
         <h3 class="leftTit">Select Vehicles</h3>
         <button type="submit" class="sixNext" style="display: block;"
-          @click="handleSubmit()">Compare
+                @click="handleSubmit()">Compare
         </button>
         <a href="javascript:void(0)" class="addNewVehicleBtn" @click="addNewVehicleAssemVisible = true">Add New
           Vehicle</a>
@@ -45,7 +45,7 @@
                     <ul>
                       <li v-for="(detail, k) in subMenu.eseriesOrEngineList" :key="k">
                         <el-tooltip :open-delay=1000 class="item" effect="dark" v-bind:content="detail" placement="top"
-                          offsetY="10">
+                                    offsetY="10">
                           <el-button
                             v-on:click="handleDblClick(menu.brandNameEn, subMenu.seriesOrModel, detail, menu.bmwFlg)"
                             class="eseriesOrModerRangeName">{{detail}}
@@ -107,15 +107,15 @@
                     </div>
                     <template>
                       <el-checkbox :indeterminate="carLane.isIndeterminate" v-model="carLane.checkAll"
-                          @change="handleCheckAllChange($event, carLane)">{{carLane.bmwFlg ?
+                                   @change="handleCheckAllChange($event, carLane)">{{carLane.bmwFlg ?
                         carLane.eseriesNameEn : carLane.engine}}
                       </el-checkbox>
                       <el-checkbox-group v-model="carLane.checkedCars"
-                          @change="handleCheckedCarsChange($event, carLane)">
+                                         @change="handleCheckedCarsChange($event, carLane)">
                         <el-checkbox v-for="(car,m) in carLane.cars" :label="car" :key="m" :value="car">
                           <p class="text">
                             <el-tooltip :open-delay=1000 class="item" effect="dark" v-bind:content="car.carNameEn"
-                                  placement="top-start">
+                                        placement="top-start">
                               <el-button class="name">{{car.carNameEn}}</el-button>
                             </el-tooltip>
                             <span class="price">{{accounting.formatMoney(car.rrPrice, '¥', 0)}}</span>
@@ -139,7 +139,7 @@
       :cmpModelList="cmpModelList" :cmpModelRangeList="cmpModelRangeList"
       :bmwESeriesList="bmwESeriesList" :menuhub="menuhub"
       @closeAddNewCarModal="closeAddNewCarModal"
-      v-on:getTitleList = "titleList">
+      v-on:getTitleList="titleList">
     </add-new-vehicle-assem>
   </div>
 </template>
@@ -150,9 +150,10 @@ import accounting from 'accounting'
 import store from '../store'
 import Bus from '../common/js/Bus'
 import draggable from 'vuedraggable'
+
 export default {
   name: 'addNewVehicleMask',
-  data () {
+  data() {
     return {
       addNewVehicleAssemVisible: false,
       date: [new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date()],
@@ -190,18 +191,17 @@ export default {
       cmpModelList: [],
       cmpModelRangeList: [],
       brandList: [],
-      titleList:[],
-      subTitleList:[],
-      d3List:[],
-      priceBoxWidth:0,
+      titleList: [],
+      subTitleList: [],
+      d3List: [],
+      priceBoxWidth: 0,
       accounting: accounting,
-      carScreen: this.$store.state.carScreen
     }
   },
   props: {
     addNewVehicleMaskVisible: Boolean
   },
-  created () {
+  created() {
     // this.carScreen = new CarScreen();
     this.getBmwBrandList()
     this.getBmwSeriesList()
@@ -210,83 +210,80 @@ export default {
     this.getCmpModelList()
     this.getCmpModelRangeList()
   },
-  mounted () {
+  mounted() {
     this.incomponent()
   },
-  updated () {
+  updated() {
 
   },
   methods: {
-
     openAddNewVehicleDialog: function () {
       var self = this
-      setTimeout(function(){
-        self.menuhub.blockList = [];
-        $('.priceInfoTitle .el-checkbox .el-checkbox__input .el-checkbox__inner').css('background','#f2f3f9');
-        $('.versionArrow').css('background-color','transparent');
-              // 将Main页面的值回传回来
-          for (var x in self.carScreen.carLanes) {
-            var carLane = self.carScreen.carLanes[x];
-            var seriesOrModel = carLane.bmwFlg ?  carLane.seriesNameEn : carLane.model;
-            var eseriesOrEngine = carLane.bmwFlg ?  carLane.eseriesNameEn : carLane.model;
-            var promise  = self.searchRowDetailCommon(
-              carLane.brandNameEn,
-              seriesOrModel,
-              eseriesOrEngine,
-              carLane.yearMonth,
-              carLane.bmwFlg);
-            var prdList = []
-
-
-            promise.then(function (val) {
-              prdList = val
-              for (var i in carLane.cars) {
-                var findFlg = false;
-                var car = carLane.cars[i];
-                for (var j in prdList) {
-                  var dbCar = prdList[j];
-                  if (carLane.bmwFlg) {
-                    if (car.model === dbCar.model && car.packageCode === dbCar.packageCode) {
-                      prdList[j] = car;
-                      findFlg = true;
-                      break;
-                    }
-                  } else {
-                    if (car.carNameEn === dbCar.carNameEn) {
-                      prdList[j] = car;
-                      findFlg = true;
-                      break;
-                    }
+      setTimeout(function () {
+        self.menuhub.blockList = []
+        $('.priceInfoTitle .el-checkbox .el-checkbox__input .el-checkbox__inner').css('background', '#f2f3f9');
+        $('.versionArrow').css('background-color', 'transparent');
+        // 将Main页面的值回传回来
+        for (var x in self.carScreen.carLanes) {
+          var carLane = self.carScreen.carLanes[x];
+          var seriesOrModel = carLane.bmwFlg ? carLane.seriesNameEn : carLane.model;
+          var eseriesOrEngine = carLane.bmwFlg ? carLane.eseriesNameEn : carLane.model;
+          var promise = self.searchRowDetailCommon(
+            carLane.brandNameEn,
+            seriesOrModel,
+            eseriesOrEngine,
+            carLane.yearMonth,
+            carLane.bmwFlg)
+          var prdList = []
+          promise.then(function (val) {
+            prdList = []
+            for (var i in carLane.cars) {
+              var findFlg = false
+              var car = carLane.cars[i]
+              for (var j in prdList) {
+                var dbCar = prdList[j]
+                if (carLane.bmwFlg) {
+                  if (car.model === dbCar.model && car.packageCode === dbCar.packageCode) {
+                    prdList[j] = car
+                    findFlg = true
+                    break
+                  }
+                } else {
+                  if (car.carNameEn === dbCar.carNameEn) {
+                    prdList[j] = car
+                    findFlg = true
+                    break
                   }
                 }
-                if (!findFlg) {
-                  prdList.push(car);
-                }
               }
-              var block = {
-                brandNameEn: carLane.brandNameEn,
-                bmwFlg: carLane.bmwFlg,
-                seriesNameEn: carLane.seriesNameEn,
-                eseriesNameEn: carLane.eseriesNameEn,
-                model: carLane.model,
-                packageCode: carLane.packageCode,
-                engine: carLane.engine,
-                yearMonth: carLane.yearMonth,
-                yearMonthForShow: carLane.yearMonth,
-                cars: prdList,
-                checkAll: false,
-                isIndeterminate: true,
-                checkedCars: carLane.cars,
-              };
-              self.menuhub.blockList.push(block);
-            })
+              if (!findFlg) {
+                prdList.push(car);
+              }
+            }
+            var block = {
+              brandNameEn: carLane.brandNameEn,
+              bmwFlg: carLane.bmwFlg,
+              seriesNameEn: carLane.seriesNameEn,
+              eseriesNameEn: carLane.eseriesNameEn,
+              model: carLane.model,
+              packageCode: carLane.packageCode,
+              engine: carLane.engine,
+              yearMonth: carLane.yearMonth,
+              yearMonthForShow: carLane.yearMonth,
+              cars: prdList,
+              checkAll: false,
+              isIndeterminate: true,
+              checkedCars: carLane.cars,
+            };
+            self.menuhub.blockList.push(block);
+          })
 
-          }
+        }
 
-        $('#sidebar>ul>li>a').each(function() {
+        $('#sidebar>ul>li>a').each(function () {
           $(this).parent().find('ul:first').hide();
           var currentMenu = $(this);
-          $(this).click(function() {
+          $(this).click(function () {
             if (currentMenu != null && currentMenu.text() != $(this).text()) {
               currentMenu.parent().find('ul:first').slideUp();
             }
@@ -301,10 +298,10 @@ export default {
           });
         });
 
-        $('#sidebar>ul>li>ul>li>a').each(function() {
+        $('#sidebar>ul>li>ul>li>a').each(function () {
           $(this).parent().find('ul:first').hide();
           var currentChildMenu = $(this);
-          $(this).click(function() {
+          $(this).click(function () {
             if (currentChildMenu != null && currentChildMenu.text() != $(this).text()) {
               currentChildMenu.parent().find('ul:first').slideUp();
             }
@@ -318,7 +315,7 @@ export default {
             return false;
           });
         });
-      },300)
+      }, 300)
 
     },
     closeAddNewCarModal: function () {
@@ -334,7 +331,7 @@ export default {
       })
     },
 
-    closeDialog () {
+    closeDialog() {
       this.$emit('closeDialog', false)
     },
     getMenuhubBgColorClass: function (brand) {
@@ -385,6 +382,7 @@ export default {
         isIndeterminate: true,
         checkedCars: prdList
       }
+      de
       this.menuhub.blockList.push(block)
     },
     searchRowDetailCommon: function (brand, seriesOrModel, eseriesOrEngine, yearMonth, bwmFlg) {
@@ -632,7 +630,7 @@ export default {
         store.commit('ADD_CARSCREEN', block)
       }
 
-      store.commit('UPDATE_CARSCREEN',this.carScreen);
+      store.commit('UPDATE_CARSCREEN', this.carScreen);
 
       this.$emit('closeDialog', false)
       Bus.$emit('operating', 'compare')
@@ -643,34 +641,34 @@ export default {
       }, 100)
 
     },
-    createArrow : function () {
-        // 确定箭头坐标
+    createArrow: function () {
+      // 确定箭头坐标
       var priceBoxWidth = null;
-      if(window.screen.width>1000){
+      if (window.screen.width > 1000) {
         priceBoxWidth = 1850;
-      }else{
+      } else {
 
       }
 
       var grid = this.carScreen.curCarLanes.length;
-      var column = grid <=3 ? 3 : this.carScreen.curCarLanes.length;
+      var column = grid <= 3 ? 3 : this.carScreen.curCarLanes.length;
       var priceWidth = null;
 
-      if(window.screen.width>1500){
-        if(column == 3){
-          priceWidth = ((priceBoxWidth * 0.92) / column )* 0.69 * 0.17;
-        }else if(column == 4){
-          priceWidth = ((priceBoxWidth * 0.92) / column )* 0.64 * 0.16;
-        }else{
-          priceWidth = ((priceBoxWidth * 0.92) / column )* 0.63 * 0.15;
+      if (window.screen.width > 1500) {
+        if (column == 3) {
+          priceWidth = ((priceBoxWidth * 0.92) / column) * 0.69 * 0.17;
+        } else if (column == 4) {
+          priceWidth = ((priceBoxWidth * 0.92) / column) * 0.64 * 0.16;
+        } else {
+          priceWidth = ((priceBoxWidth * 0.92) / column) * 0.63 * 0.15;
         }
-      }else{
-        if(column == 3){
-          priceWidth = ((priceBoxWidth * 0.92) / column )* 0.65 * 0.16;
-        }else if(column == 4){
-          priceWidth = ((priceBoxWidth * 0.92) / column )* 0.61 * 0.15;
-        }else{
-          priceWidth = ((priceBoxWidth * 0.92) / column )* 0.59 * 0.14;
+      } else {
+        if (column == 3) {
+          priceWidth = ((priceBoxWidth * 0.92) / column) * 0.65 * 0.16;
+        } else if (column == 4) {
+          priceWidth = ((priceBoxWidth * 0.92) / column) * 0.61 * 0.15;
+        } else {
+          priceWidth = ((priceBoxWidth * 0.92) / column) * 0.59 * 0.14;
         }
       }
 
@@ -678,112 +676,112 @@ export default {
       var y1 = -15, y2 = 0;
 
       this.d3List = [];
-        for(var j in this.carScreen.curCarLanes){
-          var mergeFlag = [];
-          var mergeFlagTwo  = [];
-          var Lanes = this.carScreen.curCarLanes[j];
-          var leftCars = Lanes.ins.cars;
-          var rightCars = Lanes.column.cars;
-          var d3Lanes = [];
-          for(var m in leftCars){
-            var car = leftCars[m];
-            var carpre = null;
-            if(m > 0){
-              carpre = leftCars[m - 1];
-            }
-            car.rightBottomPer = null;
-            car.leftBottomPer = null;
-            car.topReduce = null;
-            car.topKwShow = null;
-              // 计算箭头坐标
-            //   if(car.rrPrice < car.tsPrice){
-            //   y1 = car.top;
-            // }else{
-            //   y1 = car.top + 30;
-            // }
-            y1 = car.top + 30;
-            if(car.mergename != " "){
-            if(carpre != null && carpre.top == car.top){
+      for (var j in this.carScreen.curCarLanes) {
+        var mergeFlag = [];
+        var mergeFlagTwo = [];
+        var Lanes = this.carScreen.curCarLanes[j];
+        var leftCars = Lanes.ins.cars;
+        var rightCars = Lanes.column.cars;
+        var d3Lanes = [];
+        for (var m in leftCars) {
+          var car = leftCars[m];
+          var carpre = null;
+          if (m > 0) {
+            carpre = leftCars[m - 1];
+          }
+          car.rightBottomPer = null;
+          car.leftBottomPer = null;
+          car.topReduce = null;
+          car.topKwShow = null;
+          // 计算箭头坐标
+          //   if(car.rrPrice < car.tsPrice){
+          //   y1 = car.top;
+          // }else{
+          //   y1 = car.top + 30;
+          // }
+          y1 = car.top + 30;
+          if (car.mergename != " ") {
+            if (carpre != null && carpre.top == car.top) {
               mergeFlag.push(carpre.numberFlag);
-                 //第一种合并情况左列车有rightBottomPer标识的时候，右下角percent显示
-                 //第一种合并情况左列车有leftBottomPer标识的时候，左下角percent显示
-                 car.rightBottomPer = "true";
-                 carpre.leftBottomPer = "true";
+              //第一种合并情况左列车有rightBottomPer标识的时候，右下角percent显示
+              //第一种合并情况左列车有leftBottomPer标识的时候，左下角percent显示
+              car.rightBottomPer = "true";
+              carpre.leftBottomPer = "true";
             }
-              mergeFlag.push(car.numberFlag);
-            }
-
-            if(carpre != null && carpre.rrPrice == car.rrPrice && carpre.top != car.top && carpre.mergename == " "){
-              //第二种合并情况左列车有topReduce标识的时候，top值减少20
-              //第二种合并情况左列车有topKwShow标识的时候，上方kw值显示
-              car.topReduce = "true";
-              carpre.topKwShow = "true";
-              mergeFlagTwo.push(carpre.numberFlag);
-              mergeFlagTwo.push(car.numberFlag);
-              y1 = car.top + 10;
-            }
-
-            d3Lanes.push({
-            "numberFlag":car.numberFlag,
-            "x1":x1,
-            "x2":x2,
-            "y1":y1
-            });
+            mergeFlag.push(car.numberFlag);
           }
 
-          var preRightCar = null;
-          for(var n in rightCars){
-            //第一种合并情况右列车有mergeFirstFlag标识的时候，右下角percent显示
-            rightCars[n].mergeFirstFlag = null;
-            rightCars[n].mergeSecondFlag = null;
-            if(rightCars[n].rrPrice < rightCars[n].tsPrice){
-            	y2 = rightCars[n].top + 36;
-            }else if(rightCars[n].rrPrice == rightCars[n].tsPrice || (Math.round(rightCars[n].rrPrice / Math.pow(10,4)) - Math.round(rightCars[n].tsPrice / Math.pow(10,4)) < 1)){
-              y2 = rightCars[n].top + 16;
-            }else{
-            	y2 = rightCars[n].top;
-            }
-            for(var m in mergeFlag){
-              //第一种合并情况(有合并名称)，左侧对应的右侧车加rightCars[n].mergeFirstFlag = "true";标识
-              if(rightCars[n].numberFlag == mergeFlag[m]){
-                rightCars[n].mergeFirstFlag = "true";
-              }
-            }
-            for(var i in mergeFlagTwo){
-              //第二种合并情况（无合并名称），左侧对应的右侧车加rightCars[n].mergeFirstFlag = "true";标识
-              if(rightCars[n].numberFlag == mergeFlagTwo[i]){
-                rightCars[n].mergeFirstFlag = "true";
-              }
-            }
-            if(preRightCar){
-              //两种合并情况，左侧对应的右侧车下面那台加rightCars[n].mergeSecondFlag = "true"标识，
-              //右侧车有mergeSecondFlag标识时，top值减20
-              //c.mergeFirstFlag == "true" && c.mergeSecondFlag == null时，右上角nickname显示
-              //c.mergeFirstFlag == "true" && c.mergeSecondFlag == "true"时，左下角nickname显示
-              if(preRightCar.tsPrice == rightCars[n].tsPrice){
-                rightCars[n].mergeSecondFlag = "true";
-                if(preRightCar.rrPrice != rightCars[n].rrPrice){
-                  y2 = rightCars[n].top+10;
-                }else{
-                  y2 = rightCars[n].top-20;
-                }
-
-                preRightCar = null;
-              }
-            }
-            preRightCar = rightCars[n];
-            for(var z in d3Lanes){
-              if(d3Lanes[z].numberFlag == rightCars[n].numberFlag){
-                d3Lanes[z].y2 = y2;
-              }
-            }
-
+          if (carpre != null && carpre.rrPrice == car.rrPrice && carpre.top != car.top && carpre.mergename == " ") {
+            //第二种合并情况左列车有topReduce标识的时候，top值减少20
+            //第二种合并情况左列车有topKwShow标识的时候，上方kw值显示
+            car.topReduce = "true";
+            carpre.topKwShow = "true";
+            mergeFlagTwo.push(carpre.numberFlag);
+            mergeFlagTwo.push(car.numberFlag);
+            y1 = car.top + 10;
           }
-          this.d3List.push(d3Lanes);
-          // TODO
+
+          d3Lanes.push({
+            "numberFlag": car.numberFlag,
+            "x1": x1,
+            "x2": x2,
+            "y1": y1
+          });
         }
+
+        var preRightCar = null;
+        for (var n in rightCars) {
+          //第一种合并情况右列车有mergeFirstFlag标识的时候，右下角percent显示
+          rightCars[n].mergeFirstFlag = null;
+          rightCars[n].mergeSecondFlag = null;
+          if (rightCars[n].rrPrice < rightCars[n].tsPrice) {
+            y2 = rightCars[n].top + 36;
+          } else if (rightCars[n].rrPrice == rightCars[n].tsPrice || (Math.round(rightCars[n].rrPrice / Math.pow(10, 4)) - Math.round(rightCars[n].tsPrice / Math.pow(10, 4)) < 1)) {
+            y2 = rightCars[n].top + 16;
+          } else {
+            y2 = rightCars[n].top;
+          }
+          for (var m in mergeFlag) {
+            //第一种合并情况(有合并名称)，左侧对应的右侧车加rightCars[n].mergeFirstFlag = "true";标识
+            if (rightCars[n].numberFlag == mergeFlag[m]) {
+              rightCars[n].mergeFirstFlag = "true";
+            }
+          }
+          for (var i in mergeFlagTwo) {
+            //第二种合并情况（无合并名称），左侧对应的右侧车加rightCars[n].mergeFirstFlag = "true";标识
+            if (rightCars[n].numberFlag == mergeFlagTwo[i]) {
+              rightCars[n].mergeFirstFlag = "true";
+            }
+          }
+          if (preRightCar) {
+            //两种合并情况，左侧对应的右侧车下面那台加rightCars[n].mergeSecondFlag = "true"标识，
+            //右侧车有mergeSecondFlag标识时，top值减20
+            //c.mergeFirstFlag == "true" && c.mergeSecondFlag == null时，右上角nickname显示
+            //c.mergeFirstFlag == "true" && c.mergeSecondFlag == "true"时，左下角nickname显示
+            if (preRightCar.tsPrice == rightCars[n].tsPrice) {
+              rightCars[n].mergeSecondFlag = "true";
+              if (preRightCar.rrPrice != rightCars[n].rrPrice) {
+                y2 = rightCars[n].top + 10;
+              } else {
+                y2 = rightCars[n].top - 20;
+              }
+
+              preRightCar = null;
+            }
+          }
+          preRightCar = rightCars[n];
+          for (var z in d3Lanes) {
+            if (d3Lanes[z].numberFlag == rightCars[n].numberFlag) {
+              d3Lanes[z].y2 = y2;
+            }
+          }
+
+        }
+        this.d3List.push(d3Lanes);
+        // TODO
+      }
       // console.log(this.carScreen.curCarLanes)
-     },
+    },
   },
   components: {
     addNewVehicleAssem,
@@ -1152,6 +1150,7 @@ export default {
     margin: 10px 20px 0 14px;
     position: relative;
   }
+
   .AddNewVehicleBox .vehicleCheckBox .selectedTip {
     display: inline-block;
     position: absolute;
@@ -1161,6 +1160,7 @@ export default {
     color: #72adff;
     letter-spacing: 0.5px;
   }
+
   .AddNewVehicleBox .vehicleCheckBox .selectedTip .selectedNum {
     color: #757474;
     margin-left: 12px;
@@ -1196,6 +1196,7 @@ export default {
     padding-right: 25px;
     margin: 0;
   }
+
   .AddNewVehicleBox .vehicleCheckBox .el-checkbox-group .name {
     float: left;
     overflow: hidden;
