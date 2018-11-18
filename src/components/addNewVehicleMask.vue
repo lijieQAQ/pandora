@@ -382,7 +382,7 @@ export default {
         isIndeterminate: true,
         checkedCars: prdList
       }
-      de
+      
       this.menuhub.blockList.push(block)
     },
     searchRowDetailCommon: function (brand, seriesOrModel, eseriesOrEngine, yearMonth, bwmFlg) {
