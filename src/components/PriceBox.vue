@@ -20,9 +20,18 @@
             <div class="dateTimeCover"></div>
             <div class="cover" @dblclick="openModifyModal(carLane.ins, false, carLane.idx)"></div>
             <div class="icon">
-              <div class="dropdown">
-                <div class=" arr-more dropdown-toggle" id="more5"><span class="caret"></span></div>
-              </div>
+              <el-dropdown trigger="click">
+              <span class="el-dropdown-link">
+                <i class="el-icon-menu"></i>
+              </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item @click="openModifyModal(carLane.ins, false, carLane.idx)">Modify Column Content{{carLane.idx}}</el-dropdown-item>
+                  <el-dropdown-item class="backgroundNone">
+                    <i class="el-icon-d-arrow-left"></i>
+                    <i class="el-icon-d-arrow-right"></i>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
               <a role="menuitem" tabindex="-1" href="javascript:void(0)" :data-target="'#modalRmRow' + i"><i
                 v-if="tpShowFlg" class="delete-icon" @click="fadeCor(),showDeleteColumn(i)"></i></a>
             </div>
@@ -845,6 +854,10 @@ export default {
 </script>
 
 <style lang="less">
+  .backgroundNone {
+    background: transparent!important;
+    background-color: transparent!important;
+  }
   .priceBox {
     margin: 25px 36px 0 36px;
     height: 800px;
@@ -1598,8 +1611,5 @@ export default {
     color: #1c69d4;
     background-color: #f2f3f9;
   }
-
-
 </style>
-
 
