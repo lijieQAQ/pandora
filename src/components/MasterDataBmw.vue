@@ -78,7 +78,6 @@
             </table>
             <div class="overScroll">
               <table border="0" align="center" cellpadding="0" cellspacing="0">
-
                 <tr v-for="(d,i) in listData" v-cloak>
                   <td class="text-minIcon"></td>
                   <td>{{listSize * (pageInfo.initPage -1) + i + 1}}</td>
@@ -132,6 +131,7 @@ export default {
         pageCount: 0,
         initPage: 0
       },
+      listSize: 13,
       bmwSeriesList: [],
       bmwESeriesList: [],
       bmwModelList: [],
@@ -162,6 +162,7 @@ export default {
             $('.el-date-editor .el-input__inner')[0].value = monthsen[i] + arr[1]
           }
         })
+        this.search(1, false)
       }, 10)
     },
     getBmwSeriesList: function () {
@@ -227,7 +228,6 @@ export default {
         for (var i = 0; i < this.conditions.series.length; i++) {
           var index = this.conditions.series[i]
           if (index == 0) {
-            alert(1111)
             chooseAllFlag = true
             break
           }
@@ -252,6 +252,7 @@ export default {
       if (searchDate) {
         dataArray.yearMonth = '= ' + searchDate.format('yyyymm')
       }
+      dataArray.yearMonth = '= 201809'
       if (this.conditions.vabmwProductsriant != '') {
         dataArray.carNameEn = 'like %' + this.conditions.variant + '%'
       }

@@ -201,7 +201,7 @@ export default {
   props: {
     addNewVehicleMaskVisible: Boolean
   },
-  created() {
+  created () {
     // this.carScreen = new CarScreen();
     this.getBmwBrandList()
     this.getBmwSeriesList()
@@ -210,13 +210,16 @@ export default {
     this.getCmpModelList()
     this.getCmpModelRangeList()
   },
-  mounted() {
+  mounted () {
     this.incomponent()
   },
-  updated() {
+  updated () {
 
   },
   methods: {
+    blockTimeChange (value, index) {
+      debugger
+    },
     openAddNewVehicleDialog: function () {
       var self = this
       setTimeout(function () {

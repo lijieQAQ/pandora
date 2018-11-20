@@ -109,15 +109,15 @@ export default {
     },
     closeSaveVersion (route) {
       if (route != null) {
-        this.getVersionList(new Date())
-        this.initSaveVersionList()
-        for (var k in this.versionList) {
-          var sel = this.versionList[k]
-          if (sel.versionNumber == route.versionNumber) {
-            self.version = sel.id
-            break
+        this.getVersionList(new Date()).then((data) => {
+          for (var k in data) {
+            var sel = data[k]
+            if (sel.versionNumber == route.versionNumber) {
+              this.version = sel.id
+              break
+            }
           }
-        }
+        })
       }
       this.saveVersionVisible = false
     },
@@ -179,13 +179,17 @@ export default {
       dataArray['comUser.userName'] = '= ' + localStorage.username
       dataArray['sort'] = 'versionNumber'
       dataArray['size'] = 9999
-      this.$http.get('repo/rptVersions/list', {
-        params: dataArray
-      }).then(res => {
-        if (res.status == 200) {
-          this.versionList = res.data.rptVersions
-        }
+      let p = new Promise((resolve) => {
+        this.$http.get('repo/rptVersions/list', {
+          params: dataArray
+        }).then(res => {
+          if (res.status == 200) {
+            this.versionList = res.data.rptVersions
+            resolve(res.data.rptVersions)
+          }
+        })
       })
+      return p
     },
     loadVersion: function () {
       $('.loadingDiv').show()

@@ -97,7 +97,7 @@ export default {
         rows: this.carScreen.carLanes,
         tpShowFlg: this.tpShowFlg
       }
-      //待改
+      // 待改
       // $('.loadingDiv').show();
       self.$http.post('priceladder/saveVersion', route).then(res => {
         if (res.status == 200) {

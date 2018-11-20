@@ -12,7 +12,7 @@
         <el-menu :default-active="activeIndex" router class="el-menu-demo" mode="horizontal" @open="handleSelect">
           <el-menu-item index="/priceLadder" route>Price Ladder</el-menu-item>
           <el-menu-item index="2" disabled>Report</el-menu-item>
-          <el-menu-item index="/bmwProduct">Master Data</el-menu-item>
+          <el-menu-item index="/bmwProduct/masterDateBmw">Master Data</el-menu-item>
         </el-menu>
       </div>
       <div class="master-user">
@@ -22,7 +22,7 @@
             <div class="dropdown">
               <button type="button" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">{{username}}<span class="caret"></span> </button>
               <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                <li role="presentation"> <a role="menuitem" tabindex="-1" href="javascript:void(0)">Exit</a> </li>
+                <li role="presentation"> <a role="menuitem" tabindex="-1" href="javascript:void(0)" @click="logout">Exit</a> </li>
               </ul>
             </div>
           </li>
@@ -41,7 +41,7 @@ export default {
       activeIndex: 'priceLadder'
     }
   },
-  created(){
+  created () {
     this.username = localStorage.username
   },
   methods: {
@@ -51,6 +51,16 @@ export default {
       } else if (this.activeIndex === '3') {
         this.$router.push({path: `/bmwProduct`})
       }
+    },
+    logout () {
+      localStorage.removeItem('username')
+      localStorage.removeItem('token')
+      // 删除cookie
+      this.setCookie('role', '', -1)
+      this.setCookie('accessKey', '', -1)
+      this.setCookie('displayName', '', -1)
+      this.setCookie('companyId', '', -1)
+      this.$router.push({path: `/login`})
     }
   }
 }
