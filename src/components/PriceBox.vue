@@ -27,8 +27,8 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item @click="openModifyModal(carLane.ins, false, carLane.idx)">Modify Column Content{{carLane.idx}}</el-dropdown-item>
                   <el-dropdown-item class="backgroundNone">
-                    <i class="el-icon-d-arrow-left"></i>
-                    <i class="el-icon-d-arrow-right"></i>
+                    <i class="el-icon-d-arrow-left" @click="moveLeftOrRight('left', carLane.idx),createArrow()" :class="{'icon_disabled': carLane.idx == 0}"></i>
+                    <i class="el-icon-d-arrow-right" @click="moveLeftOrRight('right', carLane.idx),createArrow()" :class="{'icon_disabled': carLane.idx == carScreen.curCarLanes.length-1}"></i>
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
@@ -283,6 +283,9 @@ export default {
     })
   },
   methods: {
+    moveLeftOrRight (type, index) {
+      store.commit('MOVE_CARSCREEN', {type: type, index: index})
+    },
     confirmDleate: function (param) {
       if (param === 'createArrow') {
         this.createArrow()
@@ -294,7 +297,7 @@ export default {
     closeDeleteColumnDialog: function () {
       this.deleteColumnVisible = false
     },
-    closeModifyColumnContent: function(){
+    closeModifyColumnContent: function () {
       this.modifyColumnContentVisible = false
     },
     getLeftStyle: function (c) {
@@ -807,6 +810,7 @@ export default {
       this.deleteColumnVisible = true
       this.deleteColumnMark = i
     },
+
     openModifyCar : function(car, carLaneIns, laneIndex, carIndex) {
       this.modifyColumnContentVisible = true;
       this.editCar = {
@@ -857,6 +861,13 @@ export default {
   .backgroundNone {
     background: transparent!important;
     background-color: transparent!important;
+    .icon_disabled {
+      color: #999999;
+      pointer-events: none;
+    }
+    i:last-child {
+      float: right;
+    }
   }
   .priceBox {
     margin: 25px 36px 0 36px;

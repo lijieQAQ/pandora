@@ -1,64 +1,61 @@
 <template>
-  <div class="checkBox" v-if="addRow.addCarShowFlg">
+  <div class="checkBox">
     <div id="checkBoxTwo">
       <div class="control-group">
         <div class="controls input-append variant">
           <label for="name"><b class="text-danger">*</b>Variant</label>
-          <input type="text" value="F20" placeholder="" v-model="addRow.addCar.carNameEn" maxlength="50"
-                 name="addRow.addCar.carNameEn" v-validate="'required'">
-          <div class="sixErrorTip">{{ errors.first('addRow.addCar.carNameEn') }}</div>
+          <input type="text" value="F20" placeholder="" v-model="menuhub.editCar.carNameEn" maxlength="50"
+                 name="menuhub.editCar.carNameEn" v-validate="'required'">
+          <div class="sixErrorTip">{{ errors.first('menuhub.editCar.carNameEn') }}</div>
         </div>
       </div>
       <div class="control-group">
         <div class="controls input-append variantShort">
           <label for="name"><b class="text-danger">*</b>Variant(Short)</label>
-          <input type="text" placeholder="" v-model="addRow.addCar.nickname" maxlength="19"
-                 name="addRow.addCar.nickname" v-validate="'required'">
-          <div class="sixErrorTip">{{ errors.first('addRow.addCar.nickname') }}</div>
+          <input type="text" placeholder="" v-model="menuhub.editCar.nickname" maxlength="19"
+                 name="menuhub.editCar.nickname" v-validate="'required'">
+          <div class="sixErrorTip">{{ errors.first('menuhub.editCar.nickname') }}</div>
         </div>
       </div>
 
       <div class="control-group">
         <div class="controls input-append widthHalf changeDefaultVal">
           <label for="name"><b class="text-danger">*</b>MSRP(¥)</label>
-          <vue-numeric v-model="addRow.addCar.rrPrice" placeholder=" " currency="" min="0" maxlength="7"
-                       name="addRow.addCar.rrPrice" v-validate="'isnumber'"></vue-numeric>
-          <div class="sixErrorTip">{{ errors.first('addRow.addCar.rrPrice') }}</div>
+          <vue-numeric v-model="menuhub.editCar.rrPrice" name="menuhub.editCar.rrPrice" placeholder=" " currency=""
+                       min="0" maxlength="7" v-validate="'isnumber'"></vue-numeric>
+          <div class="sixErrorTip">{{ errors.first('menuhub.editCar.rrPrice') }}</div>
         </div>
         <div class="controls input-append widthHalf">
           <label for="name">Model Code</label>
-          <input type="text" placeholder="" v-model="addRow.addCar.model" v-bind:disabled="!addRow.isBmwProduct"
-                 maxlength="20" name="addRow.addCar.model" v-validate="">
+          <input type="text" placeholder="" v-model="menuhub.editCar.model" maxlength="20"
+                 v-bind:disabled="!menuhub.editCar.bmwFlg" name="menuhub.editCar.model" v-validate="">
         </div>
-      </div>
 
+      </div>
       <div class="control-group">
         <div class="controls input-append widthHalf changeDefaultVal">
           <label for="name">
             T/P(¥)
           </label>
-          <vue-numeric v-model="addRow.addCar.tsPrice" placeholder=" " currency="" min="0" maxlength="7"
-                       name="addRow.addCar.tsPrice" v-validate=""></vue-numeric>
+          <vue-numeric name="menuhub.editCar.tsPrice" v-model="menuhub.editCar.tsPrice" placeholder=" " empty-value=" "
+                       currency="" min="0" maxlength="7" v-validate=""></vue-numeric>
         </div>
-        <div class="controls input-append widthHalf" v-if="addRow.isBmwProduct">
+        <div class="controls input-append widthHalf" v-if="menuhub.editCar.bmwFlg">
           <label for="name">Package Code</label>
-          <input type="text" placeholder="" v-model="addRow.addCar.packageCode" maxlength="20"
-                 name="addRow.addCar.packageCode" v-validate="">
+          <input type="text" placeholder="" v-model="menuhub.editCar.packageCode" maxlength="20"
+                 name="menuhub.editCar.packageCode" v-validate="">
         </div>
-        <div class="controls input-append widthHalf" v-if="!addRow.isBmwProduct">
-          <label for="name">ModelRange</label>
-          <input type="text" placeholder="" v-model="addRow.addCar.engine" disabled="true" maxlength="20"
-                 name="addRow.addCar.engine" v-validate="">
+        <div class="controls input-append widthHalf" v-if="!menuhub.editCar.bmwFlg">
+          <label for="name"> ModelRange</label>
+          <input type="text" placeholder="" v-model="menuhub.editCar.engine" maxlength="20"
+                 name="menuhub.editCar.engine" v-validate="" disabled="true">
         </div>
       </div>
-
       <div class="control-group">
         <div class="controls input-append widthHalf">
           <label for="name">Discount(%) </label>
-          <vue-numeric class="discount" precision="2" max="100" min="0" currency="%" currency-symbol-position="suffix"
-                       maxlength="5" disabled="true">{{ accounting.toFixed(((addRow.addCar.rrPrice -
-            addRow.addCar.tsPrice) / addRow.addCar.rrPrice * 100), 2) }}%
-          </vue-numeric>
+
+          <span class="discount">{{ accounting.toFixed(((menuhub.editCar.rrPrice - menuhub.editCar.tsPrice) / menuhub.editCar.rrPrice * 100), 2) }}%</span>
         </div>
         <div class="controls input-append widthHalf">
           <label for="name">Line Code</label>
@@ -69,18 +66,16 @@
       <div class="control-group">
         <div class="controls input-append widthHalf">
           <label for="name">MIX(%)</label>
-          <vue-numeric v-model="addRow.addCar.showMixPercentage" precision="2" max="100" min="0" currency="%"
+          <vue-numeric v-model="menuhub.editCar.showMixPercentage" precision="2" max="100" min="0" currency="%"
                        currency-symbol-position="suffix" maxlength="5"></vue-numeric>
         </div>
         <div class="controls input-append widthHalf changeDefaultVal">
           <label for="name">HP(KW) </label>
-          <vue-numeric placeholder=" " v-model="addRow.addCar.powerHP" precision="0" max="9999" min="0"
+          <vue-numeric placeholder=" " v-model="menuhub.editCar.powerHP" precision="0" max="9999" min="0"
                        maxlength="4"></vue-numeric>
         </div>
       </div>
-
     </div>
-
     <div class="checkTwoBtnBox" style="width:533px">
       <button type="button" class="checkTwoBtn" @click="showAddNewCar(false)">Back</button>
       <button type="button" class="checkTwoBtn ctWord" @click="saveAddNewCar()">Save</button>
@@ -95,12 +90,12 @@ export default {
   name: 'modifyOneCar',
   data () {
     return {
-      accounting: accounting,
+      accounting: accounting
     }
   },
   props: {
     menuhub: Object,
-    addRow: Object
+    editRow: Object
   },
   computed: {
     editCarRrPrice: function () {

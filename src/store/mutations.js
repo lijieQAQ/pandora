@@ -24,6 +24,13 @@ const mutations = {
   [types.SETROW_CARSCREEN] (state, params) {
     state.carScreen.setRow(params.a, params.b)
   },
+  [types.MOVE_CARSCREEN] (state, params) {
+    if (params.type === 'right') {
+      state.carScreen.moveLeft(params.index)
+    } else {
+      state.carScreen.moveRight(params.index)
+    }
+  },
   [types.UPDATE_CMPMODELLIST] (state, params) {
     state.cmpModelList = params
   },

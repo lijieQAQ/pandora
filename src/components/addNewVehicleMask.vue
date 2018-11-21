@@ -76,6 +76,18 @@
                         <el-date-picker
                           v-model=date[i]
                           @change="(value) => blockTimeChange(value, i)"
+                          :picker-options="pickerOptionsBwm"
+                          type="month"
+                          v-if="carLane.bmwFlg"
+                          format="M/yyyy"
+                          :editable="false"
+                        >
+                        </el-date-picker>
+                        <el-date-picker
+                          v-model=date[i]
+                          v-if="!carLane.bmwFlg"
+                          @change="(value) => blockTimeChange(value, i)"
+                          :picker-options="pickerOptionsCmp"
                           type="month"
                           format="M/yyyy"
                           :editable="false"
@@ -141,11 +153,20 @@
       @closeAddNewCarModal="closeAddNewCarModal"
       v-on:getTitleList="titleList">
     </add-new-vehicle-assem>
+    <maste-menuhub-edit-car-dialog :masteMenuhubEditCarDialogVisible="masteMenuhubEditCarDialogVisible"
+                                   v-if="masteMenuhubEditCarDialogVisible"
+                                   :brandList="brandList"
+                                   :bmwBrandList="bmwBrandList" :bmwSeriesList="bmwSeriesList" :cmpBrandList="cmpBrandList"
+                                   :cmpModelList="cmpModelList" :cmpModelRangeList="cmpModelRangeList"
+                                   :bmwESeriesList="bmwESeriesList" :menuhub="menuhub"
+                                   @closeMenuhubEditCarDialog="closeMenuhubEditCarDialog"
+                                   v-on:getTitleList="titleList"></maste-menuhub-edit-car-dialog>
   </div>
 </template>
 <script>
 import format from '../common/js/dateFormat'
 import addNewVehicleAssem from './addNewVehicleAssem'
+import MasteMenuhubEditCarDialog from './MasteMenuhubEditCarDialog'
 import accounting from 'accounting'
 import store from '../store'
 import Bus from '../common/js/Bus'
@@ -153,7 +174,7 @@ import draggable from 'vuedraggable'
 
 export default {
   name: 'addNewVehicleMask',
-  data() {
+  data () {
     return {
       addNewVehicleAssemVisible: false,
       date: [new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date()],
@@ -196,6 +217,19 @@ export default {
       d3List: [],
       priceBoxWidth: 0,
       accounting: accounting,
+      bmwProductsDates: [],
+      cmpProductsDates: [],
+      masteMenuhubEditCarDialogVisible: false,
+      pickerOptionsBwm: {
+        disabledDate: (time) => {
+          return !this.bmwProductsDates.some(item => time.format('yyyy-mm') == item)
+        }
+      },
+      pickerOptionsCmp: {
+        disabledDate: (time) => {
+          return !this.cmpProductsDates.some(item => time.format('yyyy-mm') == item)
+        }
+      }
     }
   },
   props: {
@@ -212,13 +246,61 @@ export default {
   },
   mounted () {
     this.incomponent()
+    this.getMonthsData()
   },
   updated () {
 
   },
   methods: {
+    closeMenuhubEditCarDialog () {
+      this.masteMenuhubEditCarDialogVisible = false
+    },
+    // 获取月份数据
+    getMonthsData () {
+      this.bmwProductsDates = []
+      this.cmpProductsDates = []
+      this.$http.post('repo/bmwProducts/getDateList').then(res => {
+        if (res.status == 200) {
+          for (let year in res.data) {
+            for (let month in res.data[year]) {
+              this.bmwProductsDates.push(year + '-' + res.data[year][month])
+            }
+          }
+        }
+      })
+      this.$http.post('repo/cmpProducts/getDateList').then(res => {
+        if (res.status == 200) {
+          for (let year in res.data) {
+            for (let month in res.data[year]) {
+              this.cmpProductsDates.push(year + '-' + res.data[year][month])
+            }
+          }
+        }
+      })
+    },
     blockTimeChange (value, index) {
-      debugger
+      var cBlock = this.menuhub.blockList[index]
+      cBlock.yearMonth = value.format('yyyymm')
+      let promise
+      // 用这个条件进行判断
+      if (cBlock.bmwFlg) {
+        promise = this.searchBmwProductRowDetail(
+          cBlock.brandNameEn,
+          cBlock.seriesNameEn,
+          cBlock.eseriesNameEn,
+          cBlock.yearMonth)
+      } else {
+        promise = this.searchCmpProductRowDetail(
+          cBlock.brandNameEn,
+          cBlock.model,
+          cBlock.engine,
+          cBlock.yearMonth)
+      }
+      promise.then(data => {
+        cBlock.cars = data || []
+        cBlock.checkedCars = data
+        this.menuhub.blockList[index] = cBlock
+      })
     },
     openAddNewVehicleDialog: function () {
       var self = this
@@ -386,7 +468,7 @@ export default {
       })
     },
 
-    closeDialog() {
+    closeDialog () {
       this.$emit('closeDialog', false)
     },
     getMenuhubBgColorClass: function (brand) {
@@ -398,11 +480,15 @@ export default {
         return 'bg-red'
       }
     },
-    //fuben
+    // fuben
     handleDblClick: function (brand, seriesOrModel, eseriesOrEngine, bmwFlg) {
       var self = this
-      var nowdate = (new Date()).format('yyyymm')
-      var nowdate = '201809'
+      var nowdate
+      if (bmwFlg) {
+        nowdate = this.bmwProductsDates[0].replace('-', '')
+      } else {
+        nowdate = this.cmpProductsDates[0].replace('-', '')
+      }
       var promise = this.searchRowDetailCommon(
         brand,
         seriesOrModel,
@@ -414,9 +500,7 @@ export default {
         prdList = val
         self.pushMenuhubBlockList(val, brand, bmwFlg, nowdate, seriesOrModel, eseriesOrEngine)
       })
-
       // 处理百分比数据
-
     },
     pushMenuhubBlockList: function (prdList, brand, bmwFlg, nowdate, seriesOrModel, eseriesOrEngine) {
       for (var i in prdList) {
@@ -437,7 +521,11 @@ export default {
         isIndeterminate: true,
         checkedCars: prdList
       }
-
+      if (bmwFlg) {
+        this.date[this.menuhub.blockList.length] = new Date(this.bmwProductsDates[0])
+      } else {
+        this.date[this.menuhub.blockList.length] = new Date(this.cmpProductsDates[0])
+      }
       this.menuhub.blockList.push(block)
     },
     searchRowDetailCommon: function (brand, seriesOrModel, eseriesOrEngine, yearMonth, bwmFlg) {
@@ -608,8 +696,9 @@ export default {
         laneIndex: idx,
         carIndex: 0
       }
-      this.clearValidator()
+      // this.clearValidator()
       // $('#menuhubEditCar').modal('show');
+      this.masteMenuhubEditCarDialogVisible = true
     },
     handleRemoveColumn: function (idx) {
       this.menuhub.blockList.splice(idx, 1)
@@ -837,6 +926,7 @@ export default {
   },
   components: {
     addNewVehicleAssem,
+    MasteMenuhubEditCarDialog,
     draggable
   }
 }
