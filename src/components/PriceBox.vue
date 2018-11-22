@@ -25,10 +25,14 @@
                 <i class="el-icon-menu"></i>
               </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item @click="openModifyModal(carLane.ins, false, carLane.idx)">Modify Column Content{{carLane.idx}}</el-dropdown-item>
+                  <el-dropdown-item @click="openModifyModal(carLane.ins, false, carLane.idx)">Modify Column
+                    Content{{carLane.idx}}
+                  </el-dropdown-item>
                   <el-dropdown-item class="backgroundNone">
-                    <i class="el-icon-d-arrow-left" @click="moveLeftOrRight('left', carLane.idx),createArrow()" :class="{'icon_disabled': carLane.idx == 0}"></i>
-                    <i class="el-icon-d-arrow-right" @click="moveLeftOrRight('right', carLane.idx),createArrow()" :class="{'icon_disabled': carLane.idx == carScreen.curCarLanes.length-1}"></i>
+                    <i class="el-icon-d-arrow-left" @click="moveLeftOrRight('left', carLane.idx),createArrow()"
+                       :class="{'icon_disabled': carLane.idx == 0}"></i>
+                    <i class="el-icon-d-arrow-right" @click="moveLeftOrRight('right', carLane.idx),createArrow()"
+                       :class="{'icon_disabled': carLane.idx == carScreen.curCarLanes.length-1}"></i>
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
@@ -154,9 +158,12 @@
       </li>
     </ul>
     <div class="clearfloat"></div>
-    <modify-new-column-dialog :modifyCarLane='modifyCarLane' :brandList = "brandList" :cmpBrandList="cmpBrandList" :bmwBrandList="bmwBrandList"
-    :modifyNewColumnDialogVisible="modifyNewColumnDialogVisible" :bmwSeriesList="bmwSeriesList"
-    @closeModifyColumnDialog="closeModifyColumnDialog" :addRow = "addRow"></modify-new-column-dialog>
+    <modify-new-column-dialog :modifyCarLane='modifyCarLane' :brandList="brandList" :cmpBrandList="cmpBrandList"
+                              :bmwBrandList="bmwBrandList"
+                              :modifyNewColumnDialogVisible="modifyNewColumnDialogVisible"
+                              :bmwSeriesList="bmwSeriesList"
+                              @closeModifyColumnDialog="closeModifyColumnDialog"
+                              :addRow="addRow"></modify-new-column-dialog>
 
     <delete-column v-on:confirmDleate="confirmDleate" :windowScreenWidth='windowScreenWidth'
                    :priceBoxWidth='priceBoxWidth' :deleteColumnMark='deleteColumnMark'
@@ -164,7 +171,7 @@
                    @closeDeleteColumnDialog='closeDeleteColumnDialog'></delete-column>
 
     <modifyColumnContent :modifyColumnContentVisible='modifyColumnContentVisible'
-    @closeModifyColumnContent='closeModifyColumnContent' :editCar='editCar'></modifyColumnContent>
+                         @closeModifyColumnContent='closeModifyColumnContent' :editCar='editCar'></modifyColumnContent>
 
   </div>
 </template>
@@ -207,7 +214,6 @@ export default {
         selectAll: false,
         isIndeterminate: true,
         addCarShowFlg: false,
-
         addCar: {
           bmwFlg: true,
           brandNameEn: '',
@@ -248,8 +254,8 @@ export default {
         showMixPercentage: 0,
         showDiscountPercentage: 0,
         yearMonth: (new Date()).format('yyyymm'),
-        laneIndex : 0,
-        carIndex : 0,
+        laneIndex: 0,
+        carIndex: 0
       },
       d3: d3,
       modifyNewColumnDialogVisible: false,
@@ -258,8 +264,49 @@ export default {
       accounting: accounting,
       rowDate: [new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(),
         new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date(), new Date()],
-      tpShowFlg: true,
+      tpShowFlg: this.$store.state.tpShowFlg,
       carScreen: this.$store.state.carScreen
+    }
+  },
+  watch: {
+    tpShowFlg: function (newTpShowFlg) {
+      var gridCnt = 0
+      this.carScreen.tpShowFlg = newTpShowFlg
+      this.carScreen.rescale()
+
+      var self = this
+      this.$nextTick(function () {
+        var tableLiArray = $('.priceTable li')
+        var leftColumnOne = null
+        if (newTpShowFlg) {
+          gridCnt = self.carScreen.curCarLanes.length < 3 ? 3 : self.carScreen.curCarLanes.length
+
+          for (var i in tableLiArray) {
+            leftColumnOne = $(tableLiArray[i]).children('.leftColumn')
+            leftColumnOne.css('width', '67%')
+          }
+        } else {
+          if (self.carScreen.curCarLanes.length <= 4) {
+            gridCnt = 44
+          } else if (self.carScreen.curCarLanes.length == 5) {
+            gridCnt = 55
+          }
+          else if (self.carScreen.curCarLanes.length == 6) {
+            gridCnt = 66
+          } else if (self.carScreen.curCarLanes.length == 7) {
+            gridCnt = 77
+          } else {
+            gridCnt = 88
+          }
+          for (var j in tableLiArray) {
+            leftColumnOne = $(tableLiArray[j]).children('.leftColumn')
+            leftColumnOne.css('width', '100%')
+          }
+        }
+      })
+
+      this.createArrow()
+      $('.priceBox ul').addClass('"grid" + gridCnt')
     }
   },
   created () {
@@ -274,6 +321,9 @@ export default {
       if (status === 'compare') {
         this.carScreen = this.$store.state.carScreen
       }
+    })
+    Bus.$on('tpShowFlg', data => {
+      this.tpShowFlg = data
     })
     Bus.$on('implement', d3List => {
       this.d3List = d3List
@@ -317,7 +367,6 @@ export default {
       } else {
         return {'display': 'none'}
       }
-
     },
     showPercentBottomLeft: function (c) {
       if (c.leftBottomPer == 'true') {
@@ -811,40 +860,40 @@ export default {
       this.deleteColumnMark = i
     },
 
-    openModifyCar : function(car, carLaneIns, laneIndex, carIndex) {
-      this.modifyColumnContentVisible = true;
+    openModifyCar: function (car, carLaneIns, laneIndex, carIndex) {
+      this.modifyColumnContentVisible = true
       this.editCar = {
-            bmwFlg: carLaneIns.bmwFlg,
-            brandNameEn: carLaneIns.brandNameEn,
-            seriesNameEn: carLaneIns.seriesNameEn,
-            eseriesNameEn: carLaneIns.eseriesNameEn,
-            packageCode: car.packageCode,
-            model: car.model,
-            engine: car.engine,
-            rrPrice: car.rrPrice,
-            tsPrice: car.tsPrice,
-            carNameEn: car.carNameEn,
-            nickname: car.nickname,
-            mixPercentage: car.mixPercentage,
-            discountPercentage: car.discountPercentage,
-            powerHP: car.powerHP,
-            showMixPercentage: car.mixPercentage * 100,
-            showDiscountPercentage: car.discountPercentage * 100,
-            yearMonth: car.yearMonth,
-            laneIndex : laneIndex,
-            carIndex : carIndex,
-      },
-      this.editCarPre = {
-            rrPrice: car.rrPrice,
-            tsPrice: car.tsPrice,
-            discountPercentage: car.discountPercentage,
+        bmwFlg: carLaneIns.bmwFlg,
+        brandNameEn: carLaneIns.brandNameEn,
+        seriesNameEn: carLaneIns.seriesNameEn,
+        eseriesNameEn: carLaneIns.eseriesNameEn,
+        packageCode: car.packageCode,
+        model: car.model,
+        engine: car.engine,
+        rrPrice: car.rrPrice,
+        tsPrice: car.tsPrice,
+        carNameEn: car.carNameEn,
+        nickname: car.nickname,
+        mixPercentage: car.mixPercentage,
+        discountPercentage: car.discountPercentage,
+        powerHP: car.powerHP,
+        showMixPercentage: car.mixPercentage * 100,
+        showDiscountPercentage: car.discountPercentage * 100,
+        yearMonth: car.yearMonth,
+        laneIndex: laneIndex,
+        carIndex: carIndex
       }
-      this.clearValidator();
-      this.watchFlag = false;
+      this.editCarPre = {
+        rrPrice: car.rrPrice,
+        tsPrice: car.tsPrice,
+        discountPercentage: car.discountPercentage
+      }
+      this.clearValidator()
+      this.watchFlag = false
     },
-    clearValidator : function() {
-      this.$validator.reset();
-      this.errors.clear();
+    clearValidator: function () {
+      this.$validator.reset()
+      this.errors.clear()
 
     },
 
@@ -859,8 +908,8 @@ export default {
 
 <style lang="less">
   .backgroundNone {
-    background: transparent!important;
-    background-color: transparent!important;
+    background: transparent !important;
+    background-color: transparent !important;
     .icon_disabled {
       color: #999999;
       pointer-events: none;
@@ -869,6 +918,7 @@ export default {
       float: right;
     }
   }
+
   .priceBox {
     margin: 25px 36px 0 36px;
     height: 800px;

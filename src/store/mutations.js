@@ -36,6 +36,9 @@ const mutations = {
   },
   [types.UPDATE_CMPMODELRANGELIST] (state, params) {
     state.cmpModelRangeList = params
+  },
+  [types.UPDATE_TPSHOWFLG] (state, params) {
+    state.tpShowFlg = params
   }
 }
 

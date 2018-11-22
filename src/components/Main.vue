@@ -27,7 +27,7 @@
       <div class="checkbox">
         <!-- `checked` 为 true 或 false -->
         <label>
-          <input type="checkbox" v-model="tpShowFlg"> Transaction Price
+          <input type="checkbox" v-model="tpShowFlg">Transaction Price
         </label>
       </div>
       <!-- 以下为checkbox,需要留着 -->
@@ -81,6 +81,12 @@ export default {
       carScreen: this.$store.state.carScreen,
       clearAllVisible: false,
       saveVersionVisible: false
+    }
+  },
+  watch: {
+    tpShowFlg () {
+      store.commit('UPDATE_TPSHOWFLG', this.tpShowFlg)
+      Bus.$emit('tpShowFlg', this.tpShowFlg)
     }
   },
   created () {
