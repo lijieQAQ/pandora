@@ -331,6 +331,38 @@ export default {
     Bus.$on('createArrow', data => {
       this.createArrow()
     })
+    this.carScreen.tpShowFlg = this.$store.state.tpShowFlg
+    setTimeout(() => {
+      let tableLiArray = $('.priceTable li')
+      let gridCnt = 0
+      var leftColumnOne = null
+      if (this.carScreen.tpShowFlg) {
+        gridCnt = this.carScreen.curCarLanes.length < 3 ? 3 : this.carScreen.curCarLanes.length
+        for (var i in tableLiArray) {
+          leftColumnOne = $(tableLiArray[i]).children('.leftColumn')
+          leftColumnOne.css('width', '67%')
+        }
+      } else {
+        if (this.carScreen.curCarLanes.length <= 4) {
+          gridCnt = 44
+        } else if (this.carScreen.curCarLanes.length == 5) {
+          gridCnt = 55
+        }
+        else if (this.carScreen.curCarLanes.length == 6) {
+          gridCnt = 66
+        } else if (this.carScreen.curCarLanes.length == 7) {
+          gridCnt = 77
+        } else {
+          gridCnt = 88
+        }
+        for (var j in tableLiArray) {
+          leftColumnOne = $(tableLiArray[j]).children('.leftColumn')
+          leftColumnOne.css('width', '100%')
+        }
+      }
+      this.createArrow()
+      $('.priceBox ul').addClass('grid' + gridCnt)
+    }, 100)
   },
   methods: {
     moveLeftOrRight (type, index) {

@@ -191,7 +191,7 @@
 
 import store from '../store'
 import accounting from 'accounting'
-
+import Bus from '../common/js/Bus'
 export default {
   name: 'modifyColumnContent',
   data () {
@@ -361,7 +361,7 @@ export default {
           }
           store.commit('SETCAR_CARSCREEN', params)
           self.closeModifyColumnContent()
-          this.$emit('createArrow')
+          Bus.$emit('createArrow')
           // self.createArrow();
         }
       })

@@ -26,9 +26,9 @@ const mutations = {
   },
   [types.MOVE_CARSCREEN] (state, params) {
     if (params.type === 'right') {
-      state.carScreen.moveLeft(params.index)
-    } else {
       state.carScreen.moveRight(params.index)
+    } else {
+      state.carScreen.moveLeft(params.index)
     }
   },
   [types.UPDATE_CMPMODELLIST] (state, params) {

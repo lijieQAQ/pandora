@@ -212,7 +212,7 @@ CarScreen.prototype = {
       if (!fFlg) {
         var newCarGroup = {
           'simPrice': simPrice,
-          'cars': [],
+          'cars': []
         }
         newCarGroup.cars.push(car)
         pageCarGroup.push(newCarGroup)

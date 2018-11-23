@@ -131,7 +131,7 @@
 import accounting from 'accounting'
 import modifyOneCar from './modifyOneCar'
 import store from '../store'
-
+import Bus from '../common/js/Bus'
 export default {
   name: 'ModifyNewColumnDialog',
   data () {
@@ -398,7 +398,6 @@ export default {
       }
     },
     confirmAddRow: function () {
-      debugger
       if (this.addRow.selectedProduct.length > 0) {
         var addRowDateValue = this.modifyColumnDate
         var carLane = {
@@ -425,6 +424,7 @@ export default {
         }
       }
       this.closeModifyColumnDialog()
+      Bus.$emit('createArrow')
     },
     selectContainHide: function () {
       $('.selectContainShow').attr('class', 'selectContain')

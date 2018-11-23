@@ -198,7 +198,6 @@ export default {
       return p
     },
     loadVersion: function () {
-      $('.loadingDiv').show()
       var self = this
       var wsUrl = 'priceladder/loadVersionById'
       var route = {
@@ -247,13 +246,22 @@ export default {
       Bus.$emit('createArrow')
     },
     clearVersion: function () {
-      this.version = ''
-      store.commit('CLEAR_CARSCREEN')
-      this.carScreen.rescale()
-      $('#showSavedTime').css('display', 'none')
-      $('.versionCloseIcon').css('display', 'none')
-      $('.priceInfoTitle .saveTime .saveTimeBorderB').css('border-bottom', '1px solid gray')
-      $('#saveVersionModal').modal('hide')
+      this.$confirm('Do you want to save before exiting?\n', 'tip', {
+        confirmButtonText: 'submit',
+        cancelButtonText: 'quit',
+        type: 'warning',
+        center: true
+      }).then(() => {
+        this.saveVersionVisible = true
+      }).catch(() => {
+        this.version = ''
+        store.commit('CLEAR_CARSCREEN')
+        this.carScreen.rescale()
+        $('#showSavedTime').css('display', 'none')
+        $('.versionCloseIcon').css('display', 'none')
+        $('.priceInfoTitle .saveTime .saveTimeBorderB').css('border-bottom', '1px solid gray')
+        $('#saveVersionModal').modal('hide')
+      })
     }
   },
   mounted () {
